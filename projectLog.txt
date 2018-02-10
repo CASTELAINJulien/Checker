@@ -1,0 +1,30 @@
+==== Samedi 10 Février : ( Amaury SIHARATH ) ====
+Réorganisation des packages du projet inspiré de l'organisation des packages du code du CM3 demo2.zip :
+	- Conception du package tree.core
+	- Conception du package tree.gui
+	- Conception du package tree.data
+	- Conception du package tree.test
+		: Servait à l'origine à héberger le point d'entrée du programme. Package inutile maintenant. Ceci dit, ce serait intéressant de pouvoir mettre les tests unitaires dedans, même temporairement. Penser à les enlever par la suite, surtout avant le rendu final.
+	- Conception du package tree.panels
+		: N'était pas présent de base dans le code du 3e CM de GLP, créée le temps du développement pour pouvoir mieux se retrouver avec les Panels.
+
+Conception des classes :
+	- CheckerBoardPanel => ( classe CheckerBoard renommée) 
+	- CheckerBuilder
+		: Ne sert à rien pour l'instant
+	- PanelsContainer => ( ScreenManager renomée )
+		: Permettra de gérer les différents Panels du programme
+	- GraphicalChecker
+		: Point d'entrée du programme
+	- CheckerVisitor
+		: Voir comment on peut utiliser cette interface
+	- PanelsVisitor
+		: Classe créer à l'origine pour récupérer les composantes sur chaque Panel. Pas encore utilisée
+	- LaunchGameScreenPanel
+		: Représente l'écran de configuration de la partie
+	- GPTParameters => ( Il s'agit d'un copier-coller de la classe du 3e CM qu'on a eu en GLP, ça arrive de plagier... Sarcasme mis à part, c'est là qu'on met les constantes inhérentes au rendu graphique de l'application. Faudra bien qu'on s'en serve à l'avenir pour la taille de la fenêtre et bien prendre en compte les échelles )
+
+Liste TODO :
+	- Bien séparer sur la classe CherckerBoardPanel la partie modélisation ( data / données ) et la partie affichage ( gui ). Faire de même sur les autres classes qui héritent de Panel ?
+	- Réorganiser et purger les packages et classes.
+	- Commencer à implémenter certaines classes de données.
