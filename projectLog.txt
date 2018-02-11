@@ -28,3 +28,9 @@ Liste TODO :
 	- Bien séparer sur la classe CherckerBoardPanel la partie modélisation ( data / données ) et la partie affichage ( gui ). Faire de même sur les autres classes qui héritent de Panel ?
 	- Réorganiser et purger les packages et classes.
 	- Commencer à implémenter certaines classes de données.
+
+==== Dimanche 11 Février : ( Amaury SIHARATH ) ====
+	- Conception de la classe ClassFactory et Implémentation des méthodes pour la création des composantes graphiques des Panels.
+		: Sont appelés dans les méthodes de cette classe les constructeurs de chacun des objets à créer selon leur type et paramètres.
+
+	- Remplacement des créations des composantes dans les Panels par les appels des méthodes de la classe ClassFactory.
