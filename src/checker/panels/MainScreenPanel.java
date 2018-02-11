@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import customEventsPackage.CustomEvent;
+import checker.data.ClassFactory;
 import checker.gui.GTParameters;
 import application.StateMachine;
 import java.awt.event.MouseAdapter;
@@ -58,14 +59,14 @@ public class MainScreenPanel extends JPanel {
 	}
 	
 	public void initLayout () {
-		verticalBox = Box.createVerticalBox();
+		verticalBox = (Box) ClassFactory.createNoTextContainingComponent("VerticalBox");
 		this.add(verticalBox);
 		
-		lblChecker = new JLabel("Checker");
+		lblChecker = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Checker");
 		verticalBox.add(lblChecker);
 		lblChecker.setFont(new Font("Tahoma", Font.PLAIN, 72));
 		
-		launchGameButton = new JButton("Lancer une partie");
+		launchGameButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Lancer une partie");
 		launchGameButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -73,10 +74,10 @@ public class MainScreenPanel extends JPanel {
 		});
 		verticalBox.add(launchGameButton);
 		
-		optionsButton = new JButton("Options");
+		optionsButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Options");
 		verticalBox.add(optionsButton);
 		
-		leaveButton = new JButton("Quitter");
+		leaveButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Quitter");
 		verticalBox.add(leaveButton);
 	}
 	/*

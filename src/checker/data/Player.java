@@ -15,7 +15,9 @@ public class Player {
 	private boolean round;
 	private boolean isAI;
 	
-	public Player() {
+	public Player(String nameParameter, boolean isAIParameter) {
+		this.playerName = nameParameter;
+		this.isAI = isAIParameter;
 	}
 
 	public String getPlayerName() {
@@ -58,7 +60,7 @@ public class Player {
 		this.round = round;
 	}
 
-	public boolean isAI() {
+	public boolean getIsAI() {
 		return isAI;
 	}
 
