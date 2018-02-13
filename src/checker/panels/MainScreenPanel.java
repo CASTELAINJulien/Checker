@@ -17,10 +17,12 @@ import javax.swing.JPanel;
 
 import customEventsPackage.CustomEvent;
 import checker.data.ClassFactory;
+import checker.data.ClipPlayer;
 import checker.gui.GTParameters;
 import application.StateMachine;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 public class MainScreenPanel extends JPanel {
 	/**
@@ -33,8 +35,9 @@ public class MainScreenPanel extends JPanel {
 	private JButton optionsButton;
 	private JButton leaveButton;
 	private List<CustomEvent> listeners = new ArrayList<CustomEvent>();
+	private ClipPlayer musicPlayer;
 	
-	public MainScreenPanel () {
+	public MainScreenPanel () throws IOException {
 		int windowWidth = GTParameters.WINDOW_WIDTH;
 		if (windowWidth < 800 || (windowWidth % 800 != 0)) {
 			throw new IllegalArgumentException("Non supported window size : " + windowWidth);
@@ -44,21 +47,31 @@ public class MainScreenPanel extends JPanel {
 		setBackground(Color.WHITE);
 		
 		this.initLayout();
+		
 		this.initActions();
 	}
 	
 	protected void initActions() {
-		launchGameButton.addActionListener(new PlayAction());
+		launchGameButton.addActionListener(new PlayButtonAction());
+		optionsButton.addActionListener(new OptionsButtonAction());
 	}
 	
-	private class PlayAction implements ActionListener{	
+	private class PlayButtonAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("fzefzefezf");
 			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
 		}
 	}
 	
-	public void initLayout () {
+	private class OptionsButtonAction implements ActionListener{	
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("fzefzefezf");
+			musicPlayer.closeClip();
+			PanelsContainer.getInstance().getCardLayout().last((PanelsContainer.getInstance()));
+		}
+	}
+	
+	public void initLayout () throws IOException {
 		verticalBox = (Box) ClassFactory.createNoTextContainingComponent("VerticalBox");
 		this.add(verticalBox);
 		
@@ -67,11 +80,6 @@ public class MainScreenPanel extends JPanel {
 		lblChecker.setFont(new Font("Tahoma", Font.PLAIN, 72));
 		
 		launchGameButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Lancer une partie");
-		launchGameButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-			}
-		});
 		verticalBox.add(launchGameButton);
 		
 		optionsButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Options");
@@ -79,6 +87,8 @@ public class MainScreenPanel extends JPanel {
 		
 		leaveButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Quitter");
 		verticalBox.add(leaveButton);
+		musicPlayer = new ClipPlayer();
+		musicPlayer.playClip();
 	}
 	/*
 	private static MainScreenPanel instance = new MainScreenPanel();

@@ -1,13 +1,24 @@
 package checker.data;
 
 import java.awt.Component;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JSlider;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import checker.panels.CheckerBoardPanel;
+import checker.panels.LaunchGameScreenPanel;
+import checker.panels.MainScreenPanel;
+import checker.panels.OptionsScreenPanel;
+import checker.panels.PanelsContainer;
 
 public class ClassFactory {
 	public static Object createNoTextContainingComponent (String type) {
@@ -20,8 +31,12 @@ public class ClassFactory {
 			return Box.createHorizontalBox();
 		case "JTextField":
 			return new JTextField();
+		case "JTextArea":
+			return new JTextArea();
 		case "JComboBox":
 			return new JComboBox();
+		case "JSlider":
+			return new JSlider(0,100,50);
 		default:
 			return null;
 		}
@@ -32,12 +47,31 @@ public class ClassFactory {
 		
 	}
 	
+	public static JPanel createPanel(String panelName) throws IOException {
+		switch (panelName) {
+		case "MainScreenPanel":
+			return new MainScreenPanel();
+		case "LaunchGameScreenPanel":
+			return new LaunchGameScreenPanel();
+		case "OptionsScreenPanel":
+			return new OptionsScreenPanel();
+		case "CheckerBoardPanel":
+			return new CheckerBoardPanel(panelName, null);
+		case "PanelsContainer":
+			return PanelsContainer.getInstance();
+		default:
+			return null;
+		}
+	}
+	
 	public static Component createTextContainingComponent (String type, String text) {
 		switch (type) {
 		case "JButton":
 			return new JButton(text);
 		case "JLabel":
 			return new JLabel(text);
+		case "JCheckBox":
+			return new JCheckBox(text);
 		default:
 			return null;
 		}
