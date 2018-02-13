@@ -1,4 +1,4 @@
-==== Samedi 10 Février : ( Amaury SIHARATH ) ====
+﻿==== Samedi 10 Février : ( Amaury SIHARATH ) ====
 Réorganisation des packages du projet inspiré de l'organisation des packages du code du CM3 demo2.zip :
 	- Conception du package tree.core
 	- Conception du package tree.gui
@@ -34,3 +34,8 @@ Liste TODO :
 		: Sont appelés dans les méthodes de cette classe les constructeurs de chacun des objets à créer selon leur type et paramètres.
 
 	- Remplacement des créations des composantes dans les Panels par les appels des méthodes de la classe ClassFactory.
+
+==== Mardi 13 Février : ( Amaury SIHARATH ) ====
+	- Conception de la classe OptionsScreenPanel et de son IHM.
+	- Conception de la classe ClipPlayer pour jouer des sons.
+		: Classe temporaire pour tester l'API Java Sound. Il n'y a que les fichiers de type .wav qui sont supportés de base. Une musique temporaire se lance après avoir lancé le programme. 
