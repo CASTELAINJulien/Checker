@@ -24,11 +24,6 @@ Conception des classes :
 		: Représente l'écran de configuration de la partie
 	- GPTParameters => ( Il s'agit d'un copier-coller de la classe du 3e CM qu'on a eu en GLP, ça arrive de plagier... Sarcasme mis à part, c'est là qu'on met les constantes inhérentes au rendu graphique de l'application. Faudra bien qu'on s'en serve à l'avenir pour la taille de la fenêtre et bien prendre en compte les échelles )
 
-Liste TODO :
-	- Bien séparer sur la classe CherckerBoardPanel la partie modélisation ( data / données ) et la partie affichage ( gui ). Faire de même sur les autres classes qui héritent de Panel ?
-	- Réorganiser et purger les packages et classes.
-	- Commencer à implémenter certaines classes de données.
-
 ==== Dimanche 11 Février : ( Amaury SIHARATH ) ====
 	- Conception de la classe ClassFactory et Implémentation des méthodes pour la création des composantes graphiques des Panels.
 		: Sont appelés dans les méthodes de cette classe les constructeurs de chacun des objets à créer selon leur type et paramètres.
@@ -37,5 +32,11 @@ Liste TODO :
 
 ==== Mardi 13 Février : ( Amaury SIHARATH ) ====
 	- Conception de la classe OptionsScreenPanel et de son IHM.
+	- Mise à jour de la classe ClassFactory
 	- Conception de la classe ClipPlayer pour jouer des sons.
 		: Classe temporaire pour tester l'API Java Sound. Il n'y a que les fichiers de type .wav qui sont supportés de base. Une musique temporaire se lance après avoir lancé le programme. 
+
+Liste TODO :
+	- Bien séparer sur la classe CherckerBoardPanel la partie modélisation ( data / données ) et la partie affichage ( gui ). Faire de même sur les autres classes qui héritent de Panel ?
+	- Réorganiser et purger les packages et classes.
+	- Commencer à implémenter certaines classes de données.
