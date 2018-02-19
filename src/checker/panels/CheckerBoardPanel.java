@@ -12,7 +12,12 @@ import javax.swing.JPanel;
 import customEventsPackage.CustomEvent;
 import application.State;
 import application.StateMachine;
+import checker.core.VariableRepository;
 import checker.gui.Dessiner;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.Box;
+import javax.swing.JTextField;
 
 /**
  * Main GUI class for chronometer.
@@ -32,10 +37,53 @@ public class CheckerBoardPanel extends JPanel implements CustomEvent {
 	private static JPanel control = new JPanel();
 	private Dessiner draw = new Dessiner();
 	JFrame applicationFrame;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
 	// Solution temporaire pour récupérer le panel
 	
 	public CheckerBoardPanel(String title,JFrame frame) {
 		super();
+		setLayout(null);
+		
+		JInternalFrame internalFrame = new JInternalFrame("Players");
+		internalFrame.setBounds(282, 51, 158, 104);
+		add(internalFrame);
+		internalFrame.getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		Box verticalBox = Box.createVerticalBox();
+		internalFrame.getContentPane().add(verticalBox);
+		
+		Box horizontalBox = Box.createHorizontalBox();
+		verticalBox.add(horizontalBox);
+		
+		JLabel lblNewLabel = new JLabel( VariableRepository.getInstance().searchPlayer("Player 1").getPlayerName() );
+		horizontalBox.add(lblNewLabel);
+		
+		textField = new JTextField();
+		horizontalBox.add(textField);
+		textField.setColumns(10);
+		
+		Box horizontalBox_1 = Box.createHorizontalBox();
+		verticalBox.add(horizontalBox_1);
+		
+		JLabel lblNewLabel_1 = new JLabel( VariableRepository.getInstance().searchPlayer("Player 2").getPlayerName() );
+		horizontalBox_1.add(lblNewLabel_1);
+		
+		textField_1 = new JTextField();
+		horizontalBox_1.add(textField_1);
+		textField_1.setColumns(10);
+		
+		Box horizontalBox_2 = Box.createHorizontalBox();
+		verticalBox.add(horizontalBox_2);
+		
+		JLabel lblNewLabel_2 = new JLabel( VariableRepository.getInstance().searchPlayer("Player 3").getPlayerName() );
+		horizontalBox_2.add(lblNewLabel_2);
+		
+		textField_2 = new JTextField();
+		horizontalBox_2.add(textField_2);
+		textField_2.setColumns(10);
+		internalFrame.setVisible(true);
 	}
 	
 	private void init( JFrame frame) {

@@ -91,6 +91,20 @@ public class OptionsScreenPanel extends JPanel {
 		soundMainVolumeSlider.addChangeListener(new MainVolumeSliderValueListener());
 		soundMusicVolumeSlider.addChangeListener(new MusicVolumeSliderValueListener());
 		muteSoundCheckBox.addActionListener(new CheckBoxValueListener());
+		okButton.addActionListener(new okAction());
+		previousButton.addActionListener(new PreviousAction());
+	}
+	
+	private class okAction implements ActionListener{	
+		public void actionPerformed(ActionEvent e) {
+			PanelsContainer.getInstance().getCardLayout().first(PanelsContainer.getInstance());
+		}
+	}
+	
+	private class PreviousAction implements ActionListener{	
+		public void actionPerformed(ActionEvent e) {
+			PanelsContainer.getInstance().getCardLayout().first(PanelsContainer.getInstance());
+		}
 	}
 	
 	private class MainVolumeSliderValueListener implements ChangeListener {

@@ -14,6 +14,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import checker.panels.Board;
 import checker.panels.CheckerBoardPanel;
 import checker.panels.LaunchGameScreenPanel;
 import checker.panels.MainScreenPanel;
@@ -59,6 +60,8 @@ public class ClassFactory {
 			return new CheckerBoardPanel(panelName, null);
 		case "PanelsContainer":
 			return PanelsContainer.getInstance();
+		case "BoardPanel":
+			return new Board();
 		default:
 			return null;
 		}

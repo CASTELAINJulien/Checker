@@ -22,7 +22,7 @@ public class Dessiner extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//Graphics2D g2 = (Graphics2D) g;
+		//   = (Graphics2D) g;
 		int i=0;
 		//creates uncolored cases
 		for(i=0;i<al.size();i++) {

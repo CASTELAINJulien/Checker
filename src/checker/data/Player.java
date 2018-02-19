@@ -18,6 +18,8 @@ public class Player {
 	public Player(String nameParameter, boolean isAIParameter) {
 		this.playerName = nameParameter;
 		this.isAI = isAIParameter;
+		this.playerMana = 0;
+		this.playerScore = 0;
 	}
 
 	public String getPlayerName() {

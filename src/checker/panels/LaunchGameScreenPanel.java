@@ -8,7 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.SwingConstants;
 
+import checker.core.VariableRepository;
 import checker.data.ClassFactory;
+import checker.data.Player;
 import checker.gui.GTParameters;
 
 import javax.swing.Box;
@@ -23,9 +25,9 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.Component;
 
 public class LaunchGameScreenPanel extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField textFieldFirstPlayerName;
+	private JTextField textFieldSecondPlayerName;
+	private JTextField textFieldThirdPlayerName;
 	private Box generalVerticalBox;
 	private JLabel configurationGameLabel;
 	private Box centerHorizontalBox;
@@ -38,9 +40,9 @@ public class LaunchGameScreenPanel extends JPanel {
 	private JButton launchGameButton;
 	private JButton previousButton;
 	private Box horizontalBox;
-	private JLabel lblNewLabel;
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
+	private JLabel labelFirstPlayerName;
+	private JLabel labelSecondPlayerName;
+	private JLabel labelThirdPlayerName;
 	/**
 	 * Create the panel.
 	 */
@@ -68,6 +70,14 @@ public class LaunchGameScreenPanel extends JPanel {
 	
 	private class PlayAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
+			
+			Player player1 = ClassFactory.createPlayer(textFieldFirstPlayerName.getText(), returnComboBoxValue(firstPlayerChoice));
+			Player player2 = ClassFactory.createPlayer(textFieldSecondPlayerName.getText(), returnComboBoxValue(secondPlayerChoice));
+			Player player3 = ClassFactory.createPlayer(textFieldThirdPlayerName.getText(), returnComboBoxValue(thirdPlayerChoice));
+			VariableRepository.getInstance().registerPlayer( "Player 1", player1 );
+			VariableRepository.getInstance().registerPlayer( "Player 2", player2 );
+			VariableRepository.getInstance().registerPlayer( "Player 3", player3 );
+			// PanelsContainer.getInstance().add(comp);
 			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
 		}
 	}
@@ -76,6 +86,14 @@ public class LaunchGameScreenPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			PanelsContainer.getInstance().getCardLayout().previous(PanelsContainer.getInstance());
 		}
+	}
+	
+	public Boolean returnComboBoxValue(JComboBox comboBox) {
+		Boolean ifIsAI = false;
+		if ( comboBox.getSelectedItem() == "AI" ) {
+			ifIsAI = true;
+		}
+		return ifIsAI;
 	}
 	
 	public void initLayout() {
@@ -93,12 +111,12 @@ public class LaunchGameScreenPanel extends JPanel {
 		firstColumnVerticalBox = (Box) ClassFactory.createNoTextContainingComponent("VerticalBox");
 		centerHorizontalBox.add(firstColumnVerticalBox);
 		
-		lblNewLabel = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Informations Joueur 1 :");
-		firstColumnVerticalBox.add(lblNewLabel);
+		labelFirstPlayerName = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Informations Joueur 1 :");
+		firstColumnVerticalBox.add(labelFirstPlayerName);
 		
-		textField = (JTextField) ClassFactory.createNoTextContainingComponent("JTextField");
-		firstColumnVerticalBox.add(textField);
-		textField.setColumns(10);
+		textFieldFirstPlayerName = (JTextField) ClassFactory.createNoTextContainingComponent("JTextField");
+		firstColumnVerticalBox.add(textFieldFirstPlayerName);
+		textFieldFirstPlayerName.setColumns(10);
 		
 		firstPlayerChoice= (JComboBox) ClassFactory.createNoTextContainingComponent("JComboBox");
 		firstPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "AI"}));
@@ -111,12 +129,12 @@ public class LaunchGameScreenPanel extends JPanel {
 		secondColumnVerticalBox = (Box) ClassFactory.createNoTextContainingComponent("VerticalBox");
 		centerHorizontalBox.add(secondColumnVerticalBox);
 		
-		lblNewLabel_1 = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Informations Joueur 2 :");
-		secondColumnVerticalBox.add(lblNewLabel_1);
+		labelSecondPlayerName = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Informations Joueur 2 :");
+		secondColumnVerticalBox.add(labelSecondPlayerName);
 		
-		textField_1 = (JTextField) ClassFactory.createNoTextContainingComponent("JTextField");
-		secondColumnVerticalBox.add(textField_1);
-		textField_1.setColumns(10);
+		textFieldSecondPlayerName = (JTextField) ClassFactory.createNoTextContainingComponent("JTextField");
+		secondColumnVerticalBox.add(textFieldSecondPlayerName);
+		textFieldSecondPlayerName.setColumns(10);
 		
 		secondPlayerChoice = (JComboBox) ClassFactory.createNoTextContainingComponent("JComboBox");
 		secondPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "IA"}));
@@ -129,12 +147,12 @@ public class LaunchGameScreenPanel extends JPanel {
 		thirdColumnVerticalBox = (Box) ClassFactory.createNoTextContainingComponent("VerticalBox");
 		centerHorizontalBox.add(thirdColumnVerticalBox);
 		
-		lblNewLabel_2 = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Informations Joueur 3 :");
-		thirdColumnVerticalBox.add(lblNewLabel_2);
+		labelSecondPlayerName = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Informations Joueur 3 :");
+		thirdColumnVerticalBox.add(labelSecondPlayerName);
 		
-		textField_2 = (JTextField) ClassFactory.createNoTextContainingComponent("JTextField");
-		thirdColumnVerticalBox.add(textField_2);
-		textField_2.setColumns(10);
+		textFieldThirdPlayerName = (JTextField) ClassFactory.createNoTextContainingComponent("JTextField");
+		thirdColumnVerticalBox.add(textFieldThirdPlayerName);
+		textFieldThirdPlayerName.setColumns(10);
 		
 		thirdPlayerChoice = (JComboBox) ClassFactory.createNoTextContainingComponent("JComboBox");
 		thirdPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "IA"}));

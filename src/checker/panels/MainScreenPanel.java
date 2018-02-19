@@ -54,20 +54,25 @@ public class MainScreenPanel extends JPanel {
 	protected void initActions() {
 		launchGameButton.addActionListener(new PlayButtonAction());
 		optionsButton.addActionListener(new OptionsButtonAction());
+		leaveButton.addActionListener(new LeaveButtonAction() );
 	}
 	
 	private class PlayButtonAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("fzefzefezf");
 			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
 		}
 	}
 	
 	private class OptionsButtonAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("fzefzefezf");
 			musicPlayer.closeClip();
 			PanelsContainer.getInstance().getCardLayout().last((PanelsContainer.getInstance()));
+		}
+	}
+	
+	private class LeaveButtonAction implements ActionListener{	
+		public void actionPerformed(ActionEvent e) {
+			System.exit(0);
 		}
 	}
 	

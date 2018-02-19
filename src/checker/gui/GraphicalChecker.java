@@ -8,7 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import checker.core.CheckerBuilder;
+import checker.core.VariableRepository;
 import checker.data.ClassFactory;
+import checker.panels.Board;
 import checker.panels.CheckerBoardPanel;
 import checker.panels.LaunchGameScreenPanel;
 import checker.panels.MainScreenPanel;
@@ -23,7 +25,8 @@ public class GraphicalChecker extends JFrame {
 	private PanelsContainer panelsContainer;
 	private MainScreenPanel mainScreenPanel;
 	private LaunchGameScreenPanel launchGameScreenPanel;
-	private CheckerBoardPanel checkerBoardPanel;
+	// private CheckerBoardPanel checkerBoardPanel;
+	private Board checkerBoardPanel;
 	private OptionsScreenPanel optionsScreenPanel;
 
 	public GraphicalChecker() throws IllegalArgumentException {
@@ -33,7 +36,7 @@ public class GraphicalChecker extends JFrame {
 			panelsContainer = (PanelsContainer) ClassFactory.createPanel("PanelsContainer");
 			mainScreenPanel = (MainScreenPanel) ClassFactory.createPanel("MainScreenPanel");
 			launchGameScreenPanel = (LaunchGameScreenPanel) ClassFactory.createPanel("LaunchGameScreenPanel");
-			checkerBoardPanel = (CheckerBoardPanel) ClassFactory.createPanel("CheckerBoardPanel");
+			checkerBoardPanel = (Board) ClassFactory.createPanel("BoardPanel");
 			optionsScreenPanel = (OptionsScreenPanel) ClassFactory.createPanel("OptionsScreenPanel");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -44,6 +47,8 @@ public class GraphicalChecker extends JFrame {
 		panelsContainer.addPanel(launchGameScreenPanel);
 		panelsContainer.addPanel(checkerBoardPanel);
 		panelsContainer.addPanel(optionsScreenPanel);
+		
+		VariableRepository.getInstance();
 		
 		// panelsContainer.getCards();
 		// panelsContainer.getCardLayout().next(panelsContainer);
