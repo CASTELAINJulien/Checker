@@ -12,11 +12,11 @@ public class GTParameters {
 	/**
 	 * Radical parameter.
 	 */
-	public static final int WINDOW_WIDTH = 800;
+	public static final int WINDOW_WIDTH = 1024;
 
-	public static final int BASIC = WINDOW_WIDTH / 800;
+	public static final int BASIC = WINDOW_WIDTH / 1024;
 
-	public static final int WINDOW_HEIGHT = BASIC * 500;
+	public static final int WINDOW_HEIGHT = BASIC * 768;
 
 	public static final int SCALE = BASIC * 40;
 

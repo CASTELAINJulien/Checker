@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.io.IOException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -29,7 +31,7 @@ public class GraphicalChecker extends JFrame {
 	private Board checkerBoardPanel;
 	private OptionsScreenPanel optionsScreenPanel;
 
-	public GraphicalChecker() throws IllegalArgumentException {
+	public GraphicalChecker() throws IllegalArgumentException, InterruptedException, LineUnavailableException, UnsupportedAudioFileException {
 		super("Checker");
 		// CheckerBuilder builder = new CheckerBuilder();
 		try {
@@ -75,6 +77,16 @@ public class GraphicalChecker extends JFrame {
 			new GraphicalChecker();
 		} catch (IllegalArgumentException e) {
 			System.err.println(e.getMessage());
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

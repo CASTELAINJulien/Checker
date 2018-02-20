@@ -29,7 +29,6 @@ public class MainScreenPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 7064806528132220998L;
-	private Box verticalBox;
 	private JLabel lblChecker;
 	private JButton launchGameButton;
 	private JButton optionsButton;
@@ -39,7 +38,7 @@ public class MainScreenPanel extends JPanel {
 	
 	public MainScreenPanel () throws IOException {
 		int windowWidth = GTParameters.WINDOW_WIDTH;
-		if (windowWidth < 800 || (windowWidth % 800 != 0)) {
+		if (windowWidth < 1024 || (windowWidth % 1024 != 0)) {
 			throw new IllegalArgumentException("Non supported window size : " + windowWidth);
 		}
 
@@ -49,6 +48,9 @@ public class MainScreenPanel extends JPanel {
 		this.initLayout();
 		
 		this.initActions();
+		
+		musicPlayer = new ClipPlayer();
+		musicPlayer.playClip();
 	}
 	
 	protected void initActions() {
@@ -65,7 +67,7 @@ public class MainScreenPanel extends JPanel {
 	
 	private class OptionsButtonAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
-			musicPlayer.closeClip();
+			// musicPlayer.closeClip();
 			PanelsContainer.getInstance().getCardLayout().last((PanelsContainer.getInstance()));
 		}
 	}
@@ -77,23 +79,29 @@ public class MainScreenPanel extends JPanel {
 	}
 	
 	public void initLayout () throws IOException {
-		verticalBox = (Box) ClassFactory.createNoTextContainingComponent("VerticalBox");
-		this.add(verticalBox);
+		setLayout(null);
 		
-		lblChecker = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Checker");
-		verticalBox.add(lblChecker);
+		// lblChecker = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Checker");
+		lblChecker = new JLabel("Checker");
+		lblChecker.setBounds(417, 0, 254, 87);
+		add(lblChecker);
 		lblChecker.setFont(new Font("Tahoma", Font.PLAIN, 72));
 		
-		launchGameButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Lancer une partie");
-		verticalBox.add(launchGameButton);
+		// launchGameButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Lancer une partie");
+		launchGameButton = new JButton("Lancer une partie");
+		launchGameButton.setBounds(445, 116, 192, 50);
+		add(launchGameButton);
 		
-		optionsButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Options");
-		verticalBox.add(optionsButton);
+		// optionsButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Options");
+		optionsButton = new JButton("Options");
+		optionsButton.setBounds(445, 189, 192, 50);
+		add(optionsButton);
 		
-		leaveButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Quitter");
-		verticalBox.add(leaveButton);
-		musicPlayer = new ClipPlayer();
-		musicPlayer.playClip();
+		// leaveButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Quitter");
+		leaveButton = new JButton("Quitter");
+		leaveButton.setBounds(445, 268, 192, 50);
+		add(leaveButton);
+	
 	}
 	/*
 	private static MainScreenPanel instance = new MainScreenPanel();
@@ -102,10 +110,11 @@ public class MainScreenPanel extends JPanel {
 		return instance;
 	}
 	*/
+	/*
 	public Component[] getComponentsOnPanel () {
 		return this.verticalBox.getComponents();
 	}
-	
+	*/
 	public void addListener(CustomEvent toAdd) {
 		listeners.add(toAdd);
 	}

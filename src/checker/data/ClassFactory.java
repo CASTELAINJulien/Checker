@@ -3,6 +3,8 @@ package checker.data;
 import java.awt.Component;
 import java.io.IOException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -48,7 +50,7 @@ public class ClassFactory {
 		
 	}
 	
-	public static JPanel createPanel(String panelName) throws IOException {
+	public static JPanel createPanel(String panelName) throws IOException, InterruptedException, LineUnavailableException, UnsupportedAudioFileException {
 		switch (panelName) {
 		case "MainScreenPanel":
 			return new MainScreenPanel();

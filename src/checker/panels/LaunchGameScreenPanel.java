@@ -1,11 +1,14 @@
 package checker.panels;
 
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import checker.core.VariableRepository;
@@ -13,72 +16,133 @@ import checker.data.ClassFactory;
 import checker.data.Player;
 import checker.gui.GTParameters;
 
-import javax.swing.Box;
+import javax.swing.JList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JSeparator;
-import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Dimension;
-
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import java.awt.Component;
 
 public class LaunchGameScreenPanel extends JPanel {
 	private JTextField textFieldFirstPlayerName;
 	private JTextField textFieldSecondPlayerName;
 	private JTextField textFieldThirdPlayerName;
-	private Box generalVerticalBox;
-	private JLabel configurationGameLabel;
-	private Box centerHorizontalBox;
-	private Box firstColumnVerticalBox;
-	private Box secondColumnVerticalBox;
-	private Box thirdColumnVerticalBox;
-	private JComboBox firstPlayerChoice;
-	private JComboBox secondPlayerChoice;
-	private JComboBox thirdPlayerChoice;
-	private JButton launchGameButton;
-	private JButton previousButton;
-	private Box horizontalBox;
-	private JLabel labelFirstPlayerName;
-	private JLabel labelSecondPlayerName;
-	private JLabel labelThirdPlayerName;
+	
+	JLabel labelGameConfigurationTitle;
+	JLabel labelFirstPlayerInfo;
+	JLabel labelSecondPlayerInfo;
+	JLabel labelThirdPlayerInfo;
+	
+	JComboBox comboBoxFirstPlayerChoice;
+	JComboBox comboBoxSecondPlayerChoice;
+	JComboBox comboBoxThirdPlayerChoice;
+	
+	JLabel labelFirstPlayerName;
+	JLabel labelSecondPlayerName; 
+	JLabel labelThirdPlayerName;
+	
+	JLabel labelFirstPlayerType;
+	JLabel labelSecondPlayerType;
+	JLabel labelThirdPlayerType;
+	
+	JLabel labelFirstPlayerPowers;
+	JLabel labelSecondPlayerPowers;
+	JLabel labelThirdPlayerPowers;
+	
+	JList listFirstPlayerPower;
+	JList listSecondPlayerPower;
+	JList listThirdPlayerPower;
+	
+	JButton buttonLaunchGame;
+	JButton buttonPrevious;
 	/**
 	 * Create the panel.
 	 */
 	public LaunchGameScreenPanel() {
-		setLayout(new BorderLayout(0, 0));
-		
-		initLayout();
+		setBackground(Color.LIGHT_GRAY);
+		setLayout(null);
 		
 		int windowWidth = GTParameters.WINDOW_WIDTH;
-		if (windowWidth < 800 || (windowWidth % 800 != 0)) {
+		if (windowWidth < 1024 || (windowWidth % 1024 != 0)) {
 			throw new IllegalArgumentException("Non supported window size : " + windowWidth);
 		}
 
-		setPreferredSize(new Dimension(windowWidth, GTParameters.WINDOW_HEIGHT));
-		setBackground(Color.WHITE);
+		setPreferredSize(new Dimension(1024, 769));
 		
-		this.initActions();
-
+		initLayout();
+		initActions();
 	}
 	
 	protected void initActions() {
-		launchGameButton.addActionListener(new PlayAction());
-		previousButton.addActionListener(new PreviousAction());
+		buttonLaunchGame.addActionListener(new PlayAction());
+		buttonPrevious.addActionListener(new PreviousAction());
 	}
 	
 	private class PlayAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
+			Player player1;
+			Player player2;
+			Player player3;
+			// True si AI, Faux si joueur Humain
+			if ( returnComboBoxValue(comboBoxFirstPlayerChoice) == true ) {
+				if ( textFieldFirstPlayerName.getText().length() > 0 ) {
+					player1 = ClassFactory.createPlayer(textFieldFirstPlayerName.getText() + " ( AI )", returnComboBoxValue(comboBoxFirstPlayerChoice));
+				} else {
+					player1 = ClassFactory.createPlayer("Player 1" + " ( AI )", returnComboBoxValue(comboBoxFirstPlayerChoice));
+				} 
+			} else {
+				if ( textFieldFirstPlayerName.getText().length() > 0 ) {
+					player1 = ClassFactory.createPlayer(textFieldFirstPlayerName.getText(), returnComboBoxValue(comboBoxFirstPlayerChoice));
+				} else {
+					player1 = ClassFactory.createPlayer("Player 1", returnComboBoxValue(comboBoxFirstPlayerChoice));
+				} 
+			}
 			
-			Player player1 = ClassFactory.createPlayer(textFieldFirstPlayerName.getText(), returnComboBoxValue(firstPlayerChoice));
-			Player player2 = ClassFactory.createPlayer(textFieldSecondPlayerName.getText(), returnComboBoxValue(secondPlayerChoice));
-			Player player3 = ClassFactory.createPlayer(textFieldThirdPlayerName.getText(), returnComboBoxValue(thirdPlayerChoice));
+			if ( returnComboBoxValue(comboBoxSecondPlayerChoice) == true ) {
+				if ( textFieldSecondPlayerName.getText().length() > 0 ) {
+					player2 = ClassFactory.createPlayer(textFieldSecondPlayerName.getText() + " ( AI )", returnComboBoxValue(comboBoxSecondPlayerChoice));
+				} else {
+					player2 = ClassFactory.createPlayer("Player 2" + " ( AI )", returnComboBoxValue(comboBoxSecondPlayerChoice));
+				} 
+			} else {
+				if ( textFieldSecondPlayerName.getText().length() > 0 ) {
+					player2 = ClassFactory.createPlayer(textFieldSecondPlayerName.getText(), returnComboBoxValue(comboBoxSecondPlayerChoice));
+				} else {
+					player2 = ClassFactory.createPlayer("Player 2", returnComboBoxValue(comboBoxSecondPlayerChoice));
+				} 
+			}
+			
+			if ( returnComboBoxValue(comboBoxThirdPlayerChoice) == true ) {
+				if ( textFieldThirdPlayerName.getText().length() > 0 ) {
+					player3 = ClassFactory.createPlayer(textFieldThirdPlayerName.getText() + " ( AI )", returnComboBoxValue(comboBoxThirdPlayerChoice));
+				} else {
+					player3 = ClassFactory.createPlayer("Player 3" + " ( AI )", returnComboBoxValue(comboBoxThirdPlayerChoice));
+				} 
+			} else {
+				if ( textFieldThirdPlayerName.getText().length() > 0 ) {
+					player3 = ClassFactory.createPlayer(textFieldThirdPlayerName.getText(), returnComboBoxValue(comboBoxThirdPlayerChoice));
+				} else {
+					player3 = ClassFactory.createPlayer("Player 3", returnComboBoxValue(comboBoxThirdPlayerChoice));
+				} 
+			}
+			/*
+			if ( textFieldSecondPlayerName.getText().length() > 0 ) {
+				player2 = ClassFactory.createPlayer(textFieldSecondPlayerName.getText(), returnComboBoxValue(comboBoxSecondPlayerChoice));
+			} else {
+				player2 = ClassFactory.createPlayer("Player 2", returnComboBoxValue(comboBoxFirstPlayerChoice));
+			}
+			
+			if ( textFieldThirdPlayerName.getText().length() > 0 ) {
+				player3 = ClassFactory.createPlayer(textFieldThirdPlayerName.getText(), returnComboBoxValue(comboBoxThirdPlayerChoice));
+			} else {
+				player3 = ClassFactory.createPlayer("Player 3", returnComboBoxValue(comboBoxFirstPlayerChoice));
+			}
+			*/
 			VariableRepository.getInstance().registerPlayer( "Player 1", player1 );
 			VariableRepository.getInstance().registerPlayer( "Player 2", player2 );
 			VariableRepository.getInstance().registerPlayer( "Player 3", player3 );
 			// PanelsContainer.getInstance().add(comp);
 			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
+			Board.startTime();
 		}
 	}
 	
@@ -96,76 +160,121 @@ public class LaunchGameScreenPanel extends JPanel {
 		return ifIsAI;
 	}
 	
-	public void initLayout() {
-		generalVerticalBox = (Box) ClassFactory.createNoTextContainingComponent("VerticalBox");
-		add(generalVerticalBox);
+	public void initLayout () {
+		labelGameConfigurationTitle = new JLabel("Game Configuration");
+		labelGameConfigurationTitle.setFont(new Font("Tahoma", Font.PLAIN, 38));
+		labelGameConfigurationTitle.setBounds(338, 22, 335, 76);
+		add(labelGameConfigurationTitle);
 		
-		configurationGameLabel = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Configuration de la partie");
-		generalVerticalBox.add(configurationGameLabel);
-		configurationGameLabel.setVerticalAlignment(SwingConstants.TOP);
-		configurationGameLabel.setFont(new Font("Tahoma", Font.PLAIN, 38));
+		labelFirstPlayerInfo = new JLabel("Informations Joueur 1 :");
+		labelFirstPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		labelFirstPlayerInfo.setBounds(71, 131, 162, 14);
+		add(labelFirstPlayerInfo);
 		
-		centerHorizontalBox = (Box) ClassFactory.createNoTextContainingComponent("HorizontalBox");
-		generalVerticalBox.add(centerHorizontalBox);
+		labelSecondPlayerInfo = new JLabel("Informations Joueur 2 :");
+		labelSecondPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		labelSecondPlayerInfo.setBounds(400, 131, 168, 14);
+		add(labelSecondPlayerInfo);
 		
-		firstColumnVerticalBox = (Box) ClassFactory.createNoTextContainingComponent("VerticalBox");
-		centerHorizontalBox.add(firstColumnVerticalBox);
+		labelThirdPlayerInfo = new JLabel("Informations Joueur 3 :");
+		labelThirdPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		labelThirdPlayerInfo.setBounds(710, 131, 192, 14);
+		add(labelThirdPlayerInfo);
 		
-		labelFirstPlayerName = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Informations Joueur 1 :");
-		firstColumnVerticalBox.add(labelFirstPlayerName);
-		
-		textFieldFirstPlayerName = (JTextField) ClassFactory.createNoTextContainingComponent("JTextField");
-		firstColumnVerticalBox.add(textFieldFirstPlayerName);
+		textFieldFirstPlayerName = new JTextField();
+		textFieldFirstPlayerName.setBounds(180, 156, 135, 20);
+		add(textFieldFirstPlayerName);
 		textFieldFirstPlayerName.setColumns(10);
 		
-		firstPlayerChoice= (JComboBox) ClassFactory.createNoTextContainingComponent("JComboBox");
-		firstPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "AI"}));
-		firstColumnVerticalBox.add(firstPlayerChoice);
-		
-		JSeparator separator = (JSeparator) ClassFactory.createNoTextContainingComponent("JSeparator");
-		separator.setOrientation(SwingConstants.VERTICAL);
-		centerHorizontalBox.add(separator);
-		
-		secondColumnVerticalBox = (Box) ClassFactory.createNoTextContainingComponent("VerticalBox");
-		centerHorizontalBox.add(secondColumnVerticalBox);
-		
-		labelSecondPlayerName = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Informations Joueur 2 :");
-		secondColumnVerticalBox.add(labelSecondPlayerName);
-		
-		textFieldSecondPlayerName = (JTextField) ClassFactory.createNoTextContainingComponent("JTextField");
-		secondColumnVerticalBox.add(textFieldSecondPlayerName);
+		textFieldSecondPlayerName = new JTextField();
 		textFieldSecondPlayerName.setColumns(10);
+		textFieldSecondPlayerName.setBounds(514, 156, 135, 20);
+		add(textFieldSecondPlayerName);
 		
-		secondPlayerChoice = (JComboBox) ClassFactory.createNoTextContainingComponent("JComboBox");
-		secondPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "IA"}));
-		secondColumnVerticalBox.add(secondPlayerChoice);
-		
-		JSeparator separator_1 = (JSeparator) ClassFactory.createNoTextContainingComponent("JSeparator");
-		separator_1.setOrientation(SwingConstants.VERTICAL);
-		centerHorizontalBox.add(separator_1);
-		
-		thirdColumnVerticalBox = (Box) ClassFactory.createNoTextContainingComponent("VerticalBox");
-		centerHorizontalBox.add(thirdColumnVerticalBox);
-		
-		labelSecondPlayerName = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Informations Joueur 3 :");
-		thirdColumnVerticalBox.add(labelSecondPlayerName);
-		
-		textFieldThirdPlayerName = (JTextField) ClassFactory.createNoTextContainingComponent("JTextField");
-		thirdColumnVerticalBox.add(textFieldThirdPlayerName);
+		textFieldThirdPlayerName = new JTextField();
 		textFieldThirdPlayerName.setColumns(10);
+		textFieldThirdPlayerName.setBounds(829, 156, 135, 20);
+		add(textFieldThirdPlayerName);
 		
-		thirdPlayerChoice = (JComboBox) ClassFactory.createNoTextContainingComponent("JComboBox");
-		thirdPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "IA"}));
-		thirdColumnVerticalBox.add(thirdPlayerChoice);
+		comboBoxFirstPlayerChoice = new JComboBox();
+		comboBoxFirstPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "AI"}));
+		comboBoxFirstPlayerChoice.setBounds(180, 187, 135, 20);
+		add(comboBoxFirstPlayerChoice);
 		
-		horizontalBox = (Box) ClassFactory.createNoTextContainingComponent("HorizontalBox");
-		generalVerticalBox.add(horizontalBox);
+		comboBoxSecondPlayerChoice = new JComboBox();
+		comboBoxSecondPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "AI"}));
+		comboBoxSecondPlayerChoice.setBounds(514, 187, 135, 20);
+		add(comboBoxSecondPlayerChoice);
 		
-		launchGameButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Lancer la partie !");
-		horizontalBox.add(launchGameButton);
+		comboBoxThirdPlayerChoice = new JComboBox();
+		comboBoxThirdPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "AI"}));
+		comboBoxThirdPlayerChoice.setBounds(829, 187, 135, 20);
+		add(comboBoxThirdPlayerChoice);
 		
-		previousButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Annuler");
-		horizontalBox.add(previousButton);
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBounds(350, 112, 2, 340);
+		add(separator);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		separator_1.setBounds(681, 112, 2, 340);
+		add(separator_1);
+		
+		labelFirstPlayerName = new JLabel("Player Name :");
+		labelFirstPlayerName.setBounds(71, 159, 78, 14);
+		add(labelFirstPlayerName);
+		
+		labelSecondPlayerName = new JLabel("Player Name :");
+		labelSecondPlayerName.setBounds(400, 159, 78, 14);
+		add(labelSecondPlayerName);
+		
+		labelThirdPlayerName = new JLabel("Player Name :");
+		labelThirdPlayerName.setBounds(710, 159, 78, 14);
+		add(labelThirdPlayerName);
+		
+		labelFirstPlayerType = new JLabel("Player type :");
+		labelFirstPlayerType.setBounds(71, 190, 78, 14);
+		add(labelFirstPlayerType);
+		
+		labelSecondPlayerType = new JLabel("Player type :");
+		labelSecondPlayerType.setBounds(400, 190, 78, 14);
+		add(labelSecondPlayerType);
+		
+		labelThirdPlayerType = new JLabel("Player type :");
+		labelThirdPlayerType.setBounds(710, 190, 78, 14);
+		add(labelThirdPlayerType);
+		
+		labelFirstPlayerPowers = new JLabel("Select two powers :");
+		labelFirstPlayerPowers.setBounds(71, 215, 95, 14);
+		add(labelFirstPlayerPowers);
+		
+		labelSecondPlayerPowers = new JLabel("Select two powers :");
+		labelSecondPlayerPowers.setBounds(400, 215, 104, 14);
+		add(labelSecondPlayerPowers);
+		
+		labelThirdPlayerPowers = new JLabel("Select two powers :");
+		labelThirdPlayerPowers.setBounds(710, 215, 104, 14);
+		add(labelThirdPlayerPowers);
+		
+		listFirstPlayerPower = new JList();
+		listFirstPlayerPower.setBounds(180, 218, 135, 121);
+		add(listFirstPlayerPower);
+		
+		listSecondPlayerPower = new JList();
+		listSecondPlayerPower.setBounds(514, 218, 135, 121);
+		add(listSecondPlayerPower);
+		
+		listThirdPlayerPower = new JList();
+		listThirdPlayerPower.setBounds(829, 218, 135, 121);
+		add(listThirdPlayerPower);
+		
+		buttonLaunchGame = new JButton("Launch Game");
+		buttonLaunchGame.setBounds(400, 522, 104, 23);
+		add(buttonLaunchGame);
+		
+		buttonPrevious = new JButton("Previous");
+		buttonPrevious.setBounds(514, 522, 104, 23);
+		add(buttonPrevious);
 	}
-
 }

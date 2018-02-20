@@ -42,8 +42,16 @@ public class Player {
 		return playerMana;
 	}
 
-	public void setPlayerMana(double playerMana) {
+	public void setPlayerMana(double playerManaParam) {
 		this.playerMana = playerMana;
+	}
+	
+	public void addPlayerMana(double playerManaParam) {
+		if ( this.playerMana+playerManaParam < 100 ) {
+			this.playerMana += playerManaParam;
+		} else {
+			this.playerMana += (100-this.playerMana);
+		}
 	}
 
 	public ArrayList<Power> getPowers() {
