@@ -3,7 +3,7 @@ package checker.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import customEventsPackage.Power;
+import customeventspackage.Power;
 
 public class Player {
 	private String playerName;
