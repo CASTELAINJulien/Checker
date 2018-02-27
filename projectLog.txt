@@ -36,6 +36,19 @@ Conception des classes :
 	- Conception de la classe ClipPlayer pour jouer des sons.
 		: Classe temporaire pour tester l'API Java Sound. Il n'y a que les fichiers de type .wav qui sont supportés de base. Une musique temporaire se lance après avoir lancé le programme. 
 
+==== Mardi 21 Février : ( Amaury SIHARATH ) ====
+	- Modifications dans la classe Board
+		: Une barre de mana se met maintenant à jour plus ou moins bien. La barre affiche pour l'instant le mana du joueur précédent. Elle s'incrémente cependant sans prendre en compte les bornes de 0 à 100.
+		: Des boutons de test pour simuler les coups classiques et les coups spéciaux sont disponibles. La barre de mana se met à jour en conséquence.
+		: Des boutons de test pour simuler les pouvoirs spéciaux sont disponibles. La barre de mana se met à jour en conséquence.
+		: Le nom du joueur qui doit jouer pendant son tour est affiché en haut à droite de l'écran, juste en-dessous du score des joueurs, et se met à jour comme il faut.
+		: Un bouton non-fonctionnel de retour est présent. Permettra plus tard de revenir un tour en arrière en cas d'erreur de la part du joueur précédent, sur accord des autres joueurs humains présents.
+==== Mardi 27 Février : ( Amaury SIHARATH ) ====
+	- Ajout de quelques lignes de code pour la future fonctionnalité d'historique.
+	- La barre de mana se met à jour normalement ( pour l'instant ), et le joueur a le temps de voir la barre de mana se mettre à jour avant que le tour de jeu ne change ( 3 secondes d'intervals entre chaque tour normalement ). 
+	- Les boutons de pouvoirs seront grisés tant que le joueur actuel n'a pas la quantité requise de mana pour activer un pouvoir.
+	- Ajout de quelques lignes de code dans la classe Player pour bien prendre en compte les bornes pour les manas de chaque joueur. La mana est bien comprise entre 0 et 100 désormais.
+
 Liste TODO :
 	- Bien séparer sur la classe CherckerBoardPanel la partie modélisation ( data / données ) et la partie affichage ( gui ). Faire de même sur les autres classes qui héritent de Panel ?
 	- Réorganiser et purger les packages et classes.
