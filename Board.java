@@ -1,10 +1,5 @@
 package checker.panels;
-import customeventspackage.Power;
-import customeventspackage.PowerControl;
-import customeventspackage.PowerFreeze;
-import customeventspackage.PowerJump;
-import customeventspackage.PowerTeleport;
-import customeventspackage.PowerTwoMoves;
+
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -47,8 +42,8 @@ public class Board extends JPanel {
 	private final int x=30;
 	private final int y=34;
 	
-	private static final int IDEAL_WIDTH=22;
-	private static final int IDEAL_HEIGHT=22;
+	private static final int IDEAL_WIDTH=37;
+	private static final int IDEAL_HEIGHT=37;
 	
 	private static JPanel control = new JPanel();
 	
@@ -80,7 +75,6 @@ public class Board extends JPanel {
 			public void actionPerformed(ActionEvent evt) {
 				textField_3.setText( Integer.valueOf(TurnTimer.getInstance().getTimeValue()).toString() );
 				TurnTimer.getInstance().decrement();
-				
 				if ( TurnTimer.getInstance().getTimeValue() == 0 ) {
 					TurnTimer.getInstance().restartTimer();
 					GameVariableRepository.getInstance().incrementPlayerTurn();
@@ -104,7 +98,7 @@ public class Board extends JPanel {
 		this.modifyPlayerNamesGUI();
 		emplacements = new Emplacement[x][y];
 		
-		//System.out.println("test paint");
+		System.out.println("test paint");
 		
 		if ( GameVariableRepository.getInstance().getPlayerTurn() == 0 ) {
 			// System.out.println("test 1");
@@ -130,38 +124,38 @@ public class Board extends JPanel {
 						if(indexY ==  1) {
 						
 							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(390 ,450 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(440 ,560 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(420 ,450 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(480 ,560 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[15][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(450 ,450, IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(520 ,560, IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(480 ,450 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(560 ,560 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[19][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(510 ,450 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(600 ,560 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						}
 						
 						if(indexY == 33) {
 							
 							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(390 ,50 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(440 ,0 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(420 ,50 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(480 ,0 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 							emplacements[13][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(450 ,50 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(520 ,0 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 							emplacements[15][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(480 ,50 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(560 ,0 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 							emplacements[17][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(510 ,50 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(600 ,0 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						}
 					}
 					
@@ -172,32 +166,32 @@ public class Board extends JPanel {
 						if(indexY == 3) {
 						
 							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(405 ,425 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(460 ,525 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(435 ,425 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(500 ,525 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(465 ,425 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(540 ,525 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(495 ,425 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(580 ,525 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 						}
 						
 						if(indexY == 31) {
 							
 							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(405 ,75 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(460 ,35 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(435 ,75 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(500 ,35 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(465 ,75 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(540 ,35 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(495 ,75 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(580 ,35 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 						}
 						
@@ -210,38 +204,38 @@ public class Board extends JPanel {
 						if(indexY == 5) {
 						
 							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(450 ,400 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(520 ,490 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(420 ,400 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(480 ,490 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[15][indexY] = new Emplacement( 15, indexY  );
-							g.drawOval(480 ,400 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(560 ,490 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(300 ,400 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(320 ,490 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(600 ,400 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(720 ,490 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						}
 						
 						if(indexY == 29) {
 							
 							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(450 ,100 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(520 ,70 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(420 ,100 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(480 ,70 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[15][indexY] = new Emplacement( 15, indexY  );
-							g.drawOval(480 ,100 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(560 ,70 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(300 ,100 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(320 ,70 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(600 ,100 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(720 ,70 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 						}
 					}
@@ -253,56 +247,56 @@ public class Board extends JPanel {
 						if(indexY == 7) {
 						
 							emplacements[4][indexY] = new Emplacement( 4, indexY );
-							g.drawOval(405 ,375 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(460 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(435 ,375 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(500 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(465 ,375 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(540 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(495 ,375 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(580 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(285 ,375 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(300 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(315 ,375 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(340 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(615 ,375 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(700 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(585 ,375 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(740 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						}
 						
 						if(indexY == 27) {
 							
 							emplacements[4][indexY] = new Emplacement( 4, indexY );
-							g.drawOval(405 ,125 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(460 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(435 ,125 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(500 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(465 ,125 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(540 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(495 ,125 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(580 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(285 ,125 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(300 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(315 ,125 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(340 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(615 ,125 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(700 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(585 ,125 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(740 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 						}
 						
@@ -315,86 +309,86 @@ public class Board extends JPanel {
 						if(indexY == 9) {
 													
 							emplacements[3][indexY] = new Emplacement( 3, indexY );
-							g.drawOval(270 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(280 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(300 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(320 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 					
 							emplacements[7][indexY] = new Emplacement( 7, indexY );
-							g.drawOval(330 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(360 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[9][indexY] = new Emplacement( 9, indexY );
-							g.drawOval(360 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(400 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(390 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(440 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(420 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(480 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[15][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(450 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(520 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(480 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(560 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[19][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(510 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(600 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[21][indexY] = new Emplacement( 21, indexY );
-							g.drawOval(540 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(640 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(570 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(680 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(600 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(720 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[27][indexY] = new Emplacement( 27, indexY );
-							g.drawOval(630 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(760 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 						}
 						
 						if(indexY == 25) {
 							
 							emplacements[3][indexY] = new Emplacement( 3, indexY );
-							g.drawOval(270 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(280 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(300 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(320 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 					
 							emplacements[7][indexY] = new Emplacement( 7, indexY );
-							g.drawOval(330 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(360 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[9][indexY] = new Emplacement( 9, indexY );
-							g.drawOval(360 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(400 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(390 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(440 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(420 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(480 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[15][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(450 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(520 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(480 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(560 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[19][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(510 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(600 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[21][indexY] = new Emplacement( 21, indexY );
-							g.drawOval(540 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(640 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(570 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(680 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(600 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(720 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[27][indexY] = new Emplacement( 27, indexY );
-							g.drawOval(630 ,150 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(760 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						}
 						
 					}
@@ -406,91 +400,91 @@ public class Board extends JPanel {
 						if(indexY == 11) {
 						
 							emplacements[2][indexY] = new Emplacement( 2, indexY );
-							g.drawOval(255 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(260 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[4][indexY] = new Emplacement( 4, indexY );
-							g.drawOval(285 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(300 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(315 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(340 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[8][indexY] = new Emplacement( 8, indexY );
-							g.drawOval(345 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(380 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[10][indexY] = new Emplacement( 10, indexY );
-							g.drawOval(375 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(420 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(405 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(460 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(435 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(500 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(465 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(540 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(495 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(580 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[20][indexY] = new Emplacement( 20, indexY );
-							g.drawOval(525 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(620 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[22][indexY] = new Emplacement( 22, indexY );
-							g.drawOval(555 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(660 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(585 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(700 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[26][indexY] = new Emplacement( 26, indexY );
-							g.drawOval(615 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(740 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[28][indexY] = new Emplacement( 28, indexY );
-							g.drawOval(645 ,325 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(780 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						}
 						
 						if(indexY == 23) {
 							
 							emplacements[2][indexY] = new Emplacement( 2, indexY );
-							g.drawOval(255 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(260 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[4][indexY] = new Emplacement( 4, indexY );
-							g.drawOval(285 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(300 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(315 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(340 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[8][indexY] = new Emplacement( 8, indexY );
-							g.drawOval(345 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(380 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[10][indexY] = new Emplacement( 10, indexY );
-							g.drawOval(375 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(420 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(405 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(460 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(435 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(500 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(465 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(540 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(495 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(580 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[20][indexY] = new Emplacement( 20, indexY );
-							g.drawOval(525 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(620 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[22][indexY] = new Emplacement( 22, indexY );
-							g.drawOval(555 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(660 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(585 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(700 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[26][indexY] = new Emplacement( 26, indexY );
-							g.drawOval(615 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(740 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[28][indexY] = new Emplacement( 28, indexY );
-							g.drawOval(645 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(780 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 						}
 					}
@@ -502,98 +496,98 @@ public class Board extends JPanel {
 						if(indexY == 13) {
 						
 							emplacements[1][indexY] = new Emplacement( 1, indexY );
-							g.drawOval(240 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(240 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[3][indexY] = new Emplacement( 3, indexY );
-							g.drawOval(270 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(280 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(300 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(320 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[7][indexY] = new Emplacement( 7, indexY );
-							g.drawOval(330 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(360 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[9][indexY] = new Emplacement( 9, indexY );
-							g.drawOval(360 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(400 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(390 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(440 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(420 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(480 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[15][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(450 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(520 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(480 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(560 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[19][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(510 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(600 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[21][indexY] = new Emplacement( 21, indexY );
-							g.drawOval(540 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(640 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(570 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(680 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(600 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(720 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[27][indexY] = new Emplacement( 27, indexY );
-							g.drawOval(630 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(760 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[29][indexY] = new Emplacement( 29, indexY );
-							g.drawOval(660 ,300 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(800 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						}
 						
 						if(indexY == 21) {
 						
 							emplacements[1][indexY] = new Emplacement( 1, indexY );
-							g.drawOval(240 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(240 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[3][indexY] = new Emplacement( 3, indexY );
-							g.drawOval(270 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(280 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(300 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(320 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[7][indexY] = new Emplacement( 7, indexY );
-							g.drawOval(330 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(360 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[9][indexY] = new Emplacement( 9, indexY );
-							g.drawOval(360 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(400 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(390 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(440 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(420 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(480 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[15][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(450 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(520 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(480 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(560 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[19][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(510 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(600 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[21][indexY] = new Emplacement( 21, indexY );
-							g.drawOval(540 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(640 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(570 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(680 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(600 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(720 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[27][indexY] = new Emplacement( 27, indexY );
-							g.drawOval(630 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(760 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[29][indexY] = new Emplacement( 29, indexY );
-							g.drawOval(660 ,200 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(800 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 						}
 					}
@@ -605,67 +599,67 @@ public class Board extends JPanel {
 						if(indexY == 15) {
 						
 							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(315 ,275 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(340 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[8][indexY] = new Emplacement( 8, indexY );
-							g.drawOval(345 ,275 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(380 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[10][indexY] = new Emplacement( 10, indexY );
-							g.drawOval(375 ,275 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(420 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(405 ,275 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(460 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(435 ,275 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(500 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(465 ,275 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(540 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(495 ,275 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(580 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[20][indexY] = new Emplacement( 20, indexY );
-							g.drawOval(525 ,275 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(620 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[22][indexY] = new Emplacement( 22, indexY );
-							g.drawOval(555 ,275 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(660 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(585 ,275 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(700 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						}
 						
 						if(indexY == 19) {
 							
 							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(315 ,225 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(340 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[8][indexY] = new Emplacement( 8, indexY );
-							g.drawOval(345 ,225 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(380 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[10][indexY] = new Emplacement( 10, indexY );
-							g.drawOval(375 ,225 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(420 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(405 ,225 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(460 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(435 ,225 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(500 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(465 ,225 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(540 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(495 ,225 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(580 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[20][indexY] = new Emplacement( 20, indexY );
-							g.drawOval(525 ,225 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(620 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[22][indexY] = new Emplacement( 22, indexY );
-							g.drawOval(555 ,225 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(660 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(585 ,225 , IDEAL_WIDTH, IDEAL_HEIGHT);
+							g.drawOval(700 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
 							
 						}
 					}
@@ -675,31 +669,31 @@ public class Board extends JPanel {
 					if( (indexY == 17) && ( (indexX == 7) || (indexX == 9) || (indexX == 11) || (indexX == 13) || (indexX == 15) || (indexX == 17) || (indexX == 19) || (indexX == 21) || (indexX == 23) ) ) {
 						
 						emplacements[7][indexY] = new Emplacement( 7, indexY );
-						g.drawOval(330 ,250 , IDEAL_WIDTH, IDEAL_HEIGHT);
+						g.drawOval(360 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						emplacements[9][indexY] = new Emplacement( 9, indexY );
-						g.drawOval(360 ,250 , IDEAL_WIDTH, IDEAL_HEIGHT);
+						g.drawOval(400 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						emplacements[11][indexY] = new Emplacement( 11, indexY );
-						g.drawOval(390 ,250 , IDEAL_WIDTH, IDEAL_HEIGHT);
+						g.drawOval(440 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						emplacements[13][indexY] = new Emplacement( 13, indexY );
-						g.drawOval(420 ,250 , IDEAL_WIDTH, IDEAL_HEIGHT);
+						g.drawOval(480 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						emplacements[15][indexY] = new Emplacement( 15, indexY );
-						g.drawOval(450 ,250 , IDEAL_WIDTH, IDEAL_HEIGHT);
+						g.drawOval(520 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						emplacements[17][indexY] = new Emplacement( 17, indexY );
-						g.drawOval(480 ,250 , IDEAL_WIDTH, IDEAL_HEIGHT);
+						g.drawOval(560 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						emplacements[19][indexY] = new Emplacement( 19, indexY );
-						g.drawOval(510 ,250 , IDEAL_WIDTH, IDEAL_HEIGHT);
+						g.drawOval(600 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						emplacements[21][indexY] = new Emplacement( 21, indexY );
-						g.drawOval(540 ,250 , IDEAL_WIDTH, IDEAL_HEIGHT);
+						g.drawOval(640 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
 						
 						emplacements[23][indexY] = new Emplacement( 23, indexY );
-						g.drawOval(570 ,250 , IDEAL_WIDTH, IDEAL_HEIGHT);
+						g.drawOval(680 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
 					}
 				}
 			}
@@ -804,15 +798,13 @@ public class Board extends JPanel {
 		panel.add(list);
 		
 		btnPower2 = new JButton("Pouvoir 2");
-		btnPower2.setBackground(Color.white);
-		btnPower2.setIcon(new ImageIcon("testice.jpg"));
-		btnPower2.setBounds(549, 552, 90, 90);
+		btnPower2.setIcon(new ImageIcon("power2.jpg"));
+		btnPower2.setBounds(549, 652, 89, 96);
 		add(btnPower2);
 		
 		btnPower1 = new JButton("Pouvoir 1");
-		btnPower1.setBackground(Color.white);
-		btnPower1.setIcon(new ImageIcon("power_jump.png"));
-		btnPower1.setBounds(414, 552, 100, 100);
+		btnPower1.setIcon(new ImageIcon("power1.jpg"));
+		btnPower1.setBounds(414, 652, 94, 96);
 		add(btnPower1);
 		
 		textField_3 = new JTextField();
@@ -984,6 +976,3 @@ public class Board extends JPanel {
 		
 	}
 }
-
-
-
