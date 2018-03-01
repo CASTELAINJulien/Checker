@@ -9,13 +9,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import customEventsPackage.CustomEvent;
+import customeventspackage.CustomEvent;
 import checker.data.ClassFactory;
 import checker.data.ClipPlayer;
 import checker.gui.GTParameters;
@@ -36,7 +38,8 @@ public class MainScreenPanel extends JPanel {
 	private List<CustomEvent> listeners = new ArrayList<CustomEvent>();
 	private ClipPlayer musicPlayer;
 	
-	public MainScreenPanel () throws IOException {
+	// Faire attention aux throws, on devrait mettre un try & catch quelque part
+	public MainScreenPanel () throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 		int windowWidth = GTParameters.WINDOW_WIDTH;
 		if (windowWidth < 1024 || (windowWidth % 1024 != 0)) {
 			throw new IllegalArgumentException("Non supported window size : " + windowWidth);
@@ -49,8 +52,8 @@ public class MainScreenPanel extends JPanel {
 		
 		this.initActions();
 		
-		musicPlayer = new ClipPlayer();
-		musicPlayer.playClip();
+		//musicPlayer = new ClipPlayer();
+		//musicPlayer.playClip();
 	}
 	
 	protected void initActions() {
@@ -82,7 +85,7 @@ public class MainScreenPanel extends JPanel {
 		setLayout(null);
 		
 		// lblChecker = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Checker");
-		lblChecker = new JLabel("Checker");
+		lblChecker = new JLabel("Pho");
 		lblChecker.setBounds(417, 0, 254, 87);
 		add(lblChecker);
 		lblChecker.setFont(new Font("Tahoma", Font.PLAIN, 72));
@@ -118,10 +121,11 @@ public class MainScreenPanel extends JPanel {
 	public void addListener(CustomEvent toAdd) {
 		listeners.add(toAdd);
 	}
-	    
+	/*
 	public void initiateStateChange(JFrame frame) {
 	    StateMachine.getInstance();
 	    for (CustomEvent customEventsList : listeners)
 	    	customEventsList.stateChanged(frame);
 	}
+	*/
 }

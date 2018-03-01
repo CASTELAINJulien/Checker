@@ -9,7 +9,7 @@ public class Player {
 	private String playerName;
 	private double playerScore;
 	private double playerMana;
-	private ArrayList<Power> powers=new ArrayList<Power>();
+	private ArrayList<Power> alPowers=new ArrayList<Power>();
 	//pb with int
 	//private HashMap<int ,Piece> pieces = new HashMap<int, Piece>();
 	private boolean round;
@@ -47,19 +47,27 @@ public class Player {
 	}
 	
 	public void addPlayerMana(double playerManaParam) {
-		if ( this.playerMana+playerManaParam < 100 ) {
+		if ( (this.playerMana+playerManaParam < 100) && (this.playerMana+playerManaParam > 0) ) {
 			this.playerMana += playerManaParam;
+		} else if ( this.playerMana+playerManaParam < 0 ) {
+			System.out.println("pouvoir");
+			this.playerMana = 0;
 		} else {
+			System.out.println("test\n");
 			this.playerMana += (100-this.playerMana);
+			System.out.println(this.playerMana);
 		}
 	}
 
-	public ArrayList<Power> getPowers() {
-		return powers;
+	public  void addPower(Power power) {
+		alPowers.add(power);
 	}
-
-	public void setPowers(ArrayList<Power> powers) {
-		this.powers = powers;
+	public Power getPower(int i) {
+		return alPowers.get(i);
+	}
+	
+	public int taille() {
+		return alPowers.size();
 	}
 
 	public boolean isRound() {

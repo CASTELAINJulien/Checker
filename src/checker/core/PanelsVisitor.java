@@ -5,7 +5,7 @@ import java.awt.Component;
 import javax.swing.JPanel;
 
 import checker.data.Player;
-import checker.panels.CheckerBoardPanel;
+import checker.panels.Board;
 
 public class PanelsVisitor implements CheckerVisitor<Void> {
 	
@@ -28,9 +28,10 @@ public class PanelsVisitor implements CheckerVisitor<Void> {
 	public Void visit(Player node) {
 		return null;
 	}
-	
+
 	@Override
-	public Void visit(CheckerBoardPanel node) {
+	public Void visit(Board node) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

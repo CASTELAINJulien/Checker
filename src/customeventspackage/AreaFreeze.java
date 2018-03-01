@@ -1,4 +1,4 @@
-package customEventsPackage;
+package customeventspackage;
 
 public class AreaFreeze extends AreaEffect {
 	public AreaFreeze() {

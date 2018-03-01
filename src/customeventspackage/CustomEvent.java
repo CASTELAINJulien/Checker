@@ -1,4 +1,4 @@
-package customEventsPackage;
+package customeventspackage;
 import javax.swing.JFrame;
 
 public interface CustomEvent {

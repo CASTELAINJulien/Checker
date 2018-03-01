@@ -13,7 +13,6 @@ import checker.core.CheckerBuilder;
 import checker.core.VariableRepository;
 import checker.data.ClassFactory;
 import checker.panels.Board;
-import checker.panels.CheckerBoardPanel;
 import checker.panels.LaunchGameScreenPanel;
 import checker.panels.MainScreenPanel;
 import checker.panels.OptionsScreenPanel;

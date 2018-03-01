@@ -9,6 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import checker.data.ClassFactory;
+import checker.data.ClipPlayer;
 
 import javax.swing.JCheckBox;
 import java.awt.Font;
@@ -118,6 +119,7 @@ public class OptionsScreenPanel extends JPanel {
 	private class MusicVolumeSliderValueListener implements ChangeListener {
 	    public void stateChanged(ChangeEvent e) {
 	        if (soundMusicVolumeSlider.getValueIsAdjusting()) {
+	        	ClipPlayer.changeVolumeClip(soundMusicVolumeSlider.getValue());
 	        	soundMusicVolumeTextArea.setText(Integer.valueOf(soundMusicVolumeSlider.getValue()).toString());
 	        }    
 	    }

@@ -1,4 +1,4 @@
-package customEventsPackage;
+package customeventspackage;
 
 public abstract class AreaEffect {
 	private int position;

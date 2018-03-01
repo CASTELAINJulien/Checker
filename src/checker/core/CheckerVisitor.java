@@ -4,7 +4,7 @@ import java.awt.Component;
 import javax.swing.JPanel;
 
 import checker.data.Player;
-import checker.panels.CheckerBoardPanel;
+import checker.panels.Board;
 
 public interface CheckerVisitor<T> {
 	T visit(JPanel node);
@@ -15,5 +15,5 @@ public interface CheckerVisitor<T> {
 	
 	T visit(Player node);
 	
-	T visit(CheckerBoardPanel node);
+	T visit(Board node);
 }

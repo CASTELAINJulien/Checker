@@ -3,8 +3,10 @@ package checker.panels;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -15,9 +17,17 @@ import checker.core.VariableRepository;
 import checker.data.ClassFactory;
 import checker.data.Player;
 import checker.gui.GTParameters;
+import customeventspackage.Power;
+import customeventspackage.PowerControl;
+import customeventspackage.PowerFreeze;
+import customeventspackage.PowerJump;
+import customeventspackage.PowerTeleport;
+import customeventspackage.PowerTwoMoves;
 
 import javax.swing.JList;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -54,6 +64,38 @@ public class LaunchGameScreenPanel extends JPanel {
 	
 	JButton buttonLaunchGame;
 	JButton buttonPrevious;
+	
+	private Power jump=new PowerJump();
+	private	Power freeze=new PowerFreeze();
+	private Power control=new PowerControl();
+	private Power teleport=new PowerTeleport();
+	private Power twoMoves=new PowerTwoMoves();
+	
+	private JButton btnPower1Player1;
+	private JButton btnPower2Player1;
+	private JButton btnPower3Player1;
+	private JButton btnPower4Player1;
+	private JButton btnPower5Player1;
+	
+	private JButton btnPower1Player2;
+	private JButton btnPower2Player2;
+	private JButton btnPower3Player2;
+	private JButton btnPower4Player2;
+	private JButton btnPower5Player2;
+	
+	private JButton btnPower1Player3;
+	private JButton btnPower2Player3;
+	private JButton btnPower3Player3;
+	private JButton btnPower4Player3;
+	private JButton btnPower5Player3;
+	
+	private int nbPowerChoosenJ1=-1;
+	private int nbPowerChoosenJ2=-1;
+	private int nbPowerChoosenJ3=-1;
+	
+	private ArrayList<Power> al1=new ArrayList<Power>();
+	private ArrayList<Power> al2=new ArrayList<Power>();
+	private ArrayList<Power> al3=new ArrayList<Power>();
 	/**
 	 * Create the panel.
 	 */
@@ -75,6 +117,20 @@ public class LaunchGameScreenPanel extends JPanel {
 	protected void initActions() {
 		buttonLaunchGame.addActionListener(new PlayAction());
 		buttonPrevious.addActionListener(new PreviousAction());
+	}
+	
+	private class PreviousAction implements ActionListener{	
+		public void actionPerformed(ActionEvent e) {
+			PanelsContainer.getInstance().getCardLayout().previous(PanelsContainer.getInstance());
+		}
+	}
+	
+	public Boolean returnComboBoxValue(JComboBox comboBox) {
+		Boolean ifIsAI = false;
+		if ( comboBox.getSelectedItem() == "AI" ) {
+			ifIsAI = true;
+		}
+		return ifIsAI;
 	}
 	
 	private class PlayAction implements ActionListener{	
@@ -124,40 +180,22 @@ public class LaunchGameScreenPanel extends JPanel {
 					player3 = ClassFactory.createPlayer("Player 3", returnComboBoxValue(comboBoxThirdPlayerChoice));
 				} 
 			}
-			/*
-			if ( textFieldSecondPlayerName.getText().length() > 0 ) {
-				player2 = ClassFactory.createPlayer(textFieldSecondPlayerName.getText(), returnComboBoxValue(comboBoxSecondPlayerChoice));
-			} else {
-				player2 = ClassFactory.createPlayer("Player 2", returnComboBoxValue(comboBoxFirstPlayerChoice));
-			}
-			
-			if ( textFieldThirdPlayerName.getText().length() > 0 ) {
-				player3 = ClassFactory.createPlayer(textFieldThirdPlayerName.getText(), returnComboBoxValue(comboBoxThirdPlayerChoice));
-			} else {
-				player3 = ClassFactory.createPlayer("Player 3", returnComboBoxValue(comboBoxFirstPlayerChoice));
-			}
-			*/
+		
 			VariableRepository.getInstance().registerPlayer( "Player 1", player1 );
 			VariableRepository.getInstance().registerPlayer( "Player 2", player2 );
 			VariableRepository.getInstance().registerPlayer( "Player 3", player3 );
-			// PanelsContainer.getInstance().add(comp);
+			
+			player1.addPower(al1.get(0));
+			player1.addPower(al1.get(1));
+			
+			player2.addPower(al2.get(0));
+			player2.addPower(al2.get(1));
+			
+			player3.addPower(al3.get(0));
+			player3.addPower(al3.get(1));
+			
 			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
-			Board.startTime();
 		}
-	}
-	
-	private class PreviousAction implements ActionListener{	
-		public void actionPerformed(ActionEvent e) {
-			PanelsContainer.getInstance().getCardLayout().previous(PanelsContainer.getInstance());
-		}
-	}
-	
-	public Boolean returnComboBoxValue(JComboBox comboBox) {
-		Boolean ifIsAI = false;
-		if ( comboBox.getSelectedItem() == "AI" ) {
-			ifIsAI = true;
-		}
-		return ifIsAI;
 	}
 	
 	public void initLayout () {
@@ -257,18 +295,6 @@ public class LaunchGameScreenPanel extends JPanel {
 		labelThirdPlayerPowers.setBounds(710, 215, 104, 14);
 		add(labelThirdPlayerPowers);
 		
-		listFirstPlayerPower = new JList();
-		listFirstPlayerPower.setBounds(180, 218, 135, 121);
-		add(listFirstPlayerPower);
-		
-		listSecondPlayerPower = new JList();
-		listSecondPlayerPower.setBounds(514, 218, 135, 121);
-		add(listSecondPlayerPower);
-		
-		listThirdPlayerPower = new JList();
-		listThirdPlayerPower.setBounds(829, 218, 135, 121);
-		add(listThirdPlayerPower);
-		
 		buttonLaunchGame = new JButton("Launch Game");
 		buttonLaunchGame.setBounds(400, 522, 104, 23);
 		add(buttonLaunchGame);
@@ -276,5 +302,391 @@ public class LaunchGameScreenPanel extends JPanel {
 		buttonPrevious = new JButton("Previous");
 		buttonPrevious.setBounds(514, 522, 104, 23);
 		add(buttonPrevious);
+		
+		
+		
+		listFirstPlayerPower = new JList();
+		listFirstPlayerPower.setBounds(180, 218, 150, 100);
+		
+		ImageIcon icon1=new ImageIcon(new ImageIcon("power_jump.png").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
+		ImageIcon icon2=new ImageIcon(new ImageIcon("power_freeze.jpg").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
+		ImageIcon icon3=new ImageIcon(new ImageIcon("power_control.jpg").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
+		ImageIcon icon4=new ImageIcon(new ImageIcon("power_teleport.png").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
+		ImageIcon icon5=new ImageIcon(new ImageIcon("power_twoMoves.jpg").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
+		
+		
+		btnPower1Player1= new JButton("Pouvoir 1");
+		btnPower1Player1.setBackground(Color.white);
+		btnPower1Player1.setIcon(icon1);
+		btnPower1Player1.setBounds(180, 218, 50, 50);
+		btnPower1Player1.setToolTipText("<html><center>Jump power:<br>"+PowerJump.getDescription()+"<br>cost:"+PowerJump.getCost()+"</center></html>");
+		add(btnPower1Player1);
+		
+		btnPower2Player1 = new JButton("Pouvoir 2");
+		btnPower2Player1.setBackground(Color.white);
+		btnPower2Player1.setIcon(icon2);
+		btnPower2Player1.setBounds(230, 218, 50, 50);
+		btnPower2Player1.setToolTipText("<html><center>Freeze power:<br>"+PowerFreeze.getDescription()+"<br>cost:"+PowerFreeze.getCost()+"</center></html>");
+		add(btnPower2Player1);
+		
+		btnPower3Player1 = new JButton("Pouvoir 3");
+		btnPower3Player1.setBackground(Color.white);
+		btnPower3Player1.setIcon(icon3);
+		btnPower3Player1.setBounds(280, 218, 50, 50);
+		btnPower3Player1.setToolTipText("<html><center>Control power:<br>"+PowerControl.getDescription()+"<br>cost:"+PowerControl.getCost()+"</center></html>");
+		add(btnPower3Player1);
+		
+		btnPower4Player1 = new JButton("Pouvoir 4");
+		btnPower4Player1.setBackground(Color.white);
+		btnPower4Player1.setIcon(icon4);
+		btnPower4Player1.setBounds(180, 268, 50, 50);
+		btnPower4Player1.setToolTipText("<html><center>Teleport power:<br>"+PowerTeleport.getDescription()+"<br>cost:"+PowerTeleport.getCost()+"</center></html>");
+		add(btnPower4Player1);
+		
+		btnPower5Player1 = new JButton("Pouvoir 5");
+		btnPower5Player1.setBackground(Color.white);
+		btnPower5Player1.setIcon(icon5);
+		btnPower5Player1.setBounds(230, 268, 50, 50);
+		btnPower5Player1.setToolTipText("<html><center>Two moves power:<br>"+PowerTwoMoves.getDescription()+"<br>cost:"+PowerTwoMoves.getCost()+"</center></html>");
+		add(btnPower5Player1);
+		
+		add(listFirstPlayerPower);
+		
+	
+		listSecondPlayerPower = new JList();
+		listSecondPlayerPower.setBounds(514, 218, 150, 100);
+		
+		btnPower1Player2 = new JButton("Pouvoir 1");
+		btnPower1Player2.setBackground(Color.white);
+		btnPower1Player2.setIcon(icon1);
+		btnPower1Player2.setBounds(514, 218, 50, 50);
+		btnPower1Player2.setToolTipText("<html><center>Jump power:<br>"+PowerJump.getDescription()+"<br>cost:"+PowerJump.getCost()+"</center></html>");
+		add(btnPower1Player2);
+		
+		btnPower2Player2 = new JButton("Pouvoir 2");
+		btnPower2Player2.setBackground(Color.white);
+		btnPower2Player2.setIcon(icon2);
+		btnPower2Player2.setBounds(564, 218, 50, 50);
+		btnPower2Player2.setToolTipText("<html><center>Freeze power:<br>"+PowerFreeze.getDescription()+"<br>cost:"+PowerFreeze.getCost()+"</center></html>");
+		add(btnPower2Player2);
+		
+		btnPower3Player2 = new JButton("Pouvoir 3");
+		btnPower3Player2.setBackground(Color.white);
+		btnPower3Player2.setIcon(icon3);
+		btnPower3Player2.setBounds(614, 218, 50, 50);
+		btnPower3Player2.setToolTipText("<html><center>Control power:<br>"+PowerControl.getDescription()+"<br>cost:"+PowerControl.getCost()+"</center></html>");
+		add(btnPower3Player2);
+		
+		btnPower4Player2 = new JButton("Pouvoir 4");
+		btnPower4Player2.setBackground(Color.white);
+		btnPower4Player2.setIcon(icon4);
+		btnPower4Player2.setBounds(514, 268, 50, 50);
+		btnPower4Player2.setToolTipText("<html><center>Teleport power:<br>"+PowerTeleport.getDescription()+"<br>cost:"+PowerTeleport.getCost()+"</center></html>");
+		add(btnPower4Player2);
+		
+		btnPower5Player2 = new JButton("Pouvoir 5");
+		btnPower5Player2.setBackground(Color.white);
+		btnPower5Player2.setIcon(icon5);
+		btnPower5Player2.setBounds(564, 268, 50, 50);
+		btnPower5Player2.setToolTipText("<html><center>Two moves power:<br>"+PowerTwoMoves.getDescription()+"<br>cost:"+PowerTwoMoves.getCost()+"</center></html>");
+		add(btnPower5Player2);
+		
+		add(listSecondPlayerPower);
+		
+		
+		
+		listThirdPlayerPower = new JList();
+		listThirdPlayerPower.setBounds(829, 218, 150, 100);
+		
+		btnPower1Player3 = new JButton("Pouvoir 1");
+		btnPower1Player3.setBackground(Color.white);
+		btnPower1Player3.setIcon(icon1);
+		btnPower1Player3.setBounds(829, 218, 50, 50);
+		btnPower1Player3.setToolTipText("<html><center>Jump power:<br>"+PowerJump.getDescription()+"<br>cost:"+PowerJump.getCost()+"</center></html>");
+		add(btnPower1Player3);
+		
+		btnPower2Player3 = new JButton("Pouvoir 2");
+		btnPower2Player3.setBackground(Color.white);
+		btnPower2Player3.setIcon(icon2);
+		btnPower2Player3.setBounds(879, 218, 50, 50);
+		btnPower2Player3.setToolTipText("<html><center>Freeze power:<br>"+PowerFreeze.getDescription()+"<br>cost:"+PowerFreeze.getCost()+"</center></html>");
+		add(btnPower2Player3);
+		
+		btnPower3Player3 = new JButton("Pouvoir 3");
+		btnPower3Player3.setBackground(Color.white);
+		btnPower3Player3.setIcon(icon3);
+		btnPower3Player3.setBounds(929, 218, 50, 50);
+		btnPower3Player3.setToolTipText("<html><center>Control power:<br>"+PowerControl.getDescription()+"<br>cost:"+PowerControl.getCost()+"</center></html>");
+		add(btnPower3Player3);
+		
+		btnPower4Player3 = new JButton("Pouvoir 4");
+		btnPower4Player3.setBackground(Color.white);
+		btnPower4Player3.setIcon(icon4);
+		btnPower4Player3.setBounds(829, 268, 50, 50);
+		btnPower4Player3.setToolTipText("<html><center>Teleport power:<br>"+PowerTeleport.getDescription()+"<br>cost:"+PowerTeleport.getCost()+"</center></html>");
+		add(btnPower4Player3);
+		
+		btnPower5Player3 = new JButton("Pouvoir 5");
+		btnPower5Player3.setBackground(Color.white);
+		btnPower5Player3.setIcon(icon5);
+		btnPower5Player3.setBounds(879, 268, 50, 50);
+		btnPower5Player3.setToolTipText("<html><center>Two moves power:<br>"+PowerTwoMoves.getDescription()+"<br>cost:"+PowerTwoMoves.getCost()+"</center></html>");
+		add(btnPower5Player3);
+		
+		add(listThirdPlayerPower);
+		btnPower1Player1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ1<1 && al1.contains(jump)==false) {
+					al1.add(jump);
+					nbPowerChoosenJ1++;
+					btnPower1Player1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al1.get(nbPowerChoosenJ1).getDescription2());
+					//System.out.println(nbPowerChoosenJ1+1);
+				}
+		 		else if((al1.get(0).getName().equals("Jump")||al1.get(1).getName().equals("Jump")) ) {
+					al1.remove(jump);
+					nbPowerChoosenJ1--;
+					btnPower1Player1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ1+1);
+					//System.out.println(al1.get(0).getName().equals("jump"));
+				}
+			}
+		});
+		btnPower2Player1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ1<1 && al1.contains(freeze)==false) {
+					al1.add(freeze);
+					nbPowerChoosenJ1++;
+					btnPower2Player1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al1.get(nbPowerChoosenJ1).getDescription2());
+					//System.out.println(al1.contains(freeze));
+					//System.out.println(nbPowerChoosenJ1+1);
+				}
+				else if((al1.get(0).getName().equals("Freeze")||al1.get(1).getName().equals("Freeze")) ) {
+					al1.remove(freeze);
+					nbPowerChoosenJ1--;
+					btnPower2Player1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ1+1);
+				//	System.out.println(al1.contains(freeze));
+				}
+			}
+		});
+		btnPower3Player1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ1<1 && al1.contains(control)==false) {
+					al1.add(control);
+					nbPowerChoosenJ1++;
+					btnPower3Player1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al1.get(nbPowerChoosenJ1).getDescription2());
+				//	System.out.println(nbPowerChoosenJ1+1);
+				}
+				else if((al1.get(0).getName().equals("Control")||al1.get(1).getName().equals("Control")) ) {
+					al1.remove(control);
+					nbPowerChoosenJ1--;
+					btnPower3Player1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ1+1);
+				}
+			}
+		});
+		btnPower4Player1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ1<1 && al1.contains(teleport)==false)  {
+					al1.add(teleport);
+					nbPowerChoosenJ1++;
+					btnPower4Player1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al1.get(nbPowerChoosenJ1).getDescription2());
+					//System.out.println(nbPowerChoosenJ1+1);
+				}
+				else if((al1.get(0).getName().equals("Teleport")||al1.get(1).getName().equals("Teleport")) ) {
+					al1.remove(teleport);
+					nbPowerChoosenJ1--;
+					btnPower4Player1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ1+1);
+				}
+			}	
+		});
+		btnPower5Player1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ1<1 && al1.contains(twoMoves)==false)  {
+					al1.add(twoMoves);
+					nbPowerChoosenJ1++;
+					btnPower5Player1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al1.get(nbPowerChoosenJ1).getDescription2());
+					//System.out.println(nbPowerChoosenJ1+1);
+				}
+				else if((al1.get(0).getName().equals("Two moves")||al1.get(1).getName().equals("Two moves")) ) {
+					al1.remove(twoMoves);
+					nbPowerChoosenJ1--;
+					btnPower5Player1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ1+1);
+				}
+			}
+		});
+		
+		
+		
+		btnPower1Player2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ2<1 && al2.contains(jump)==false) {
+					al2.add(jump);
+					nbPowerChoosenJ2++;
+					btnPower1Player2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al2.get(nbPowerChoosenJ2).getDescription2());
+				}
+				else if((al2.get(0).getName().equals("Jump")||al2.get(1).getName().equals("Jump")) ) {
+					al2.remove(jump);
+					nbPowerChoosenJ2--;
+					btnPower1Player2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ2+1);
+				}
+			}
+		});
+		btnPower2Player2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ2<1 && al2.contains(freeze)==false) {
+					al2.add(freeze);
+					nbPowerChoosenJ2++;
+					btnPower2Player2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al2.get(nbPowerChoosenJ2).getDescription2());
+				}
+				else if((al2.get(0).getName().equals("Freeze")||al2.get(1).getName().equals("Freeze")) ) {
+					al2.remove(freeze);
+					nbPowerChoosenJ2--;
+					btnPower2Player2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ2+1);
+				}
+			}
+		});
+		btnPower3Player2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ2<1 && al2.contains(control)==false) {
+					al2.add(control);
+					nbPowerChoosenJ2++;
+					btnPower3Player2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al2.get(nbPowerChoosenJ2).getDescription2());
+				}
+				else if((al2.get(0).getName().equals("Control")||al2.get(1).getName().equals("Control")) ) {
+					al2.remove(control);
+					nbPowerChoosenJ2--;
+					btnPower3Player2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ2+1);
+				}
+			}
+		});
+		btnPower4Player2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ2<1 && al2.contains(teleport)==false) {
+					al2.add(teleport);
+					nbPowerChoosenJ2++;
+					btnPower4Player2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al2.get(nbPowerChoosenJ2).getDescription2());
+				}
+				else if((al2.get(0).getName().equals("Teleport")||al2.get(1).getName().equals("Teleport")) ) {
+					al2.remove(teleport);
+					nbPowerChoosenJ2--;
+					btnPower4Player2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ2+1);
+				}
+			}	
+		});
+		btnPower5Player2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ2<1 && al2.contains(twoMoves)==false) {
+					al2.add(twoMoves);
+					nbPowerChoosenJ2++;
+					btnPower5Player2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al2.get(nbPowerChoosenJ2).getDescription2());
+				}
+				else if((al2.get(0).getName().equals("Two moves")||al2.get(1).getName().equals("Two moves")) ) {
+					al2.remove(twoMoves);
+					nbPowerChoosenJ2--;
+					btnPower5Player2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ2+1);
+				}
+			}
+		});
+				
+		
+		btnPower1Player3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ3<1 && al3.contains(jump)==false) {
+					al3.add(jump);
+					nbPowerChoosenJ3++;
+					btnPower1Player3.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al3.get(nbPowerChoosenJ3).getDescription2());
+				}
+				else if((al3.get(0).getName().equals("Jump")||al3.get(1).getName().equals("Jump")) ) {
+					al3.remove(jump);
+					nbPowerChoosenJ3--;
+					btnPower1Player3.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ3+1);
+				}
+			}
+		});
+		btnPower2Player3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ3<1 && al3.contains(freeze)==false) {
+					al3.add(freeze);
+					nbPowerChoosenJ3++;
+					btnPower2Player3.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al3.get(nbPowerChoosenJ3).getDescription2());
+				}
+				else if((al3.get(0).getName().equals("Freeze")||al3.get(1).getName().equals("Freeze")) ) {
+					al3.remove(freeze);
+					nbPowerChoosenJ3--;
+					btnPower2Player3.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ3+1);
+				}
+			}
+		});
+		btnPower3Player3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ3<1 && al3.contains(control)==false) {
+					al3.add(control);
+					nbPowerChoosenJ3++;
+					btnPower3Player3.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al3.get(nbPowerChoosenJ3).getDescription2());
+				}
+				else if((al3.get(0).getName().equals("Control")||al3.get(1).getName().equals("Control")) ) {
+					al3.remove(control);
+					nbPowerChoosenJ3--;
+					btnPower3Player3.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ3+1);
+				}
+			}
+		});
+		btnPower4Player3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ3<1 && al3.contains(teleport)==false) {
+					al3.add(teleport);
+					nbPowerChoosenJ3++;
+					btnPower4Player3.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al3.get(nbPowerChoosenJ3).getDescription2());
+				}
+				else if((al3.get(0).getName().equals("Teleport")||al3.get(1).getName().equals("Teleport")) ) {
+					al3.remove(teleport);
+					nbPowerChoosenJ3--;
+					btnPower4Player3.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ3+1);
+				}
+			}	
+		});
+		btnPower5Player3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(nbPowerChoosenJ3<1 && al3.contains(twoMoves)==false) {
+					al3.add(twoMoves);
+					nbPowerChoosenJ3++;
+					btnPower5Player3.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
+					//System.out.println(al3.get(nbPowerChoosenJ3).getDescription2());
+				}
+				else if((al3.get(0).getName().equals("Two moves")||al3.get(1).getName().equals("Two moves")) ) {
+					al3.remove(twoMoves);
+					nbPowerChoosenJ3--;
+					btnPower5Player3.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+					//System.out.println(nbPowerChoosenJ3+1);
+				}
+			}
+		});
 	}
+	
 }
