@@ -7,22 +7,25 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import checker.core.CheckerBuilder;
 import checker.core.VariableRepository;
 import checker.data.ClassFactory;
 import checker.data.Player;
 import checker.gui.GTParameters;
-import customeventspackage.Power;
-import customeventspackage.PowerControl;
-import customeventspackage.PowerFreeze;
-import customeventspackage.PowerJump;
-import customeventspackage.PowerTeleport;
-import customeventspackage.PowerTwoMoves;
+
+import customEventsPackage.Power;
+import customEventsPackage.PowerControl;
+import customEventsPackage.PowerFreeze;
+import customEventsPackage.PowerJump;
+import customEventsPackage.PowerTeleport;
+import customEventsPackage.PowerTwoMoves;
 
 import javax.swing.JList;
 import javax.swing.BorderFactory;
@@ -89,9 +92,9 @@ public class LaunchGameScreenPanel extends JPanel {
 	private JButton btnPower4Player3;
 	private JButton btnPower5Player3;
 	
-	private int nbPowerChoosenJ1=-1;
-	private int nbPowerChoosenJ2=-1;
-	private int nbPowerChoosenJ3=-1;
+	private int nbPowerChoosenJ1=0;
+	private int nbPowerChoosenJ2=0;
+	private int nbPowerChoosenJ3=0;
 	
 	private ArrayList<Power> al1=new ArrayList<Power>();
 	private ArrayList<Power> al2=new ArrayList<Power>();
@@ -185,6 +188,74 @@ public class LaunchGameScreenPanel extends JPanel {
 			VariableRepository.getInstance().registerPlayer( "Player 2", player2 );
 			VariableRepository.getInstance().registerPlayer( "Player 3", player3 );
 			
+			
+			//random selection of the power(s)
+			Power[] randomPower=new Power[5];
+				randomPower[0]=control;
+				randomPower[1]=freeze;
+				randomPower[2]=jump;
+				randomPower[3]=teleport;
+				randomPower[4]=twoMoves;
+				Random r = new Random();
+				
+			if(nbPowerChoosenJ1<2){
+				if(nbPowerChoosenJ1==0) {
+					Power powerRandomlySelected = randomPower[r.nextInt(5)];			
+					al1.add(powerRandomlySelected);
+					al1.add(powerRandomlySelected);
+					while(al1.get(0).equals(al1.get(1))) {
+						al1.remove(1);
+						powerRandomlySelected = randomPower[r.nextInt(5)];			
+						al1.add(powerRandomlySelected);
+					}
+				}
+				if(nbPowerChoosenJ1==1) {
+					Power powerRandomlySelected = randomPower[r.nextInt(5)];
+					while(powerRandomlySelected.equals(al1.get(0))) {
+						powerRandomlySelected = randomPower[r.nextInt(5)];
+					}
+					al1.add(powerRandomlySelected);
+				}
+			}
+			if(nbPowerChoosenJ2<2){
+				if(nbPowerChoosenJ2==0) {
+					Power powerRandomlySelected = randomPower[r.nextInt(5)];			
+					al2.add(powerRandomlySelected);
+					al2.add(powerRandomlySelected);
+					while(al2.get(0).equals(al2.get(1))) {
+						al2.remove(1);
+						powerRandomlySelected = randomPower[r.nextInt(5)];			
+						al2.add(powerRandomlySelected);
+					}
+				}
+				if(nbPowerChoosenJ2==1) {
+					Power powerRandomlySelected = randomPower[r.nextInt(5)];
+					while(powerRandomlySelected.equals(al2.get(0))) {
+						powerRandomlySelected = randomPower[r.nextInt(5)];
+					}
+					al2.add(powerRandomlySelected);
+				}
+			}
+			if(nbPowerChoosenJ3<2){
+				if(nbPowerChoosenJ3==0) {
+					Power powerRandomlySelected = randomPower[r.nextInt(5)];			
+					al3.add(powerRandomlySelected);
+					al3.add(powerRandomlySelected);
+					while(al3.get(0).equals(al3.get(1))) {
+						al3.remove(1);
+						powerRandomlySelected = randomPower[r.nextInt(5)];			
+						al3.add(powerRandomlySelected);
+					}
+				}
+				if(nbPowerChoosenJ3==1) {
+					Power powerRandomlySelected = randomPower[r.nextInt(5)];
+					while(powerRandomlySelected.equals(al3.get(0))) {
+						powerRandomlySelected = randomPower[r.nextInt(5)];
+					}
+					al3.add(powerRandomlySelected);
+				}
+			}
+			
 			player1.addPower(al1.get(0));
 			player1.addPower(al1.get(1));
 			
@@ -193,6 +264,8 @@ public class LaunchGameScreenPanel extends JPanel {
 			
 			player3.addPower(al3.get(0));
 			player3.addPower(al3.get(1));
+			
+			CheckerBuilder.getInstance().initializeEmplacements();
 			
 			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
 		}
@@ -312,7 +385,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		ImageIcon icon2=new ImageIcon(new ImageIcon("power_freeze.jpg").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
 		ImageIcon icon3=new ImageIcon(new ImageIcon("power_control.jpg").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
 		ImageIcon icon4=new ImageIcon(new ImageIcon("power_teleport.png").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
-		ImageIcon icon5=new ImageIcon(new ImageIcon("power_twoMoves.jpg").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
+		ImageIcon icon5=new ImageIcon(new ImageIcon("power_twomoves.jpg").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
 		
 		
 		btnPower1Player1= new JButton("Pouvoir 1");
@@ -436,25 +509,26 @@ public class LaunchGameScreenPanel extends JPanel {
 		add(listThirdPlayerPower);
 		btnPower1Player1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ1<1 && al1.contains(jump)==false) {
+				if(nbPowerChoosenJ1<2 && al1.contains(jump)==false) {
 					al1.add(jump);
 					nbPowerChoosenJ1++;
 					btnPower1Player1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
 					//System.out.println(al1.get(nbPowerChoosenJ1).getDescription2());
-					//System.out.println(nbPowerChoosenJ1+1);
+
 				}
 		 		else if((al1.get(0).getName().equals("Jump")||al1.get(1).getName().equals("Jump")) ) {
 					al1.remove(jump);
 					nbPowerChoosenJ1--;
 					btnPower1Player1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 					//System.out.println(nbPowerChoosenJ1+1);
-					//System.out.println(al1.get(0).getName().equals("jump"));
+					
+					
 				}
 			}
 		});
 		btnPower2Player1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ1<1 && al1.contains(freeze)==false) {
+				if(nbPowerChoosenJ1<2 && al1.contains(freeze)==false) {
 					al1.add(freeze);
 					nbPowerChoosenJ1++;
 					btnPower2Player1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -473,7 +547,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower3Player1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ1<1 && al1.contains(control)==false) {
+				if(nbPowerChoosenJ1<2 && al1.contains(control)==false) {
 					al1.add(control);
 					nbPowerChoosenJ1++;
 					btnPower3Player1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -490,7 +564,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower4Player1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ1<1 && al1.contains(teleport)==false)  {
+				if(nbPowerChoosenJ1<2 && al1.contains(teleport)==false)  {
 					al1.add(teleport);
 					nbPowerChoosenJ1++;
 					btnPower4Player1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -507,7 +581,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower5Player1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ1<1 && al1.contains(twoMoves)==false)  {
+				if(nbPowerChoosenJ1<2 && al1.contains(twoMoves)==false)  {
 					al1.add(twoMoves);
 					nbPowerChoosenJ1++;
 					btnPower5Player1.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -527,7 +601,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		
 		btnPower1Player2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ2<1 && al2.contains(jump)==false) {
+				if(nbPowerChoosenJ2<2 && al2.contains(jump)==false) {
 					al2.add(jump);
 					nbPowerChoosenJ2++;
 					btnPower1Player2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -543,7 +617,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower2Player2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ2<1 && al2.contains(freeze)==false) {
+				if(nbPowerChoosenJ2<2 && al2.contains(freeze)==false) {
 					al2.add(freeze);
 					nbPowerChoosenJ2++;
 					btnPower2Player2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -559,7 +633,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower3Player2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ2<1 && al2.contains(control)==false) {
+				if(nbPowerChoosenJ2<2 && al2.contains(control)==false) {
 					al2.add(control);
 					nbPowerChoosenJ2++;
 					btnPower3Player2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -575,7 +649,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower4Player2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ2<1 && al2.contains(teleport)==false) {
+				if(nbPowerChoosenJ2<2 && al2.contains(teleport)==false) {
 					al2.add(teleport);
 					nbPowerChoosenJ2++;
 					btnPower4Player2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -591,7 +665,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower5Player2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ2<1 && al2.contains(twoMoves)==false) {
+				if(nbPowerChoosenJ2<2 && al2.contains(twoMoves)==false) {
 					al2.add(twoMoves);
 					nbPowerChoosenJ2++;
 					btnPower5Player2.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -609,7 +683,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		
 		btnPower1Player3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ3<1 && al3.contains(jump)==false) {
+				if(nbPowerChoosenJ3<2 && al3.contains(jump)==false) {
 					al3.add(jump);
 					nbPowerChoosenJ3++;
 					btnPower1Player3.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -625,7 +699,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower2Player3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ3<1 && al3.contains(freeze)==false) {
+				if(nbPowerChoosenJ3<2 && al3.contains(freeze)==false) {
 					al3.add(freeze);
 					nbPowerChoosenJ3++;
 					btnPower2Player3.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -641,7 +715,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower3Player3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ3<1 && al3.contains(control)==false) {
+				if(nbPowerChoosenJ3<2 && al3.contains(control)==false) {
 					al3.add(control);
 					nbPowerChoosenJ3++;
 					btnPower3Player3.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -657,7 +731,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower4Player3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ3<1 && al3.contains(teleport)==false) {
+				if(nbPowerChoosenJ3<2 && al3.contains(teleport)==false) {
 					al3.add(teleport);
 					nbPowerChoosenJ3++;
 					btnPower4Player3.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));
@@ -673,7 +747,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		});
 		btnPower5Player3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(nbPowerChoosenJ3<1 && al3.contains(twoMoves)==false) {
+				if(nbPowerChoosenJ3<2 && al3.contains(twoMoves)==false) {
 					al3.add(twoMoves);
 					nbPowerChoosenJ3++;
 					btnPower5Player3.setBorder(BorderFactory.createLineBorder(Color.GREEN, 4));

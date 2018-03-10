@@ -1,4 +1,5 @@
 package customEventsPackage;
+
 import javax.swing.JFrame;
 
 public interface CustomEvent {

@@ -16,12 +16,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import checker.core.CheckerBuilder;
 import checker.core.GameVariableRepository;
 import checker.core.VariableRepository;
 import checker.data.ClassFactory;
+import checker.data.Emplacement;
+import checker.data.Piece;
 import checker.data.Player;
 import checker.data.TurnTimer;
-import checker.panels.Emplacement;
+import checker.gui.BoardParameter;
 import javax.swing.JProgressBar;
 import javax.swing.JDesktopPane;
 import javax.swing.border.TitledBorder;
@@ -36,6 +39,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.util.ListIterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -45,18 +49,17 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.SwingConstants;
 
 
 
 public class Board extends JPanel {
 
 	private Emplacement[][] emplacements;
-	
-	private final int x=30;
-	private final int y=34;
-	
+
 	private int xTempValue =0;
 	private int yTempValue =0;
+	private boolean justPlayed = false;
 	
 	private static final int IDEAL_WIDTH=22;
 	private static final int IDEAL_HEIGHT=22;
@@ -222,14 +225,14 @@ public class Board extends JPanel {
 		
 		btnPower1 = new JButton();
 		btnPower1.setBackground(Color.white);
-		btnPower1.setBounds(414, 552, 100, 100);
+		btnPower1.setBounds(98, 435, 100, 100);
 		btnPower1.setEnabled(false);
 		add(btnPower1);
 				
 		btnPower2 = new JButton();
 		btnPower2.setBackground(Color.white);
 		btnPower2.setEnabled(false);
-		btnPower2.setBounds(549, 552, 100, 100);
+		btnPower2.setBounds(98, 665, 100, 100);
 		add(btnPower2);
 		
 		textField_3 = new JTextField();
@@ -268,14 +271,16 @@ public class Board extends JPanel {
 		
 		labelProgressBarValue = new JLabel("0");
 		labelProgressBarValue.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		labelProgressBarValue.setBounds(519, 602, 29, 28);
+		labelProgressBarValue.setBounds(861, 271, 29, 28);
+		labelProgressBarValue.setComponentOrientation(getComponentOrientation());
 		add(labelProgressBarValue);
 		
-		progressBar = new JProgressBar();
+		progressBar = new JProgressBar(SwingConstants.VERTICAL);
+		// progressBar.setOrientation(SwingConstants.VERTICAL);
 		labelProgressBarValue.setLabelFor(progressBar);
 		progressBar.setForeground(new Color(0, 153, 255));
 		progressBar.setBackground(Color.LIGHT_GRAY);
-		progressBar.setBounds(373, 602, 300, 39);
+		progressBar.setBounds(718, 271, 300, 39);
 		add(progressBar);
 	}
 	
@@ -334,27 +339,62 @@ public class Board extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				boolean isOnEmplacementTemp = false;
-				xTempValue = arg0.getX();
-			    yTempValue = arg0.getY();
+				boolean isOccupiedTemp = false;
+				boolean aPieceIsSelectedTemp = GameVariableRepository.getInstance().getAPieceIsSelected();
+				// xTempValue = 0;
+			    // yTempValue = 0;
 			    int i = 0;
 			    int j = 0;
-			    /*
-			    for ( i =0; i < emplacements.length; i++ ) {
-			    	for ( j=0; j<emplacements.length; j++ ) {
-			    		isOnEmplacementTemp = emplacements[i][j].isCursorOnEmplacement(xTempValue, yTempValue);
-			    		if ( isOnEmplacementTemp == true ) {
-			    			break;
-			    		}
-			    	} 
-			    	if ( isOnEmplacementTemp == true ) {
-		    			break;
-		    		}
-			    }
-			    */
-			    if ( isOnEmplacementTemp == true ) {
-			    	System.out.println(" X : " + arg0.getX() + "\n" + "Y : " + arg0.getY() + "\n");
-			    	System.out.println(" Emplacement [" + i + "][" + j + "]");
-	    		}
+			    // System.out.println("testSouris");
+			    
+			    ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator();
+			    
+		    	while (iter.hasNext() && isOnEmplacementTemp == false ) {
+		            Emplacement currentEmplacement = iter.next();
+		            isOnEmplacementTemp = currentEmplacement.isCursorOnEmplacement(arg0.getX(), arg0.getY());
+		            isOccupiedTemp = currentEmplacement.getIsOccupied();
+		            
+		            if ( isOnEmplacementTemp == true && isOccupiedTemp == true && aPieceIsSelectedTemp == false ) {
+		            	Piece pieceToBeSelected = currentEmplacement.getOccupyingPiece();
+		            	
+		            	GameVariableRepository.getInstance().setSelectedPiece(pieceToBeSelected);
+		            	GameVariableRepository.getInstance().setEmplacementToBeEmptied(currentEmplacement);
+		            	
+		            	xTempValue = currentEmplacement.getPositionX();
+			            yTempValue = currentEmplacement.getPositionY();
+			            
+			            // System.out.println(number.getPositionX());    // insert a number right before this
+			            GameVariableRepository.getInstance().setAPieceIsSelected(true);
+			            
+			            GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement));
+			            revalidate();
+			            repaint();
+		            } else if ( isOnEmplacementTemp == true && isOccupiedTemp == false && aPieceIsSelectedTemp == true ) {
+		            	System.out.println("testIsSelected");
+		            	Piece currentSelectedPiece = GameVariableRepository.getInstance().getSelectedPiece();
+		            	
+		            	// GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement);
+		            	
+		            	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement)).setIsOccupied(true);
+		            	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement)).setOccupyingPiece(currentSelectedPiece);
+		            	
+		            	
+		            	GameVariableRepository.getInstance().getEmplacementToBeEmptied().setIsOccupied(false);
+		            	GameVariableRepository.getInstance().getEmplacementToBeEmptied().setOccupyingPiece(null);
+		            	
+		            	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).setIsOccupied(false);
+		            	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).setOccupyingPiece(null);
+		            	
+		            	// GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied());
+		            	// currentEmplacement.setOccupyingPiece(currentSelectedPiece);
+		            	
+		            	GameVariableRepository.getInstance().setSelectedPiece(null);
+		            	GameVariableRepository.getInstance().setAPieceIsSelected(false);
+		            	revalidate();
+		            	repaint();
+		            }
+		            
+		        }
 			}
 		});
 		
@@ -367,24 +407,29 @@ public class Board extends JPanel {
 		});
 		
 		
-		// ==== Attention, utilisation des threads à cet endroit-là
+		// ==== Attention, utilisation des threads ï¿½ cet endroit-lï¿½
 		btnSimulateSpecialMove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				// On met à jour l'attribut Mana du joueur
+				// On met a jour l'attribut Mana du joueur
 				updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), 50);
-				
+				btnSimulateSpecialMove.setEnabled(false);
+				btnSimulateClassicMove.setEnabled(false);
 				new Thread(new Runnable(){
 					public void run(){
 						Thread t = new Thread(new Runnable(){
 							public void run(){
-								try {
-									Thread.sleep(3000);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}
-								GameVariableRepository.getInstance().incrementPlayerTurn();
-								updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+								Timer t = new Timer(3000, new ActionListener() {
+						            @Override
+						            public void actionPerformed(ActionEvent e) {
+										btnSimulateSpecialMove.setEnabled(true);
+										btnSimulateClassicMove.setEnabled(true);
+										GameVariableRepository.getInstance().incrementPlayerTurn();
+										updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+						            }
+						        });
+								 t.setRepeats(false);
+							     t.start();
 							}
 						});
 						
@@ -403,18 +448,23 @@ public class Board extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), 5);
 				model.addElement("toucmymy");
-				
+				btnSimulateSpecialMove.setEnabled(false);
+				btnSimulateClassicMove.setEnabled(false);
 				new Thread(new Runnable(){
 					public void run(){
 						Thread t = new Thread(new Runnable(){
 							public void run(){
-								try {
-									Thread.sleep(3000);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
-								}	
-								GameVariableRepository.getInstance().incrementPlayerTurn();
-								updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+								Timer t = new Timer(3000, new ActionListener() {
+						            @Override
+						            public void actionPerformed(ActionEvent e) {
+										btnSimulateSpecialMove.setEnabled(true);
+										btnSimulateClassicMove.setEnabled(true);
+										GameVariableRepository.getInstance().incrementPlayerTurn();
+										updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+						            }
+						        });
+								 t.setRepeats(false);
+							     t.start();
 							}
 						});
 						
@@ -441,7 +491,7 @@ public class Board extends JPanel {
 						VariableRepository.getInstance().searchPlayer("Player 1").addPlayerMana(-VariableRepository.getInstance().searchPlayer("Player 1").getPower(0).getCost2());
 						progressBar.setValue( ( int ) VariableRepository.getInstance().searchPlayer("Player 1").getPlayerMana() );
 						
-						//affiche nom du pouvoir pendant 2secondes au milieu de l'écran
+						//affiche nom du pouvoir pendant 2secondes au milieu de l'ï¿½cran
 						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer("Player 1").getPower(0).getName()+" Activated");				
 						add(powerActivated);
 						Timer t = new Timer(2000, new ActionListener() {
@@ -546,7 +596,7 @@ public class Board extends JPanel {
 		});
 		
 	}
-	
+	/*
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
@@ -557,10 +607,10 @@ public class Board extends JPanel {
 		repaint();
 		
 	}
-	
-	public void paint(Graphics g) {
+	*/
+	public void paintComponent(Graphics g) {
 		
-		super.paint(g);
+		super.paintComponent(g);
 		
 		graphicContext = g;
 		
@@ -572,16 +622,15 @@ public class Board extends JPanel {
 				btnPower1.setBorder(BorderFactory.createLineBorder(Color.green, 4));
 				btnPower1.setEnabled(true);
 				
-			}
-			else {
+			} else {
 				btnPower1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 				btnPower1.setEnabled(false);
 			}
+			
 			if(playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(1).getCost2()){
 				btnPower2.setBorder(BorderFactory.createLineBorder(Color.green, 4));
 				btnPower2.setEnabled(true);
-			}
-			else {				
+			} else {				
 				btnPower2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 				btnPower2.setEnabled(false);
 			}
@@ -598,27 +647,21 @@ public class Board extends JPanel {
 			btnPower2.setIcon(new ImageIcon(playerToUpdate.getPower(1).getImage()));
 				
 			labelPlayerActualTurn.setText(playerToUpdate.getPlayerName());
-		} 
-			
-			
-			
-		 else if ( GameVariableRepository.getInstance().getPlayerTurn() == 1 ) {
+		} else if ( GameVariableRepository.getInstance().getPlayerTurn() == 1 ) {
 			playerToUpdate = VariableRepository.getInstance().searchPlayer("Player 2");
-			
 			
 			if(playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(0).getCost2()) {
 				btnPower1.setBorder(BorderFactory.createLineBorder(Color.red, 4));
 				btnPower1.setEnabled(true);
-			}
-			else {
+			} else {
 				btnPower1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));		
 				btnPower1.setEnabled(false);
 			}
+			
 			if(playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(1).getCost2()) {
 				btnPower2.setBorder(BorderFactory.createLineBorder(Color.red, 4));
 				btnPower2.setEnabled(true);
-			}
-			else {
+			} else {
 				btnPower2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 				btnPower2.setEnabled(false);
 			}
@@ -633,24 +676,21 @@ public class Board extends JPanel {
 					"<br>cost:"+playerToUpdate.getPower(1).getCost2()+"</center></html>");
 			
 			labelPlayerActualTurn.setText(playerToUpdate.getPlayerName());
-		} 
-			
-			
-		 else {
+		} else {
 			playerToUpdate = VariableRepository.getInstance().searchPlayer("Player 3");
+			
 			if(playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(0).getCost2()) {
 				btnPower1.setBorder(BorderFactory.createLineBorder(Color.yellow, 4));
 				btnPower1.setEnabled(true);
-			}
-			else {
+			} else {
 				btnPower1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));		
 				btnPower1.setEnabled(false);
 			}
+			
 			if(playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(1).getCost2()) {
 				btnPower2.setBorder(BorderFactory.createLineBorder(Color.yellow, 4));
 				btnPower2.setEnabled(true);
-			}
-			else {
+			} else {
 				btnPower2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 				btnPower2.setEnabled(false);
 			}
@@ -669,622 +709,53 @@ public class Board extends JPanel {
 
 		}
 		
-		/*if ( playerToUpdate != null ) {
-			if ( playerToUpdate.getPlayerMana() < 50 ) {
-				btnPower1.setEnabled(false);
-			} else {
-				btnPower1.setEnabled(true);
-			}
-			
-			if ( playerToUpdate.getPlayerMana() < 80 ) {
-				btnPower2.setEnabled(false);
-			} else {
-				btnPower2.setEnabled(true);
-			}
-		}*/
-		
 		this.modifyPlayerNamesGUI();
-		emplacements = new Emplacement[x][y];
+		// System.out.println("efzefze");
+		//emplacements = new Emplacement[x][y];
 		
-		/*if ( GameVariableRepository.getInstance().getPlayerTurn() == 0 ) {
-			// System.out.println("test 1");
-			labelPlayerActualTurn.setText(VariableRepository.getInstance().searchPlayer("Player 1").getPlayerName());
-		} else if ( GameVariableRepository.getInstance().getPlayerTurn() == 1 ) {
-			// System.out.println("test 2");
-			labelPlayerActualTurn.setText(VariableRepository.getInstance().searchPlayer("Player 2").getPlayerName());
-		} else {
-			// System.out.println("test 3");
-			labelPlayerActualTurn.setText(VariableRepository.getInstance().searchPlayer("Player 3").getPlayerName());
-		}*/
+		// Set up the checker board at first
+		for (ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator(); iter.hasNext(); ) {
+            Emplacement currentEmplacement = iter.next();
+            g.setColor(Color.LIGHT_GRAY);
+            // System.out.println(number.getPositionX());    // insert a number right before this
+            g.fillOval((int) (currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint) ,currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces,BoardParameter.pieceRadius,BoardParameter.pieceRadius);
+            g.drawOval((int) (currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint) ,currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces,BoardParameter.pieceRadius,BoardParameter.pieceRadius);            
+        }
 		
-		for(int indexX = 0; indexX <= x; indexX++ ) {
+		
+		// Set up the different pieces for all the players
+		for (ListIterator<Emplacement> iter2 = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator(); iter2.hasNext(); ) {
+			//g.setColor(Color.red);
+			Emplacement currentEmplacement = iter2.next();
+			// System.out.println(currentEmplacement.toString() + "\n");
+			int radius = BoardParameter.pieceRadius;
+			int x = currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint;
+			int y = currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces;
 			
-			for(int indexY = 0; indexY <= y; indexY++ ) {
-				
-				if( indexY%2 != 0) {
-					
-					//line 1 & 17
-				
-					if( ( (indexY == 1) || (indexY == 33) ) && ( (indexX == 10) || (indexX == 12) || (indexX == 14) || (indexX == 16) || (indexX == 18) ) ) {
-						
-						if(indexY ==  1) {
-						
-							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(440 ,560 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(480 ,560 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[15][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(520 ,560, IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(560 ,560 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[19][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(600 ,560 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						}
-						
-						if(indexY == 33) {
-							
-							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(440 ,0 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(480 ,0 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-							emplacements[13][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(520 ,0 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-							emplacements[15][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(560 ,0 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-							emplacements[17][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(600 ,0 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						}
-					}
-					
-					//line 2 & 16
-				
-					if( ( (indexY == 3) || (indexY == 31) ) && ( (indexX == 11) || (indexX == 13) || (indexX == 15) || (indexX == 17) ) ) {	
-						
-						if(indexY == 3) {
-						
-							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(460 ,525 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(500 ,525 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(540 ,525 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(580 ,525 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-						}
-						
-						if(indexY == 31) {
-							
-							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(460 ,35 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(500 ,35 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(540 ,35 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(580 ,35 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-						}
-						
-					}
-					
-					//line 3 & 15
-				
-					if( ( (indexY == 5) || (indexY == 29) ) && ( (indexX == 4) || (indexX == 12) || (indexX == 14) || (indexX == 16) || (indexX == 23) ) ) {	
-						
-						if(indexY == 5) {
-						
-							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(520 ,490 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(480 ,490 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[15][indexY] = new Emplacement( 15, indexY  );
-							g.drawOval(560 ,490 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(320 ,490 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(720 ,490 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						}
-						
-						if(indexY == 29) {
-							
-							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(520 ,70 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(480 ,70 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[15][indexY] = new Emplacement( 15, indexY  );
-							g.drawOval(560 ,70 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(320 ,70 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(720 ,70 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-						}
-					}
-					
-					//line 4 & 14
-						
-					if( ( (indexY == 7) || (indexY == 27) ) && ( (indexX == 4) || (indexX == 6) || (indexX == 12) || (indexX == 14) || (indexX == 16) || (indexX == 18) || (indexX == 23) || (indexX == 25) ) ) {	
-						
-						if(indexY == 7) {
-						
-							emplacements[4][indexY] = new Emplacement( 4, indexY );
-							g.drawOval(460 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(500 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(540 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(580 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(300 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(340 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(700 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(740 ,455 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						}
-						
-						if(indexY == 27) {
-							
-							emplacements[4][indexY] = new Emplacement( 4, indexY );
-							g.drawOval(460 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(500 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(540 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(580 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(300 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(340 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(700 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(740 ,105 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-						}
-						
-					}
-					
-					//line 5 & 13
-					
-					if( ( (indexY == 9) || (indexY == 25) ) && ( (indexX == 3) || (indexX == 5) || (indexX == 7) || (indexX == 9) || (indexX == 11) || (indexX == 13) || (indexX == 15) || (indexX == 17) || (indexX == 19) || (indexX ==  21) || (indexX == 23) || (indexX  == 25) || (indexX == 27) ) ) {	
-						
-						if(indexY == 9) {
-													
-							emplacements[3][indexY] = new Emplacement( 3, indexY );
-							g.drawOval(280 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(320 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-					
-							emplacements[7][indexY] = new Emplacement( 7, indexY );
-							g.drawOval(360 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[9][indexY] = new Emplacement( 9, indexY );
-							g.drawOval(400 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(440 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(480 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[15][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(520 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(560 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[19][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(600 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[21][indexY] = new Emplacement( 21, indexY );
-							g.drawOval(640 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(680 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(720 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[27][indexY] = new Emplacement( 27, indexY );
-							g.drawOval(760 ,420 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-						}
-						
-						if(indexY == 25) {
-							
-							emplacements[3][indexY] = new Emplacement( 3, indexY );
-							g.drawOval(280 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(320 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-					
-							emplacements[7][indexY] = new Emplacement( 7, indexY );
-							g.drawOval(360 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[9][indexY] = new Emplacement( 9, indexY );
-							g.drawOval(400 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(440 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(480 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[15][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(520 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(560 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[19][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(600 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[21][indexY] = new Emplacement( 21, indexY );
-							g.drawOval(640 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(680 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(720 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[27][indexY] = new Emplacement( 27, indexY );
-							g.drawOval(760 ,140 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						}
-						
-					}
-					
-					//line 6 & 12
-					
-					if( ( (indexY == 11) || (indexY == 23) ) && ( (indexX == 2) || (indexX == 4) || (indexX == 6) || (indexX == 8) || (indexX == 10) || (indexX == 12) || (indexX == 14) || (indexX == 16) || (indexX == 18) || (indexX == 20) || (indexX  == 22) || (indexX == 24) || (indexX == 26) || (indexX == 28) ) ) {	
-						
-						if(indexY == 11) {
-						
-							emplacements[2][indexY] = new Emplacement( 2, indexY );
-							g.drawOval(260 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[4][indexY] = new Emplacement( 4, indexY );
-							g.drawOval(300 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(340 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[8][indexY] = new Emplacement( 8, indexY );
-							g.drawOval(380 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[10][indexY] = new Emplacement( 10, indexY );
-							g.drawOval(420 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(460 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(500 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(540 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(580 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[20][indexY] = new Emplacement( 20, indexY );
-							g.drawOval(620 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[22][indexY] = new Emplacement( 22, indexY );
-							g.drawOval(660 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(700 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[26][indexY] = new Emplacement( 26, indexY );
-							g.drawOval(740 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[28][indexY] = new Emplacement( 28, indexY );
-							g.drawOval(780 ,385 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						}
-						
-						if(indexY == 23) {
-							
-							emplacements[2][indexY] = new Emplacement( 2, indexY );
-							g.drawOval(260 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[4][indexY] = new Emplacement( 4, indexY );
-							g.drawOval(300 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(340 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[8][indexY] = new Emplacement( 8, indexY );
-							g.drawOval(380 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[10][indexY] = new Emplacement( 10, indexY );
-							g.drawOval(420 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(460 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(500 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(540 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(580 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[20][indexY] = new Emplacement( 20, indexY );
-							g.drawOval(620 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[22][indexY] = new Emplacement( 22, indexY );
-							g.drawOval(660 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(700 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[26][indexY] = new Emplacement( 26, indexY );
-							g.drawOval(740 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[28][indexY] = new Emplacement( 28, indexY );
-							g.drawOval(780 ,175 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-						}
-					}
-					
-					//line 7 & 11
-					
-					if( ( (indexY == 13) || (indexY == 21) ) && ( (indexX == 1) || (indexX == 3) || (indexX == 5) || (indexX == 7) || (indexX == 9) || (indexX == 11) || (indexX == 13) || (indexX == 15) || (indexX == 17) || (indexX == 19) || (indexX == 21) || (indexX == 23) || (indexX == 25) || (indexX == 27) || (indexX == 29) ) ) {	
-						
-						if(indexY == 13) {
-						
-							emplacements[1][indexY] = new Emplacement( 1, indexY );
-							g.drawOval(240 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[3][indexY] = new Emplacement( 3, indexY );
-							g.drawOval(280 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(320 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[7][indexY] = new Emplacement( 7, indexY );
-							g.drawOval(360 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[9][indexY] = new Emplacement( 9, indexY );
-							g.drawOval(400 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(440 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(480 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[15][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(520 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(560 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[19][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(600 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[21][indexY] = new Emplacement( 21, indexY );
-							g.drawOval(640 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(680 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(720 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[27][indexY] = new Emplacement( 27, indexY );
-							g.drawOval(760 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[29][indexY] = new Emplacement( 29, indexY );
-							g.drawOval(800 ,350 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						}
-						
-						if(indexY == 21) {
-						
-							emplacements[1][indexY] = new Emplacement( 1, indexY );
-							g.drawOval(240 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[3][indexY] = new Emplacement( 3, indexY );
-							g.drawOval(280 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[5][indexY] = new Emplacement( 5, indexY );
-							g.drawOval(320 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[7][indexY] = new Emplacement( 7, indexY );
-							g.drawOval(360 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[9][indexY] = new Emplacement( 9, indexY );
-							g.drawOval(400 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[11][indexY] = new Emplacement( 11, indexY );
-							g.drawOval(440 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[13][indexY] = new Emplacement( 13, indexY );
-							g.drawOval(480 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[15][indexY] = new Emplacement( 15, indexY );
-							g.drawOval(520 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[17][indexY] = new Emplacement( 17, indexY );
-							g.drawOval(560 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[19][indexY] = new Emplacement( 19, indexY );
-							g.drawOval(600 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[21][indexY] = new Emplacement( 21, indexY );
-							g.drawOval(640 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[23][indexY] = new Emplacement( 23, indexY );
-							g.drawOval(680 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[25][indexY] = new Emplacement( 25, indexY );
-							g.drawOval(720 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[27][indexY] = new Emplacement( 27, indexY );
-							g.drawOval(760 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[29][indexY] = new Emplacement( 29, indexY );
-							g.drawOval(800 ,210 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-						}
-					}
-					
-					//line 8 & 10
-					
-					if( ( (indexY == 15) || (indexY == 19) ) && ( (indexX == 6) || (indexX == 8) || (indexX == 10) || (indexX == 12) || (indexX == 14) || (indexX == 16) || (indexX == 18) || (indexX == 20) || (indexX == 22) || (indexX == 24) ) ) {
-						
-						if(indexY == 15) {
-						
-							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(340 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[8][indexY] = new Emplacement( 8, indexY );
-							g.drawOval(380 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[10][indexY] = new Emplacement( 10, indexY );
-							g.drawOval(420 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(460 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(500 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(540 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(580 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[20][indexY] = new Emplacement( 20, indexY );
-							g.drawOval(620 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[22][indexY] = new Emplacement( 22, indexY );
-							g.drawOval(660 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(700 ,315 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						}
-						
-						if(indexY == 19) {
-							
-							emplacements[6][indexY] = new Emplacement( 6, indexY );
-							g.drawOval(340 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[8][indexY] = new Emplacement( 8, indexY );
-							g.drawOval(380 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[10][indexY] = new Emplacement( 10, indexY );
-							g.drawOval(420 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[12][indexY] = new Emplacement( 12, indexY );
-							g.drawOval(460 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[14][indexY] = new Emplacement( 14, indexY );
-							g.drawOval(500 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[16][indexY] = new Emplacement( 16, indexY );
-							g.drawOval(540 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[18][indexY] = new Emplacement( 18, indexY );
-							g.drawOval(580 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[20][indexY] = new Emplacement( 20, indexY );
-							g.drawOval(620 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[22][indexY] = new Emplacement( 22, indexY );
-							g.drawOval(660 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-							emplacements[24][indexY] = new Emplacement( 24, indexY );
-							g.drawOval(700 ,245 , IDEAL_WIDTH, IDEAL_HEIGHT);
-							
-						}
-					}
-					
-					//line 9
-					
-					if( (indexY == 17) && ( (indexX == 7) || (indexX == 9) || (indexX == 11) || (indexX == 13) || (indexX == 15) || (indexX == 17) || (indexX == 19) || (indexX == 21) || (indexX == 23) ) ) {
-						
-						emplacements[7][indexY] = new Emplacement( 7, indexY );
-						g.drawOval(360 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						emplacements[9][indexY] = new Emplacement( 9, indexY );
-						g.drawOval(400 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						emplacements[11][indexY] = new Emplacement( 11, indexY );
-						g.drawOval(440 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						emplacements[13][indexY] = new Emplacement( 13, indexY );
-						g.drawOval(480 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						emplacements[15][indexY] = new Emplacement( 15, indexY );
-						g.drawOval(520 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						emplacements[17][indexY] = new Emplacement( 17, indexY );
-						g.drawOval(560 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						emplacements[19][indexY] = new Emplacement( 19, indexY );
-						g.drawOval(600 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						emplacements[21][indexY] = new Emplacement( 21, indexY );
-						g.drawOval(640 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
-						
-						emplacements[23][indexY] = new Emplacement( 23, indexY );
-						g.drawOval(680 ,280 , IDEAL_WIDTH, IDEAL_HEIGHT);
-					}
-				}
-			}
+            if ( currentEmplacement.getIsOccupied() == true ) {
+            	Color color = currentEmplacement.getOccupyingPiece().getColor();
+            	g.setColor(color);
+            	g.fillOval(x,y,radius,radius);
+            } 
 		}
-		 repaint();
+		
+		if ( GameVariableRepository.getInstance().getAPieceIsSelected() == true ) {
+			Emplacement toUpdate = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied());
+			g.setColor(Color.MAGENTA);
+			g.fillOval(toUpdate.getPositionX() * BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint, toUpdate.getPositionY()*BoardParameter.interEmplacementSpaces, BoardParameter.pieceRadius, BoardParameter.pieceRadius);
+			// justPlayed = false;
+		} else {
+			Emplacement toUpdate = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied());
+			if ( toUpdate != null ) {
+				g.setColor(Color.LIGHT_GRAY);
+				g.fillOval(toUpdate.getPositionX() * BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint, toUpdate.getPositionY()*BoardParameter.interEmplacementSpaces, BoardParameter.pieceRadius, BoardParameter.pieceRadius);
+			}
+			
+			GameVariableRepository.getInstance().setEmplacementToBeEmptied(null);
+			// GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(0);
+			System.out.println(toUpdate.toString());
+		}
+		//repaint();
 	}
 }
 

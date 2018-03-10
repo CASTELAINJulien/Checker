@@ -17,7 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import customeventspackage.CustomEvent;
+import customEventsPackage.CustomEvent;
 import checker.data.ClassFactory;
 import checker.data.ClipPlayer;
 import checker.gui.GTParameters;
