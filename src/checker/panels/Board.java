@@ -57,6 +57,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import javax.swing.JScrollPane;
 
 
 
@@ -105,6 +106,7 @@ public class Board extends JPanel {
 	JList<String> historicList;
 	
 	ExecutorService service = Executors.newSingleThreadExecutor();
+	private JScrollPane scrollPane;
 	
 	public static void startTime () {
 		ActionListener taskPerformer = new ActionListener() {
@@ -227,12 +229,15 @@ public class Board extends JPanel {
 		panel.setLayout(null);
 		
 		model = new DefaultListModel<>();
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(6, 16, 192, 227);
+		panel.add(scrollPane);
 		historicList = new JList<String>( model );
+		scrollPane.setViewportView(historicList);
 		historicList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		historicList.setValueIsAdjusting(true);
 		historicList.setEnabled(false);
-		historicList.setBounds(6, 16, 192, 227);
-		panel.add(historicList);
 		
 		btnPower1 = new JButton();
 		btnPower1.setBackground(Color.white);
@@ -388,63 +393,19 @@ public class Board extends JPanel {
 		            	GameVariableRepository.getInstance().setPreviousTurnEmplacementsArrayList( GameVariableRepository.getInstance().getEmplacementsArrayList() );
 		            	Piece pieceToBeSelected = currentEmplacement.getOccupyingPiece();
 		            	
-		            	GameVariableRepository.getInstance().setSelectedPiece(pieceToBeSelected);
-		            	GameVariableRepository.getInstance().setEmplacementToBeEmptied(currentEmplacement);
-		            	
-		            	xTempValue = currentEmplacement.getPositionX();
-			            yTempValue = currentEmplacement.getPositionY();
-			            
-			            // System.out.println(number.getPositionX());    // insert a number right before this
-			            GameVariableRepository.getInstance().setAPieceIsSelected(true);
-			            
-			            GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement));
-			            
-			            int radius = BoardParameter.pieceRadius;
-						int x = currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint;
-						int y = currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces;
-						
-						int xEmplacementToEmpty = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).getPositionX();
-						int yEmplacementToEmpty = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).getPositionY();
+		            	BoardUpdater.getInstance().updatePieceSelectionState(pieceToBeSelected, currentEmplacement);
 						
 						validate();
 						repaint();
-						// repaint(xEmplacementToEmpty,yEmplacementToEmpty, radius, radius);
-			            // repaint(x,y, radius, radius);
 			            
 		            } else if ( isOnEmplacementTemp == true && isOccupiedTemp == false && aPieceIsSelectedTemp == true && currentEmplacement.ifIsEligibleForMove() == true ) {
-		            	// System.out.println("testIsSelected");
 		            	Piece currentSelectedPiece = GameVariableRepository.getInstance().getSelectedPiece();
 		            	
-		            	// GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement);
+		            	BoardUpdater.getInstance().updateAfterMovePieceState(currentSelectedPiece, currentEmplacement);
 		            	
-		            	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement)).setIsOccupied(true);
-		            	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement)).setOccupyingPiece(currentSelectedPiece);
-		            	
-		            	
-		            	GameVariableRepository.getInstance().getEmplacementToBeEmptied().setIsOccupied(false);
-		            	GameVariableRepository.getInstance().getEmplacementToBeEmptied().setOccupyingPiece(null);
-		            	
-		            	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).setIsOccupied(false);
-		            	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).setOccupyingPiece(null);
-		            	
-		            	// GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied());
-		            	// currentEmplacement.setOccupyingPiece(currentSelectedPiece);
-		            	
-		            	GameVariableRepository.getInstance().setSelectedPiece(null);
-		            	GameVariableRepository.getInstance().setAPieceIsSelected(false);
-		            	int radius = BoardParameter.pieceRadius;
-						int x = currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint;
-						int y = currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces;
-						
-						int xEmplacementToEmpty = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).getPositionX();
-						int yEmplacementToEmpty = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).getPositionY();
-						
-						// BoardUpdater.getInstance().drawPlayersPieces(graphicContext);
-						
-						currentSelectedPiece.setXPosition(currentEmplacement.getPositionX());
-						currentSelectedPiece.setYPosition(currentEmplacement.getPositionY());
 						updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), 5);
-						model.addElement("Déplacement classique");
+						
+						model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Déplacement classique");
 						
 						new Thread(new Runnable(){
 							public void run(){
@@ -479,10 +440,7 @@ public class Board extends JPanel {
 						}).start();      
 						
 						validate();
-						// repaint();
-						
-						repaint(xEmplacementToEmpty,yEmplacementToEmpty, radius, radius);
-			            repaint(x,y, radius, radius);
+						repaint();
 		            }
 		            
 		        }
@@ -575,6 +533,8 @@ public class Board extends JPanel {
 						VariableRepository.getInstance().searchPlayer("Player 1").addPlayerMana(-VariableRepository.getInstance().searchPlayer("Player 1").getPower(0).getCost2());
 						progressBar.setValue( ( int ) VariableRepository.getInstance().searchPlayer("Player 1").getPlayerMana() );
 						
+						model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + VariableRepository.getInstance().searchPlayer("Player 1").getPower(0).getName());
+						
 						//affiche nom du pouvoir pendant 2secondes au milieu de l'ï¿½cran
 						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer("Player 1").getPower(0).getName()+" Activated");				
 						add(powerActivated);
@@ -589,9 +549,11 @@ public class Board extends JPanel {
 						
 					}
 				} else if ( GameVariableRepository.getInstance().getPlayerTurn() == 1 ) {
-					if(VariableRepository.getInstance().searchPlayer("Player 2").getPlayerMana()>=VariableRepository.getInstance().searchPlayer("Player 1").getPower(0).getCost2()) {					
+					if(VariableRepository.getInstance().searchPlayer("Player 2").getPlayerMana()>=VariableRepository.getInstance().searchPlayer("Player 2").getPower(0).getCost2()) {					
 						VariableRepository.getInstance().searchPlayer("Player 2").addPlayerMana(-VariableRepository.getInstance().searchPlayer("Player 2").getPower(0).getCost2());
 						progressBar.setValue( ( int ) VariableRepository.getInstance().searchPlayer("Player 2").getPlayerMana() );
+						
+						model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + VariableRepository.getInstance().searchPlayer("Player 2").getPower(0).getName());
 						
 						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer("Player 2").getPower(0).getName()+" Activated");						
 						add(powerActivated);
@@ -608,6 +570,8 @@ public class Board extends JPanel {
 					if(VariableRepository.getInstance().searchPlayer("Player 3").getPlayerMana()>=VariableRepository.getInstance().searchPlayer("Player 3").getPower(0).getCost2()) {					
 						VariableRepository.getInstance().searchPlayer("Player 3").addPlayerMana(-VariableRepository.getInstance().searchPlayer("Player 3").getPower(0).getCost2());
 						progressBar.setValue( ( int ) VariableRepository.getInstance().searchPlayer("Player 3").getPlayerMana() );
+						
+						model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + VariableRepository.getInstance().searchPlayer("Player 3").getPower(0).getName());
 						
 						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer("Player 3").getPower(0).getName()+" Activated");						
 						add(powerActivated);

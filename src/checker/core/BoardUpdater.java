@@ -2,10 +2,18 @@ package checker.core;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ListIterator;
 
+import javax.swing.JButton;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+
 import checker.data.Emplacement;
+import checker.data.Piece;
 import checker.gui.BoardParameter;
+import checker.panels.Board;
 
 public class BoardUpdater {
 	private BoardUpdater() {
@@ -23,6 +31,40 @@ public class BoardUpdater {
 	 */
 	public static BoardUpdater getInstance() {
 		return instance;
+	}
+	
+	public void updatePieceSelectionState (Piece pieceToBeSelected, Emplacement currentEmplacement) {
+    	GameVariableRepository.getInstance().setSelectedPiece(pieceToBeSelected);
+    	GameVariableRepository.getInstance().setEmplacementToBeEmptied(currentEmplacement);
+    	
+    	// xTempValue = currentEmplacement.getPositionX();
+        // yTempValue = currentEmplacement.getPositionY();
+        
+        // System.out.println(number.getPositionX());    // insert a number right before this
+        GameVariableRepository.getInstance().setAPieceIsSelected(true);
+        
+        GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement));
+	}
+	
+	public void updateAfterMovePieceState(Piece currentSelectedPiece, Emplacement currentEmplacement) {
+    	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement)).setIsOccupied(true);
+    	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement)).setOccupyingPiece(currentSelectedPiece);
+    	
+    	GameVariableRepository.getInstance().getEmplacementTable()[currentEmplacement.getPositionX()][currentEmplacement.getPositionY()].setIsOccupied(true);
+    	GameVariableRepository.getInstance().getEmplacementTable()[currentEmplacement.getPositionX()][currentEmplacement.getPositionY()].setOccupyingPiece(currentSelectedPiece);
+    	
+    	Emplacement toUpdateAsEmpty = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied());
+    	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).setIsOccupied(false);
+    	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).setOccupyingPiece(null);
+    	
+    	GameVariableRepository.getInstance().getEmplacementTable()[toUpdateAsEmpty.getPositionX()][toUpdateAsEmpty.getPositionY()].setIsOccupied(false);
+    	GameVariableRepository.getInstance().getEmplacementTable()[toUpdateAsEmpty.getPositionX()][toUpdateAsEmpty.getPositionY()].setOccupyingPiece(null);
+    	
+    	GameVariableRepository.getInstance().setSelectedPiece(null);
+    	GameVariableRepository.getInstance().setAPieceIsSelected(false);
+			
+		currentSelectedPiece.setXPosition(currentEmplacement.getPositionX());
+		currentSelectedPiece.setYPosition(currentEmplacement.getPositionY());
 	}
 	
 	public void drawCheckerBoardEmplacements ( Graphics g ) {
