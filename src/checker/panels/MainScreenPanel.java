@@ -52,8 +52,8 @@ public class MainScreenPanel extends JPanel {
 		
 		this.initActions();
 		
-		//musicPlayer = new ClipPlayer();
-		//musicPlayer.playClip();
+		musicPlayer = new ClipPlayer();
+		musicPlayer.playClip();
 	}
 	
 	protected void initActions() {

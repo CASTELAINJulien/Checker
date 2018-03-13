@@ -61,6 +61,33 @@ public class Emplacement {
 		GameVariableRepository.getInstance().getEmplacementsArrayList().add(this);
 	}
 	
+	public boolean ifIsEligibleForMove() {
+		Piece currentPiece = GameVariableRepository.getInstance().getSelectedPiece();
+		
+		boolean isEligibleForMove = false;
+		//Coordinates for the horizontal moves
+		int leftAndRightY = currentPiece.getYPosition();
+		int leftEmplacementX = currentPiece.getXPosition() - 2;
+		int rightEmplacementX = currentPiece.getXPosition() + 2;
+		
+		//Coordinates for the diagonales moves
+		int leftDiagonalEmplacementX = currentPiece.getXPosition() - 1;
+		int rightDiagonalEmplacementX = currentPiece.getXPosition() + 1;
+		int upperDiagonalEmplacementsY = currentPiece.getYPosition() + 2;
+		int lowerDiagonalEmplacementsY = currentPiece.getYPosition() - 2;
+		
+		// Conditions for horizontal moves
+		if ( this.positionY == leftAndRightY && ( this.positionX == leftEmplacementX || this.positionX == rightEmplacementX )  ) {
+			isEligibleForMove = true;
+		} else if ( this.positionY == upperDiagonalEmplacementsY && ( this.positionX == leftDiagonalEmplacementX || this.positionX == rightDiagonalEmplacementX ) ) {
+			isEligibleForMove = true;
+		} else if ( this.positionY == lowerDiagonalEmplacementsY && ( this.positionX == leftDiagonalEmplacementX || this.positionX == rightDiagonalEmplacementX ) ) {
+			isEligibleForMove = true;
+		}
+		
+		return isEligibleForMove;
+	}
+	
 	public boolean getIsOccupied() {
 		return this.isOccupied;
 	}
@@ -125,7 +152,11 @@ public class Emplacement {
 	
 	public String toString () {
 		StringBuffer sb = new StringBuffer();
-		sb.append("\t" + " Is occupied : " + this.isOccupied + "\n" + "\t" + " Occupying piece : " + this.occupyingPiece + "\n");
+		sb.append("=================\n");
+		sb.append("\t" + "X : " + this.positionX + "\n");
+		sb.append("\t" + "Y : " + this.positionY + "\n");
+		sb.append("\t" + " Is occupied : " + this.isOccupied + "\n"); 
+		sb.append("\t" + " Occupying piece : " + this.occupyingPiece);
 		return sb.toString();
 	}
 }

@@ -637,40 +637,25 @@ public class CheckerBuilder {
 					
 					//line 2 & 16
 				
-					if( ( (indexY == 3) || (indexY == 31) ) && ( (indexX == 11) || (indexX == 13) || (indexX == 15) || (indexX == 17) ) ) {	
-						
-						if(indexY == 3) {
-						
+					if( ( (indexY == 3) || (indexY == 31) ) && ( (indexX == 11) || (indexX == 13) || (indexX == 15) || (indexX == 17) ) ) {		
+						if(indexY == 3) {		
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY);
-
-													
+										
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY);
-
-													
+							
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY);
-
-													
+										
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY);
-
-							
-							
 						}
 						
-						if(indexY == 31) {
-							
+						if(indexY == 31) {							
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY, 1);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY, 1 );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY, 1 );
 
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY, 1 );
-
-							
-							
+							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY, 1 );							
 						}
 						
 					}
@@ -679,142 +664,97 @@ public class CheckerBuilder {
 				
 					if( ( (indexY == 5) || (indexY == 29) ) && ( (indexX == 4) || (indexX == 12) || (indexX == 14) || (indexX == 16) || (indexX == 23) ) ) {	
 						
-						if(indexY == 5) {
-						
+						if(indexY == 5) {						
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY, 2 );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 25, indexY, 3);
 
-							
-						
 						}
 						
-						if(indexY == 29) {
-							
+						if(indexY == 29) {							
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY, 1);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY);
-
-													
+					
 							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY);					
 						}
 					}
 					
 					//line 4 & 14
-						
 					if( ( (indexY == 7) || (indexY == 27) ) && ( (indexX == 4) || (indexX == 6) || (indexX == 12) || (indexX == 14) || (indexX == 16) || (indexX == 18) || (indexX == 23) || (indexX == 25) ) ) {	
-						
-						if(indexY == 7) {
-						
+						if(indexY == 7) {						
 							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY, 2);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY, 2);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 24, indexY, 3);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 26, indexY, 3);
 						}
 						
-						if(indexY == 27) {
-							
+						if(indexY == 27) {							
 							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY );
 
-													
 							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY );
 						}			
 					}
 					
 					//line 5 & 13
-					
 					if( ( (indexY == 9) || (indexY == 25) ) && ( (indexX == 3) || (indexX == 5) || (indexX == 7) || (indexX == 9) || (indexX == 11) || (indexX == 13) || (indexX == 15) || (indexX == 17) || (indexX == 19) || (indexX ==  21) || (indexX == 23) || (indexX  == 25) || (indexX == 27) ) ) {	
-						
-						if(indexY == 9) {
-													
+						if(indexY == 9) {													
 							GameVariableRepository.getInstance().getEmplacementTable()[3][indexY] = new Emplacement( 3, indexY, 2 );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY, 2 );
-
 												
 							GameVariableRepository.getInstance().getEmplacementTable()[7][indexY] = new Emplacement( 7, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[9][indexY] = new Emplacement( 9, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[11][indexY] = new Emplacement( 11, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY );
-
-													
+												
 							GameVariableRepository.getInstance().getEmplacementTable()[19][indexY] = new Emplacement( 19, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[21][indexY] = new Emplacement( 21, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY, 3 );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[27][indexY] = new Emplacement( 27, indexY, 3);	
 						}

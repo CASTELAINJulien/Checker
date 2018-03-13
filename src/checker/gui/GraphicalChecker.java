@@ -8,6 +8,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import checker.core.CheckerBuilder;
 import checker.core.VariableRepository;
@@ -72,21 +73,26 @@ public class GraphicalChecker extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		try {
-			new GraphicalChecker();
-		} catch (IllegalArgumentException e) {
-			System.err.println(e.getMessage());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedAudioFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		SwingUtilities.invokeLater(new Runnable() {
+	         @Override
+	         public void run() {
+	        	 try {
+	     			new GraphicalChecker();
+	     		} catch (IllegalArgumentException e) {
+	     			System.err.println(e.getMessage());
+	     		} catch (InterruptedException e) {
+	     			// TODO Auto-generated catch block
+	     			System.err.println(e.getMessage());
+	     			e.printStackTrace();
+	     		} catch (LineUnavailableException e) {
+	     			// TODO Auto-generated catch block
+	     			e.printStackTrace();
+	     		} catch (UnsupportedAudioFileException e) {
+	     			// TODO Auto-generated catch block
+	     			e.printStackTrace();
+	     		}
+	         }
+	      });
 	}
 
 }

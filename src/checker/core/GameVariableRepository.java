@@ -1,6 +1,8 @@
 package checker.core;
 
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import checker.data.Emplacement;
 import checker.data.Piece;
@@ -11,6 +13,7 @@ public class GameVariableRepository {
 	private int realPlayerCount;
 	// Varies from 0 to 2, each digits indicating a player. Will varies between the turns.
 	private int playerTurn;
+	private String actualPlayerName;
 	
 	private ArrayList<Emplacement> emplacementsList;
 	private Emplacement[][] emplacements;
@@ -24,12 +27,18 @@ public class GameVariableRepository {
 	private Piece selectedPiece;
 	private Emplacement emplacementToBeEmptied;
 	private boolean aPieceIsSelected;
+	private boolean gameStarted;
+	private boolean isUpdating;
 	private int indexOfEmplacementToBeEmptied;
+	
+	// Everything that concerned the last turn state data
+	private ArrayList<Emplacement> previousTurnEmplacementsList;
 	
 	private GameVariableRepository() {
 		this.emplacements = new Emplacement[BoardParameter.doubleArrayRowCellsNumber][BoardParameter.doubleArrayColumnCellNumber];
 		this.emplacementsList = new ArrayList<Emplacement>();
 		this.playerTurn = 0;
+		this.actualPlayerName = "Player 1";
 		this.firstStartingAreaEmplacements = new ArrayList<Emplacement>();
 		this.secondStartingAreaEmplacements = new ArrayList<Emplacement>();
 		this.thirdStartingAreaEmplacements = new ArrayList<Emplacement>();
@@ -40,6 +49,8 @@ public class GameVariableRepository {
 		this.selectedPiece = null;
 		this.emplacementToBeEmptied = null;
 		this.indexOfEmplacementToBeEmptied = 0;
+		this.gameStarted = false;
+		this.isUpdating = false;
 	}
 	
 	static GameVariableRepository instance = new GameVariableRepository();
@@ -50,11 +61,81 @@ public class GameVariableRepository {
 	
 	public int incrementPlayerTurn() {
 		this.playerTurn++;
+		
 		if ( playerTurn >= 3 ) {
 			this.playerTurn = 0;
 		}
 		
+		updateActualPlayerName();
 		return this.playerTurn;
+	}
+	
+	public String getActualPlayerName () {
+		return this.actualPlayerName;
+	}
+	
+	public void updateActualPlayerName() {
+		if ( this.playerTurn == 0 ) {
+			this.actualPlayerName = "Player 1";
+		} else if ( this.playerTurn == 1 ) {
+			this.actualPlayerName = "Player 2";
+		} else {
+			this.actualPlayerName = "Player 3";
+		}
+	}
+	
+	public boolean getIsUpdating() {
+		return this.isUpdating;
+	}
+	
+	public void updatePiecesState() {
+		
+		if ( this.playerTurn == 0 ) {
+			for (ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator(); iter.hasNext(); ) {
+	            Emplacement currentEmplacement = iter.next();
+	            Piece currentPiece = currentEmplacement.getOccupyingPiece();
+	            if ( currentPiece != null && currentPiece.getOwnersName() == "Player 1" ) {
+	            	currentPiece.setIsClickeable(true);
+	            } else if ( currentPiece != null )  {
+	            	currentPiece.setIsClickeable(false);
+	            }
+	            
+	        }
+		} else if ( this.playerTurn == 1 ) {
+			for (ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator(); iter.hasNext(); ) {
+	            Emplacement currentEmplacement = iter.next();
+	            Piece currentPiece = currentEmplacement.getOccupyingPiece();
+	            if ( currentPiece != null && currentPiece.getOwnersName() == "Player 2" ) {
+	            	currentPiece.setIsClickeable(true);
+	            } else if ( currentPiece != null )  {
+	            	currentPiece.setIsClickeable(false);
+	            }
+	            
+	        }
+		} else {
+			for (ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator(); iter.hasNext(); ) {
+	            Emplacement currentEmplacement = iter.next();
+	            Piece currentPiece = currentEmplacement.getOccupyingPiece();
+	            if ( currentPiece != null && currentPiece.getOwnersName() == "Player 3" ) {
+	            	currentPiece.setIsClickeable(true);
+	            } else if ( currentPiece != null )  {
+	            	currentPiece.setIsClickeable(false);
+	            }
+	            
+	        }
+		}
+	}
+	
+	public void setIsUpdating(boolean isUpdatingParameter) {
+		this.isUpdating = isUpdatingParameter;
+	}
+	
+	public boolean getGameStarted() {
+		return this.gameStarted;
+	}
+	
+	public void setGameStarted(boolean gameStartedParameter) {
+		this.gameStarted = gameStartedParameter;
 	}
 	
 	public int getIndexOfEmplacementToBeEmptied() {
@@ -94,7 +175,19 @@ public class GameVariableRepository {
 	}
 	
 	public ArrayList<Emplacement> getEmplacementsArrayList() {
-		return emplacementsList;
+		return this.emplacementsList;
+	}
+	
+	public void setEmplacementsArrayList( ArrayList<Emplacement> arrayListParameter) {
+		this.emplacementsList = arrayListParameter;
+	}
+	
+	public ArrayList<Emplacement> getPreviousTurnEmplacementsArrayList() {
+		return this.previousTurnEmplacementsList;
+	}
+	
+	public void setPreviousTurnEmplacementsArrayList( ArrayList<Emplacement> arrayListParameter) {
+		this.previousTurnEmplacementsList = arrayListParameter;
 	}
 	
 	public Emplacement setEmplacementsAttribute(int indice) {

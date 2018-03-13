@@ -15,6 +15,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import checker.core.CheckerBuilder;
+import checker.core.GameVariableRepository;
 import checker.core.VariableRepository;
 import checker.data.ClassFactory;
 import checker.data.Player;
@@ -267,6 +268,7 @@ public class LaunchGameScreenPanel extends JPanel {
 			
 			CheckerBuilder.getInstance().initializeEmplacements();
 			
+			// GameVariableRepository.getInstance().setGameStarted(true);
 			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
 		}
 	}
