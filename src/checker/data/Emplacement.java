@@ -1,3 +1,4 @@
+
 package checker.data;
 
 import java.awt.Color;
@@ -24,9 +25,10 @@ public class Emplacement {
 		occupyingPiece = null;
 		this.isOccupied = false;
 		this.radius = 22;
+		int[] keyCoordinates = {this.positionX, this.positionY};
 		
 		Piece currentPiece = null;
-		// Mettre un parametre startingAreaIndex par dÃ©faut ?
+		// Mettre un parametre startingAreaIndex par défaut ?
 		if ( startingAreaIndex == 1 ) {
 			GameVariableRepository.getInstance().getFirstStartingAreaEmplacements().add(this);
 			currentPiece = new Piece(this.positionX, this.positionY, Color.red, "Player 1");
@@ -45,6 +47,7 @@ public class Emplacement {
 		this.isOccupied = true;
 		this.occupyingPiece = currentPiece;
 		GameVariableRepository.getInstance().getEmplacementsArrayList().add(this);
+		GameVariableRepository.getInstance().getEmplacementsHashMap().put(keyCoordinates,this);
 	}
 	
 	public Emplacement(int positionX, int positionY) {
@@ -56,9 +59,13 @@ public class Emplacement {
 		this.isOccupied = false;
 		this.radius = 22;
 		
+		int[] keyCoordinates = {this.positionX, this.positionY};
+		
 		GameVariableRepository.getInstance().getFieldAreaEmplacements().add(this);
 		
 		GameVariableRepository.getInstance().getEmplacementsArrayList().add(this);
+		
+		GameVariableRepository.getInstance().getEmplacementsHashMap().put(keyCoordinates,this);
 	}
 	
 	public boolean ifIsEligibleForMove() {
@@ -76,15 +83,72 @@ public class Emplacement {
 		int upperDiagonalEmplacementsY = currentPiece.getYPosition() + 2;
 		int lowerDiagonalEmplacementsY = currentPiece.getYPosition() - 2;
 		
-		// Conditions for horizontal moves
+		// Conditions for horizontal moves		
 		if ( this.positionY == leftAndRightY && ( this.positionX == leftEmplacementX || this.positionX == rightEmplacementX )  ) {
 			isEligibleForMove = true;
+			// Conditions for diagonal upper moves
 		} else if ( this.positionY == upperDiagonalEmplacementsY && ( this.positionX == leftDiagonalEmplacementX || this.positionX == rightDiagonalEmplacementX ) ) {
 			isEligibleForMove = true;
+			// Conditions for diagonal lower moves
 		} else if ( this.positionY == lowerDiagonalEmplacementsY && ( this.positionX == leftDiagonalEmplacementX || this.positionX == rightDiagonalEmplacementX ) ) {
 			isEligibleForMove = true;
 		}
+
+		//Coordinates for the horizontal moves
+		int leftAndRightYForJump = currentPiece.getYPosition();
+		int leftEmplacementXForJump = currentPiece.getXPosition() - 4;
+		int rightEmplacementXForJump = currentPiece.getXPosition() + 4;
 		
+		//Coordinates for the diagonales moves
+		int leftDiagonalEmplacementXForJump = currentPiece.getXPosition() - 2;
+		int rightDiagonalEmplacementXForJump = currentPiece.getXPosition() + 2;
+		int upperDiagonalEmplacementsYForJump = currentPiece.getYPosition() + 4;
+		int lowerDiagonalEmplacementsYForJump = currentPiece.getYPosition() - 4;
+		
+		if ( this.positionY == leftAndRightYForJump && ( this.positionX == leftEmplacementXForJump || this.positionX == rightEmplacementXForJump ) ) {
+			int[] firstKeyToTest = { leftEmplacementX, leftAndRightY };
+			int[] secondKeyToTest = { rightEmplacementX, leftAndRightY };
+			
+			if ( GameVariableRepository.getInstance().isSetEmplacement(leftEmplacementX, leftAndRightY) != (-1) ) {
+				if ( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(leftEmplacementX, leftAndRightY)).getIsOccupied() == true) {
+					System.out.println("test normal 1 ");
+					isEligibleForMove = true;
+				}
+			} else if ( GameVariableRepository.getInstance().isSetEmplacement(rightEmplacementX, leftAndRightY) != (-1) ) {
+				if ( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(rightEmplacementX, leftAndRightY)).getIsOccupied() == true) {
+					System.out.println("test normal 1 ");
+					isEligibleForMove = true;
+				}
+			}
+			// Conditions for diagonal upper moves
+		} else if ( this.positionY == upperDiagonalEmplacementsYForJump && ( this.positionX == leftDiagonalEmplacementXForJump || this.positionX == rightDiagonalEmplacementXForJump ) ) {
+			int[] firstKeyToTest = { leftDiagonalEmplacementX, upperDiagonalEmplacementsY };
+			int[] secondKeyToTest = { rightDiagonalEmplacementX, upperDiagonalEmplacementsY };
+			if ( GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, upperDiagonalEmplacementsY) != (-1) ) {
+				if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, upperDiagonalEmplacementsY)).getIsOccupied() == true) {
+					isEligibleForMove = true;
+				}
+			} else if ( GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, upperDiagonalEmplacementsY) != (-1) ) {
+				if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, upperDiagonalEmplacementsY)).getIsOccupied() == true) {
+					isEligibleForMove = true;
+				}
+			}
+			System.out.println("test diago  1");
+			// Conditions for diagonal lower moves
+		} else if ( this.positionY == lowerDiagonalEmplacementsYForJump && ( this.positionX == leftDiagonalEmplacementXForJump || this.positionX == rightDiagonalEmplacementXForJump ) ) {
+			int[] firstKeyToTest = { leftDiagonalEmplacementX, lowerDiagonalEmplacementsY };
+			int[] secondKeyToTest = { rightDiagonalEmplacementX, lowerDiagonalEmplacementsY };
+			if ( GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, lowerDiagonalEmplacementsY) != (-1) ) {
+				if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, lowerDiagonalEmplacementsY)).getIsOccupied() == true) {
+					isEligibleForMove = true;
+				}
+			} else if ( GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, lowerDiagonalEmplacementsY) != (-1) ) {
+				if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, lowerDiagonalEmplacementsY)).getIsOccupied() == true) {
+					isEligibleForMove = true;
+				}
+			}
+			System.out.println("test diago  2");
+		}
 		return isEligibleForMove;
 	}
 	

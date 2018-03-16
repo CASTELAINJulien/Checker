@@ -1,3 +1,4 @@
+
 package checker.core;
 
 import java.awt.Color;
@@ -84,7 +85,9 @@ public class BoardUpdater {
 			for (ListIterator<Emplacement> iter2 = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator(); iter2.hasNext(); ) {
 				//g.setColor(Color.red);
 				Emplacement currentEmplacement = iter2.next();
-				System.out.println(currentEmplacement.toString() + "\n");
+				
+				// System.out.println(currentEmplacement.toString() + "\n");
+				
 				int radius = BoardParameter.pieceRadius;
 				int x = currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint;
 				int y = currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces;

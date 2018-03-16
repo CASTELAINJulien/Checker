@@ -1,3 +1,4 @@
+
 package checker.core;
 
 import checker.data.Emplacement;
@@ -46,16 +47,12 @@ public class CheckerBuilder {
 							GameVariableRepository.getInstance().getEmplacementTable()[11][indexY] = new Emplacement( 11, indexY, 2 );
 														
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY, 2 );
-
 														
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 15, indexY, 2 );
-
 														
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 17, indexY, 2 );
-
 														
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 19, indexY, 2 );
-
 							
 						}
 					}
@@ -67,16 +64,12 @@ public class CheckerBuilder {
 						if(indexY == 3) {
 						
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY, 1 );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY, 1 );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY, 1 );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY, 1 );
-
 							
 							
 						}
@@ -84,16 +77,12 @@ public class CheckerBuilder {
 						if(indexY == 31) {
 							
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY, 2 );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY, 2 );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY, 2 );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY, 2 );
-
 							
 							
 						}
@@ -107,19 +96,14 @@ public class CheckerBuilder {
 						if(indexY == 5) {
 						
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY,1);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY);
-
 							
 						
 						}
@@ -127,16 +111,12 @@ public class CheckerBuilder {
 						if(indexY == 29) {
 							
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY,2);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY);					
 						}
@@ -149,25 +129,18 @@ public class CheckerBuilder {
 						if(indexY == 7) {
 						
 							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY);
 						}
@@ -175,25 +148,18 @@ public class CheckerBuilder {
 						if(indexY == 27) {
 							
 							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY);
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY );
 						}			
@@ -206,40 +172,28 @@ public class CheckerBuilder {
 						if(indexY == 9) {
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[3][indexY] = new Emplacement( 3, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY );
-
 												
 							GameVariableRepository.getInstance().getEmplacementTable()[7][indexY] = new Emplacement( 7, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[9][indexY] = new Emplacement( 9, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[11][indexY] = new Emplacement( 11, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[19][indexY] = new Emplacement( 19, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[21][indexY] = new Emplacement( 21, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[27][indexY] = new Emplacement( 27, indexY );	
 						}
@@ -247,43 +201,30 @@ public class CheckerBuilder {
 						if(indexY == 25) {
 							
 							GameVariableRepository.getInstance().getEmplacementTable()[3][indexY] = new Emplacement( 3, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY );
-
 												
 							GameVariableRepository.getInstance().getEmplacementTable()[7][indexY] = new Emplacement( 7, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[9][indexY] = new Emplacement( 9, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[11][indexY] = new Emplacement( 11, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[19][indexY] = new Emplacement( 19, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[21][indexY] = new Emplacement( 21, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[27][indexY] = new Emplacement( 27, indexY );
-
 							
 						}
 						
@@ -296,92 +237,64 @@ public class CheckerBuilder {
 						if(indexY == 11) {
 						
 							GameVariableRepository.getInstance().getEmplacementTable()[2][indexY] = new Emplacement( 2, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[8][indexY] = new Emplacement( 8, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[10][indexY] = new Emplacement( 10, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[20][indexY] = new Emplacement( 20, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[22][indexY] = new Emplacement( 22, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[26][indexY] = new Emplacement( 26, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[28][indexY] = new Emplacement( 28, indexY );
-
 							
 						}
 						
 						if(indexY == 23) {
 							
 							GameVariableRepository.getInstance().getEmplacementTable()[2][indexY] = new Emplacement( 2, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[8][indexY] = new Emplacement( 8, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[10][indexY] = new Emplacement( 10, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[20][indexY] = new Emplacement( 20, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[22][indexY] = new Emplacement( 22, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[26][indexY] = new Emplacement( 26, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[28][indexY] = new Emplacement( 28, indexY );
-
 							
 							
 						}
@@ -394,49 +307,34 @@ public class CheckerBuilder {
 						if(indexY == 13) {
 						
 							GameVariableRepository.getInstance().getEmplacementTable()[1][indexY] = new Emplacement( 1, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[3][indexY] = new Emplacement( 3, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[7][indexY] = new Emplacement( 7, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[9][indexY] = new Emplacement( 9, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[11][indexY] = new Emplacement( 11, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[19][indexY] = new Emplacement( 19, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[21][indexY] = new Emplacement( 21, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[27][indexY] = new Emplacement( 27, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[29][indexY] = new Emplacement( 29, indexY );
-
 							
 						
 						}
@@ -444,49 +342,34 @@ public class CheckerBuilder {
 						if(indexY == 21) {
 						
 							GameVariableRepository.getInstance().getEmplacementTable()[1][indexY] = new Emplacement( 1, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[3][indexY] = new Emplacement( 3, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[7][indexY] = new Emplacement( 7, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[9][indexY] = new Emplacement( 9, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[11][indexY] = new Emplacement( 11, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[19][indexY] = new Emplacement( 19, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[21][indexY] = new Emplacement( 21, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[27][indexY] = new Emplacement( 27, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[29][indexY] = new Emplacement( 29, indexY );
-
 							
 							
 						}
@@ -499,68 +382,48 @@ public class CheckerBuilder {
 						if(indexY == 15) {
 						
 							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[8][indexY] = new Emplacement( 8, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[10][indexY] = new Emplacement( 10, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[20][indexY] = new Emplacement( 20, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[22][indexY] = new Emplacement( 22, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY );
-
 							
 						}
 						
 						if(indexY == 19) {
 							
 							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[8][indexY] = new Emplacement( 8, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[10][indexY] = new Emplacement( 10, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[20][indexY] = new Emplacement( 20, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[22][indexY] = new Emplacement( 22, indexY );
-
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY );
-
 							
 							
 						}

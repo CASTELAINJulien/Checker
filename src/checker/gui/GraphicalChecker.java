@@ -1,3 +1,4 @@
+
 package checker.gui;
 
 import java.awt.Color;

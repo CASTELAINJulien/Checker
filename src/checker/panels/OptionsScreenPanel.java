@@ -49,7 +49,7 @@ public class OptionsScreenPanel extends JPanel {
 		optionsTitleLabel.setFont(new Font("Tahoma", Font.PLAIN, 41));
 		verticalBox.add(optionsTitleLabel);
 		
-		soundMainVolumeLabel = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Volume Principal");
+		soundMainVolumeLabel = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Main Volume");
 		verticalBox.add(soundMainVolumeLabel);
 		
 		horizontalBox_1 = Box.createHorizontalBox();
@@ -62,7 +62,7 @@ public class OptionsScreenPanel extends JPanel {
 		soundMainVolumeTextArea.setText(Integer.valueOf(soundMainVolumeSlider.getValue()).toString());
 		horizontalBox_1.add(soundMainVolumeTextArea);
 		
-		soundMusicVolumeLabel = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Volume Musique");
+		soundMusicVolumeLabel = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Music Volume");
 		verticalBox.add(soundMusicVolumeLabel);
 		
 		horizontalBox_2 = Box.createHorizontalBox();
@@ -75,13 +75,13 @@ public class OptionsScreenPanel extends JPanel {
 		soundMusicVolumeTextArea.setText(Integer.valueOf(soundMusicVolumeSlider.getValue()).toString());
 		horizontalBox_2.add(soundMusicVolumeTextArea);
 		
-		muteSoundCheckBox = (JCheckBox) ClassFactory.createTextContainingComponent("JCheckBox", "Rendre muet");
+		muteSoundCheckBox = (JCheckBox) ClassFactory.createTextContainingComponent("JCheckBox", "Mute");
 		verticalBox.add(muteSoundCheckBox);
 		
 		horizontalBox = (Box) ClassFactory.createNoTextContainingComponent("HorizontalBox");
 		verticalBox.add(horizontalBox);
 		
-		previousButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Retour");
+		previousButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Previous");
 		horizontalBox.add(previousButton);
 		
 		okButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "OK");

@@ -1,3 +1,4 @@
+
 package checker.panels;
 
 import java.awt.Color;
@@ -52,8 +53,8 @@ public class MainScreenPanel extends JPanel {
 		
 		this.initActions();
 		
-		musicPlayer = new ClipPlayer();
-		musicPlayer.playClip();
+		//musicPlayer = new ClipPlayer();
+		//musicPlayer.playClip();
 	}
 	
 	protected void initActions() {
@@ -85,13 +86,13 @@ public class MainScreenPanel extends JPanel {
 		setLayout(null);
 		
 		// lblChecker = (JLabel) ClassFactory.createTextContainingComponent("JLabel", "Checker");
-		lblChecker = new JLabel("Pho");
+		lblChecker = new JLabel("Checker");
 		lblChecker.setBounds(417, 0, 254, 87);
 		add(lblChecker);
 		lblChecker.setFont(new Font("Tahoma", Font.PLAIN, 72));
 		
 		// launchGameButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Lancer une partie");
-		launchGameButton = new JButton("Lancer une partie");
+		launchGameButton = new JButton("Play");
 		launchGameButton.setBounds(445, 116, 192, 50);
 		add(launchGameButton);
 		
@@ -101,7 +102,7 @@ public class MainScreenPanel extends JPanel {
 		add(optionsButton);
 		
 		// leaveButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "Quitter");
-		leaveButton = new JButton("Quitter");
+		leaveButton = new JButton("Quit");
 		leaveButton.setBounds(445, 268, 192, 50);
 		add(leaveButton);
 	

@@ -1,5 +1,7 @@
 package customEventsPackage;
 
+import checker.data.Piece;
+
 public class PowerJump extends Power {
 	public PowerJump() {
 		
@@ -21,6 +23,9 @@ public class PowerJump extends Power {
 	}
 	public int getCost2() {
 		return 70;
+	}
+	public void effect(Piece currentPiece) {
+		
 	}
 
 }

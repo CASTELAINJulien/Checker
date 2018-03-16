@@ -14,6 +14,7 @@ public class Player {
 	//private HashMap<int ,Piece> pieces = new HashMap<int, Piece>();
 	private boolean round;
 	private boolean isAI;
+	private int powerActivated=9;//9 is the default value=no power activated
 	
 	public Player(String nameParameter, boolean isAIParameter) {
 		this.playerName = nameParameter;
@@ -47,7 +48,7 @@ public class Player {
 	}
 	
 	public void addPlayerMana(double playerManaParam) {
-		if ( (this.playerMana+playerManaParam < 100) && (this.playerMana+playerManaParam > 0) ) {
+		if ( (this.playerMana+playerManaParam < 100) && (this.playerMana+playerManaParam >= 0) ) {
 			this.playerMana += playerManaParam;
 		} else if ( this.playerMana+playerManaParam < 0 ) {
 			System.out.println("pouvoir");
@@ -84,6 +85,12 @@ public class Player {
 
 	public void setAI(boolean isAI) {
 		this.isAI = isAI;
+	}
+	public int getPowerActivated() {
+		return powerActivated;
+	}
+	public void setPowerActivated(int powerNumber) {
+		powerActivated=powerNumber;
 	}
 	
 	

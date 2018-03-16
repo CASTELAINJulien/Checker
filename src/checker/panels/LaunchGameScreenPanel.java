@@ -1,3 +1,4 @@
+
 package checker.panels;
 
 import javax.swing.JPanel;
@@ -142,7 +143,7 @@ public class LaunchGameScreenPanel extends JPanel {
 			Player player1;
 			Player player2;
 			Player player3;
-			// True si AI, Faux si joueur Humain
+			// True si AI, Faux si joueur Human
 			if ( returnComboBoxValue(comboBoxFirstPlayerChoice) == true ) {
 				if ( textFieldFirstPlayerName.getText().length() > 0 ) {
 					player1 = ClassFactory.createPlayer(textFieldFirstPlayerName.getText() + " ( AI )", returnComboBoxValue(comboBoxFirstPlayerChoice));
@@ -279,17 +280,17 @@ public class LaunchGameScreenPanel extends JPanel {
 		labelGameConfigurationTitle.setBounds(338, 22, 335, 76);
 		add(labelGameConfigurationTitle);
 		
-		labelFirstPlayerInfo = new JLabel("Informations Joueur 1 :");
+		labelFirstPlayerInfo = new JLabel("Informations Player 1 :");
 		labelFirstPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		labelFirstPlayerInfo.setBounds(71, 131, 162, 14);
 		add(labelFirstPlayerInfo);
 		
-		labelSecondPlayerInfo = new JLabel("Informations Joueur 2 :");
+		labelSecondPlayerInfo = new JLabel("Informations Player 2 :");
 		labelSecondPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		labelSecondPlayerInfo.setBounds(400, 131, 168, 14);
 		add(labelSecondPlayerInfo);
 		
-		labelThirdPlayerInfo = new JLabel("Informations Joueur 3 :");
+		labelThirdPlayerInfo = new JLabel("Informations Player 3 :");
 		labelThirdPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		labelThirdPlayerInfo.setBounds(710, 131, 192, 14);
 		add(labelThirdPlayerInfo);
@@ -310,17 +311,17 @@ public class LaunchGameScreenPanel extends JPanel {
 		add(textFieldThirdPlayerName);
 		
 		comboBoxFirstPlayerChoice = new JComboBox();
-		comboBoxFirstPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "AI"}));
+		comboBoxFirstPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Human", "AI"}));
 		comboBoxFirstPlayerChoice.setBounds(180, 187, 135, 20);
 		add(comboBoxFirstPlayerChoice);
 		
 		comboBoxSecondPlayerChoice = new JComboBox();
-		comboBoxSecondPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "AI"}));
+		comboBoxSecondPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Human", "AI"}));
 		comboBoxSecondPlayerChoice.setBounds(514, 187, 135, 20);
 		add(comboBoxSecondPlayerChoice);
 		
 		comboBoxThirdPlayerChoice = new JComboBox();
-		comboBoxThirdPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Humain", "AI"}));
+		comboBoxThirdPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Human", "AI"}));
 		comboBoxThirdPlayerChoice.setBounds(829, 187, 135, 20);
 		add(comboBoxThirdPlayerChoice);
 		
@@ -390,35 +391,35 @@ public class LaunchGameScreenPanel extends JPanel {
 		ImageIcon icon5=new ImageIcon(new ImageIcon("power_twomoves.jpg").getImage().getScaledInstance(50,50,Image.SCALE_DEFAULT));
 		
 		
-		btnPower1Player1= new JButton("Pouvoir 1");
+		btnPower1Player1= new JButton("Power 1");
 		btnPower1Player1.setBackground(Color.white);
 		btnPower1Player1.setIcon(icon1);
 		btnPower1Player1.setBounds(180, 218, 50, 50);
 		btnPower1Player1.setToolTipText("<html><center>Jump power:<br>"+PowerJump.getDescription()+"<br>cost:"+PowerJump.getCost()+"</center></html>");
 		add(btnPower1Player1);
 		
-		btnPower2Player1 = new JButton("Pouvoir 2");
+		btnPower2Player1 = new JButton("Power 2");
 		btnPower2Player1.setBackground(Color.white);
 		btnPower2Player1.setIcon(icon2);
 		btnPower2Player1.setBounds(230, 218, 50, 50);
 		btnPower2Player1.setToolTipText("<html><center>Freeze power:<br>"+PowerFreeze.getDescription()+"<br>cost:"+PowerFreeze.getCost()+"</center></html>");
 		add(btnPower2Player1);
 		
-		btnPower3Player1 = new JButton("Pouvoir 3");
+		btnPower3Player1 = new JButton("Power 3");
 		btnPower3Player1.setBackground(Color.white);
 		btnPower3Player1.setIcon(icon3);
 		btnPower3Player1.setBounds(280, 218, 50, 50);
 		btnPower3Player1.setToolTipText("<html><center>Control power:<br>"+PowerControl.getDescription()+"<br>cost:"+PowerControl.getCost()+"</center></html>");
 		add(btnPower3Player1);
 		
-		btnPower4Player1 = new JButton("Pouvoir 4");
+		btnPower4Player1 = new JButton("Power 4");
 		btnPower4Player1.setBackground(Color.white);
 		btnPower4Player1.setIcon(icon4);
 		btnPower4Player1.setBounds(180, 268, 50, 50);
 		btnPower4Player1.setToolTipText("<html><center>Teleport power:<br>"+PowerTeleport.getDescription()+"<br>cost:"+PowerTeleport.getCost()+"</center></html>");
 		add(btnPower4Player1);
 		
-		btnPower5Player1 = new JButton("Pouvoir 5");
+		btnPower5Player1 = new JButton("Power 5");
 		btnPower5Player1.setBackground(Color.white);
 		btnPower5Player1.setIcon(icon5);
 		btnPower5Player1.setBounds(230, 268, 50, 50);
@@ -431,35 +432,35 @@ public class LaunchGameScreenPanel extends JPanel {
 		listSecondPlayerPower = new JList();
 		listSecondPlayerPower.setBounds(514, 218, 150, 100);
 		
-		btnPower1Player2 = new JButton("Pouvoir 1");
+		btnPower1Player2 = new JButton("Power 1");
 		btnPower1Player2.setBackground(Color.white);
 		btnPower1Player2.setIcon(icon1);
 		btnPower1Player2.setBounds(514, 218, 50, 50);
 		btnPower1Player2.setToolTipText("<html><center>Jump power:<br>"+PowerJump.getDescription()+"<br>cost:"+PowerJump.getCost()+"</center></html>");
 		add(btnPower1Player2);
 		
-		btnPower2Player2 = new JButton("Pouvoir 2");
+		btnPower2Player2 = new JButton("Power 2");
 		btnPower2Player2.setBackground(Color.white);
 		btnPower2Player2.setIcon(icon2);
 		btnPower2Player2.setBounds(564, 218, 50, 50);
 		btnPower2Player2.setToolTipText("<html><center>Freeze power:<br>"+PowerFreeze.getDescription()+"<br>cost:"+PowerFreeze.getCost()+"</center></html>");
 		add(btnPower2Player2);
 		
-		btnPower3Player2 = new JButton("Pouvoir 3");
+		btnPower3Player2 = new JButton("Power 3");
 		btnPower3Player2.setBackground(Color.white);
 		btnPower3Player2.setIcon(icon3);
 		btnPower3Player2.setBounds(614, 218, 50, 50);
 		btnPower3Player2.setToolTipText("<html><center>Control power:<br>"+PowerControl.getDescription()+"<br>cost:"+PowerControl.getCost()+"</center></html>");
 		add(btnPower3Player2);
 		
-		btnPower4Player2 = new JButton("Pouvoir 4");
+		btnPower4Player2 = new JButton("Power 4");
 		btnPower4Player2.setBackground(Color.white);
 		btnPower4Player2.setIcon(icon4);
 		btnPower4Player2.setBounds(514, 268, 50, 50);
 		btnPower4Player2.setToolTipText("<html><center>Teleport power:<br>"+PowerTeleport.getDescription()+"<br>cost:"+PowerTeleport.getCost()+"</center></html>");
 		add(btnPower4Player2);
 		
-		btnPower5Player2 = new JButton("Pouvoir 5");
+		btnPower5Player2 = new JButton("Power 5");
 		btnPower5Player2.setBackground(Color.white);
 		btnPower5Player2.setIcon(icon5);
 		btnPower5Player2.setBounds(564, 268, 50, 50);
@@ -473,35 +474,35 @@ public class LaunchGameScreenPanel extends JPanel {
 		listThirdPlayerPower = new JList();
 		listThirdPlayerPower.setBounds(829, 218, 150, 100);
 		
-		btnPower1Player3 = new JButton("Pouvoir 1");
+		btnPower1Player3 = new JButton("Power 1");
 		btnPower1Player3.setBackground(Color.white);
 		btnPower1Player3.setIcon(icon1);
 		btnPower1Player3.setBounds(829, 218, 50, 50);
 		btnPower1Player3.setToolTipText("<html><center>Jump power:<br>"+PowerJump.getDescription()+"<br>cost:"+PowerJump.getCost()+"</center></html>");
 		add(btnPower1Player3);
 		
-		btnPower2Player3 = new JButton("Pouvoir 2");
+		btnPower2Player3 = new JButton("Power 2");
 		btnPower2Player3.setBackground(Color.white);
 		btnPower2Player3.setIcon(icon2);
 		btnPower2Player3.setBounds(879, 218, 50, 50);
 		btnPower2Player3.setToolTipText("<html><center>Freeze power:<br>"+PowerFreeze.getDescription()+"<br>cost:"+PowerFreeze.getCost()+"</center></html>");
 		add(btnPower2Player3);
 		
-		btnPower3Player3 = new JButton("Pouvoir 3");
+		btnPower3Player3 = new JButton("Power 3");
 		btnPower3Player3.setBackground(Color.white);
 		btnPower3Player3.setIcon(icon3);
 		btnPower3Player3.setBounds(929, 218, 50, 50);
 		btnPower3Player3.setToolTipText("<html><center>Control power:<br>"+PowerControl.getDescription()+"<br>cost:"+PowerControl.getCost()+"</center></html>");
 		add(btnPower3Player3);
 		
-		btnPower4Player3 = new JButton("Pouvoir 4");
+		btnPower4Player3 = new JButton("Power 4");
 		btnPower4Player3.setBackground(Color.white);
 		btnPower4Player3.setIcon(icon4);
 		btnPower4Player3.setBounds(829, 268, 50, 50);
 		btnPower4Player3.setToolTipText("<html><center>Teleport power:<br>"+PowerTeleport.getDescription()+"<br>cost:"+PowerTeleport.getCost()+"</center></html>");
 		add(btnPower4Player3);
 		
-		btnPower5Player3 = new JButton("Pouvoir 5");
+		btnPower5Player3 = new JButton("Power 5");
 		btnPower5Player3.setBackground(Color.white);
 		btnPower5Player3.setIcon(icon5);
 		btnPower5Player3.setBounds(879, 268, 50, 50);

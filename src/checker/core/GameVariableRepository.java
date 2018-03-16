@@ -2,7 +2,11 @@ package checker.core;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import checker.data.Emplacement;
 import checker.data.Piece;
@@ -17,6 +21,7 @@ public class GameVariableRepository {
 	
 	private ArrayList<Emplacement> emplacementsList;
 	private Emplacement[][] emplacements;
+	private HashMap<int[],Emplacement> emplacementsHashMap;
 	private ArrayList<Emplacement> firstStartingAreaEmplacements;
 	private ArrayList<Emplacement> secondStartingAreaEmplacements;
 	private ArrayList<Emplacement> thirdStartingAreaEmplacements;
@@ -30,6 +35,7 @@ public class GameVariableRepository {
 	private boolean gameStarted;
 	private boolean isUpdating;
 	private int indexOfEmplacementToBeEmptied;
+	private int nbRound=0;
 	
 	// Everything that concerned the last turn state data
 	private ArrayList<Emplacement> previousTurnEmplacementsList;
@@ -51,6 +57,8 @@ public class GameVariableRepository {
 		this.indexOfEmplacementToBeEmptied = 0;
 		this.gameStarted = false;
 		this.isUpdating = false;
+		this.nbRound=0;
+		this.emplacementsHashMap = new HashMap<int[],Emplacement>();
 	}
 	
 	static GameVariableRepository instance = new GameVariableRepository();
@@ -64,10 +72,46 @@ public class GameVariableRepository {
 		
 		if ( playerTurn >= 3 ) {
 			this.playerTurn = 0;
+			this.nbRound++;
 		}
 		
 		updateActualPlayerName();
 		return this.playerTurn;
+	}
+	public int decrementPlayerTurn() {
+		this.playerTurn--;
+		return this.playerTurn;
+	}
+	
+	public HashMap<int[],Emplacement> getEmplacementsHashMap() {
+		return this.emplacementsHashMap;
+	}
+	
+	public int isSetEmplacement( int x, int y ) {
+		boolean isSetEmplacement = false;
+		// int[] keyArray = {x,y};
+		
+		// Map<String, String> map = ...
+		// Interesting link for comparing two arrays => https://www.geeksforgeeks.org/compare-two-arrays-java/
+		/*
+		Iterator<Entry<int[], Emplacement>> iterator = this.emplacementsHashMap.entrySet().iterator();
+		while(iterator.hasNext() && isSetEmplacement == false ){
+			Entry<int[], Emplacement> entry = iterator.next();
+			
+			if ( ( entry.getKey()[0] == x ) && ( entry.getKey()[1] == y ) ) {
+				return isSetEmplacement = true;
+			}
+		}
+		*/
+		ListIterator<Emplacement> listIterator = this.emplacementsList.listIterator();
+		while(listIterator.hasNext() && isSetEmplacement == false ){
+			// Entry<int[], Emplacement> entry = iterator.next();
+			Emplacement currentEmplacement = listIterator.next();
+			if ( currentEmplacement.getPositionX() == x && currentEmplacement.getPositionY() == y ) {
+				return this.emplacementsList.indexOf(currentEmplacement);
+			}
+		}
+		return -1;
 	}
 	
 	public String getActualPlayerName () {
@@ -227,5 +271,8 @@ public class GameVariableRepository {
 	}
 	public Emplacement[][] getEmplacementTable(){
 		return emplacements;
+	}
+	public int getNbRound() {
+		return this.nbRound;
 	}
 }

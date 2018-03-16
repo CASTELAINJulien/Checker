@@ -8,7 +8,6 @@ import java.awt.Image;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.DebugGraphics;
 import javax.swing.DefaultListModel;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -28,6 +27,12 @@ import checker.data.Player;
 import checker.data.TurnTimer;
 import checker.gui.BoardParameter;
 import checker.gui.GTParameters;
+import customEventsPackage.Power;
+import customEventsPackage.PowerControl;
+import customEventsPackage.PowerFreeze;
+import customEventsPackage.PowerTwoMoves;
+import customEventsPackage.PowerJump;
+import customEventsPackage.PowerTeleport;
 
 import javax.swing.JProgressBar;
 import javax.swing.JDesktopPane;
@@ -57,7 +62,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import javax.swing.JScrollPane;
 
 
 
@@ -100,13 +104,22 @@ public class Board extends JPanel {
 	JButton launchGameButton;
 	private static JLabel powerActivated;
 	
+	private Piece pieceFrozen=null;
+	private Piece pieceFrozen2=null;
+	private Piece pieceFrozen3=null;
+	private int roundFreeze;
+	private int turnPlayerFreezer;
+	private int roundFreeze2;
+	private int turnPlayerFreezer2;
+	private int roundFreeze3;
+	private int turnPlayerFreezer3;
+	
 	private Graphics graphicContext;
 	
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JList<String> historicList;
 	
 	ExecutorService service = Executors.newSingleThreadExecutor();
-	private JScrollPane scrollPane;
 	
 	public static void startTime () {
 		ActionListener taskPerformer = new ActionListener() {
@@ -143,8 +156,11 @@ public class Board extends JPanel {
 		setLayout(null);
 		
 		initLayout();
+		
 		initActions();
 	}
+	
+	
 	
 	public void modifyPlayerNamesGUI() {
 		String firstPlayerName = VariableRepository.getInstance().searchPlayer("Player 1").getPlayerName();
@@ -229,15 +245,12 @@ public class Board extends JPanel {
 		panel.setLayout(null);
 		
 		model = new DefaultListModel<>();
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 16, 192, 227);
-		panel.add(scrollPane);
 		historicList = new JList<String>( model );
-		scrollPane.setViewportView(historicList);
 		historicList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		historicList.setValueIsAdjusting(true);
 		historicList.setEnabled(false);
+		historicList.setBounds(6, 16, 192, 227);
+		panel.add(historicList);
 		
 		btnPower1 = new JButton();
 		btnPower1.setBackground(Color.white);
@@ -288,7 +301,7 @@ public class Board extends JPanel {
 		
 		labelProgressBarValue = new JLabel("0");
 		labelProgressBarValue.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		labelProgressBarValue.setBounds(935, 409, 29, 28);
+		labelProgressBarValue.setBounds(938, 417, 29, 28);
 		labelProgressBarValue.setComponentOrientation(getComponentOrientation());
 		add(labelProgressBarValue);
 		
@@ -368,8 +381,8 @@ public class Board extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				
-				boolean isOnEmplacementTemp = false;
-				boolean isOccupiedTemp = false;
+				boolean isOnEmplacementTemp = false;//curseur sur empla
+				boolean isOccupiedTemp = false;//piece sur empla
 				boolean aPieceIsSelectedTemp = GameVariableRepository.getInstance().getAPieceIsSelected();
 				// xTempValue = 0;
 			    // yTempValue = 0;
@@ -382,69 +395,204 @@ public class Board extends JPanel {
 			    if (GameVariableRepository.getInstance().getIsUpdating() == true ) {
 			    	return;
 			    }
+
 			    
-			    while (iter.hasNext() && isOnEmplacementTemp == false ) {
-		            Emplacement currentEmplacement = iter.next();
-		            Piece currentPiece = currentEmplacement.getOccupyingPiece();
-		            isOnEmplacementTemp = currentEmplacement.isCursorOnEmplacement(arg0.getX(), arg0.getY());
-		            isOccupiedTemp = currentEmplacement.getIsOccupied();
-		            
-		            if ( isOnEmplacementTemp == true && isOccupiedTemp == true && aPieceIsSelectedTemp == false && currentPiece != null && currentPiece.getIsClickeable() == true ) {
-		            	GameVariableRepository.getInstance().setPreviousTurnEmplacementsArrayList( GameVariableRepository.getInstance().getEmplacementsArrayList() );
-		            	Piece pieceToBeSelected = currentEmplacement.getOccupyingPiece();
-		            	
-		            	BoardUpdater.getInstance().updatePieceSelectionState(pieceToBeSelected, currentEmplacement);
-						
-						validate();
-						repaint();
+				 while (iter.hasNext() && isOnEmplacementTemp == false ) {
+			            Emplacement currentEmplacement = iter.next();
+			            Piece currentPiece = currentEmplacement.getOccupyingPiece();
+			            isOnEmplacementTemp = currentEmplacement.isCursorOnEmplacement(arg0.getX(), arg0.getY());
+			            isOccupiedTemp = currentEmplacement.getIsOccupied();
 			            
-		            } else if ( isOnEmplacementTemp == true && isOccupiedTemp == false && aPieceIsSelectedTemp == true && currentEmplacement.ifIsEligibleForMove() == true ) {
-		            	Piece currentSelectedPiece = GameVariableRepository.getInstance().getSelectedPiece();
-		            	
-		            	BoardUpdater.getInstance().updateAfterMovePieceState(currentSelectedPiece, currentEmplacement);
-		            	
-						updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), 5);
-						
-						model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Déplacement classique");
-						
-						new Thread(new Runnable(){
-							public void run(){
-								Thread t = new Thread(new Runnable(){
-									public void run(){
-										GameVariableRepository.getInstance().setIsUpdating(true);
-										Timer t = new Timer(3000, new ActionListener() {
-								            @Override
-								            public void actionPerformed(ActionEvent e) {
-												btnSimulateSpecialMove.setEnabled(true);
-												// btnSimulateClassicMove.setEnabled(true);
-												GameVariableRepository.getInstance().incrementPlayerTurn();
-												GameVariableRepository.getInstance().updatePiecesState();
-												updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
-												labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
-												GameVariableRepository.getInstance().setIsUpdating(false);
-								            }
-								        });
-										 t.setRepeats(false);
-									     t.start();
-									}
-								});
+			            
+			            
+			            //si une piece est gelé
+			            if(pieceFrozen!=null) {
+			            	//si la piece a été gelé un tour complet
+			            	if((GameVariableRepository.getInstance().getNbRound()==roundFreeze+1) && (GameVariableRepository.getInstance().getPlayerTurn()==turnPlayerFreezer)) {		            		
+		            			PowerFreeze.effectUndo(pieceFrozen);	
+		            			pieceFrozen=null;
+			            	}	
+			            	else {
+			            		pieceFrozen.setIsClickeable(false);
+			            		pieceFrozen.setColor(Color.blue);
+			            		repaint();
+			            	}
+			            }
+			            if(pieceFrozen2!=null) {
+			            	//si la piece a été gelé un tour complet
+			            	if((GameVariableRepository.getInstance().getNbRound()==roundFreeze2+1) && (GameVariableRepository.getInstance().getPlayerTurn()==turnPlayerFreezer2)) {		            		
+		            			PowerFreeze.effectUndo(pieceFrozen2);	
+		            			pieceFrozen2=null;
+
+			            	}	
+			            	else {
+			            		pieceFrozen2.setIsClickeable(false);
+			            		pieceFrozen2.setColor(Color.blue);
+			            		repaint();
+			            	}
+			            }
+			            if(pieceFrozen3!=null) {
+			            	//si la piece a été gelé un tour complet
+			            	if((GameVariableRepository.getInstance().getNbRound()==roundFreeze3+1) && (GameVariableRepository.getInstance().getPlayerTurn()==turnPlayerFreezer3)) {		            		
+		            			PowerFreeze.effectUndo(pieceFrozen3);	
+		            			pieceFrozen3=null;
+			            	}	
+			            	else {
+			            		pieceFrozen3.setIsClickeable(false);
+			            		pieceFrozen3.setColor(Color.blue);
+			            		repaint();
+			            	}
+			            }	            
+			            
+			            if ( isOnEmplacementTemp == true && isOccupiedTemp == true && aPieceIsSelectedTemp == false && currentPiece != null) {// && currentPiece.getIsClickeable() == true ) {
+			            	
+			            	//check if the power control is activated
+		            		if(PowerControl.testControl(GameVariableRepository.getInstance().getActualPlayerName())==true) { 
+		            			Power activated=VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPower(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPowerActivated());
+		            			activated.effect(currentPiece);
+		            			VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(9);
+		            		}	            		
+		            		
+		            		//check if the power freeze is activated
+		            		if(PowerFreeze.testFreeze(GameVariableRepository.getInstance().getActualPlayerName())==true) { 
+		            			if(pieceFrozen==null) {
+		            				pieceFrozen=currentPiece;
+		            				roundFreeze=GameVariableRepository.getInstance().getNbRound();
+		            				turnPlayerFreezer=GameVariableRepository.getInstance().getPlayerTurn();
+		            				VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(9);
+		            			}
+		            			//if a piece is already frozen
+		            			else if(pieceFrozen!=null && pieceFrozen2==null) {
+		            				pieceFrozen2=currentPiece;
+		            				roundFreeze2=GameVariableRepository.getInstance().getNbRound();
+		            				turnPlayerFreezer2=GameVariableRepository.getInstance().getPlayerTurn();
+		            				VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(9);
+		            			}
+		            			//if 2 pieces are already frozen
+		            			else if(pieceFrozen!=null && pieceFrozen2!=null && pieceFrozen3==null) {
+		            				pieceFrozen3=currentPiece;
+		            				roundFreeze3=GameVariableRepository.getInstance().getNbRound();
+		            				turnPlayerFreezer3=GameVariableRepository.getInstance().getPlayerTurn();
+		            				VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(9);
+		            			}
+		            		}	            	
+			            	
+			            	if( currentPiece.getIsClickeable() == true ) {
+			            		
+			            		//check if the power 2moves is activated
+			            		if(PowerTwoMoves.testTwoMoves(GameVariableRepository.getInstance().getActualPlayerName())==true) {
+			            			Power activated=VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPower(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPowerActivated());
+				            		activated.effect(currentPiece);
+				            		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(9);
+				            	}
+			            		
+				            	GameVariableRepository.getInstance().setPreviousTurnEmplacementsArrayList( GameVariableRepository.getInstance().getEmplacementsArrayList() );
+				            	Piece pieceToBeSelected = currentEmplacement.getOccupyingPiece();
+				            	
+				            	BoardUpdater.getInstance().updatePieceSelectionState(pieceToBeSelected, currentEmplacement);
 								
-								if(SwingUtilities.isEventDispatchThread()) {
-									t.start();
-								} else {
-									labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
-									updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
-									SwingUtilities.invokeLater(t);
+								validate();
+								repaint();
+					            
+			            	}
+			            } else if ( isOnEmplacementTemp == true && isOccupiedTemp == false && aPieceIsSelectedTemp == true) {// && currentEmplacement.ifIsEligibleForMove() == true ) {
+			            	
+			            	//check if the power teleport is activated
+			            	if(PowerTeleport.testTeleport(GameVariableRepository.getInstance().getActualPlayerName())==true) { 
+			            		Piece currentSelectedPiece = GameVariableRepository.getInstance().getSelectedPiece();
+				            	
+			            		BoardUpdater.getInstance().updateAfterMovePieceState(currentSelectedPiece, currentEmplacement);
+			            		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(9);
+
+			            		updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), 5);
+			            		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Déplacement classique");
+			            		GameVariableRepository.getInstance().incrementPlayerTurn();//deplacer pour pouvoir control
+			            			
+								new Thread(new Runnable(){
+									public void run(){
+										Thread t = new Thread(new Runnable(){
+											public void run(){
+												GameVariableRepository.getInstance().setIsUpdating(true);
+												Timer t = new Timer(3000, new ActionListener() {
+										            @Override
+										            public void actionPerformed(ActionEvent e) {
+														btnSimulateSpecialMove.setEnabled(true);
+														// btnSimulateClassicMove.setEnabled(true);
+														//GameVariableRepository.getInstance().incrementPlayerTurn();deplacer au dessus
+														GameVariableRepository.getInstance().updatePiecesState();
+														updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+														labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
+														GameVariableRepository.getInstance().setIsUpdating(false);
+										            }
+										        });
+												 t.setRepeats(false);
+											     t.start();
+											}
+										});
+									
+									if(SwingUtilities.isEventDispatchThread()) {
+										t.start();
+									} else {
+										labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
+										updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+										SwingUtilities.invokeLater(t);
+									}
 								}
-							}
-						}).start();      
-						
-						validate();
-						repaint();
-		            }
+							}).start();      
+							
+							repaint();					
+			            } else if(currentEmplacement.ifIsEligibleForMove() == true ) {
+		            		Piece currentSelectedPiece = GameVariableRepository.getInstance().getSelectedPiece();
+		            	
+		            		BoardUpdater.getInstance().updateAfterMovePieceState(currentSelectedPiece, currentEmplacement);
+		            	
+		            		updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), 5);
+		            	//	System.out.println("mana="+VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerMana());
+							
+		            		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Déplacement classique");
+		            		GameVariableRepository.getInstance().incrementPlayerTurn();//deplacer pour pouvoir control
+		            	
+							new Thread(new Runnable(){
+								public void run(){
+									Thread t = new Thread(new Runnable(){
+										public void run(){
+											GameVariableRepository.getInstance().setIsUpdating(true);
+											Timer t = new Timer(3000, new ActionListener() {
+									            @Override
+									            public void actionPerformed(ActionEvent e) {
+													btnSimulateSpecialMove.setEnabled(true);
+													// btnSimulateClassicMove.setEnabled(true);
+													//GameVariableRepository.getInstance().incrementPlayerTurn();deplacer au dessus
+													GameVariableRepository.getInstance().updatePiecesState();
+													updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+													labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
+													GameVariableRepository.getInstance().setIsUpdating(false);
+									            }
+									        });
+											
+											t.setRepeats(false);
+											t.start();
+										}
+									});
+								
+									if(SwingUtilities.isEventDispatchThread()) {
+										t.start();
+									} else {
+										labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
+										updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+										SwingUtilities.invokeLater(t);
+									}
+								}
+							}).start();      
+					
+							repaint();
+					
+					// repaint(xEmplacementToEmpty,yEmplacementToEmpty, radius, radius);
+		            // repaint(x,y, radius, radius);
+			            }
 		            
-		        }
-		    	
+			            }
+				 }
 			}
 		});
 		
@@ -527,16 +675,15 @@ public class Board extends JPanel {
 					
 				}
 				*/
-				
-				if ( GameVariableRepository.getInstance().getPlayerTurn() == 0 ) {
-					if(VariableRepository.getInstance().searchPlayer("Player 1").getPlayerMana()>=VariableRepository.getInstance().searchPlayer("Player 1").getPower(0).getCost2()) {					
-						VariableRepository.getInstance().searchPlayer("Player 1").addPlayerMana(-VariableRepository.getInstance().searchPlayer("Player 1").getPower(0).getCost2());
-						progressBar.setValue( ( int ) VariableRepository.getInstance().searchPlayer("Player 1").getPlayerMana() );
-						
-						model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + VariableRepository.getInstance().searchPlayer("Player 1").getPower(0).getName());
+
+					if(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerMana()>=VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPower(0).getCost2()) {					
+						updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), -VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPower(0).getCost2());
+						updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+						//System.out.println("mana="+VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerMana());
+						VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(0);
 						
 						//affiche nom du pouvoir pendant 2secondes au milieu de l'ï¿½cran
-						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer("Player 1").getPower(0).getName()+" Activated");				
+						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPower(0).getName()+" Activated");				
 						add(powerActivated);
 						Timer t = new Timer(2000, new ActionListener() {
 				            @Override
@@ -547,56 +694,19 @@ public class Board extends JPanel {
 				        t.setRepeats(false);
 				        t.start();
 						
-					}
-				} else if ( GameVariableRepository.getInstance().getPlayerTurn() == 1 ) {
-					if(VariableRepository.getInstance().searchPlayer("Player 2").getPlayerMana()>=VariableRepository.getInstance().searchPlayer("Player 2").getPower(0).getCost2()) {					
-						VariableRepository.getInstance().searchPlayer("Player 2").addPlayerMana(-VariableRepository.getInstance().searchPlayer("Player 2").getPower(0).getCost2());
-						progressBar.setValue( ( int ) VariableRepository.getInstance().searchPlayer("Player 2").getPlayerMana() );
-						
-						model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + VariableRepository.getInstance().searchPlayer("Player 2").getPower(0).getName());
-						
-						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer("Player 2").getPower(0).getName()+" Activated");						
-						add(powerActivated);
-						Timer t = new Timer(2000, new ActionListener() {
-				            @Override
-				            public void actionPerformed(ActionEvent e) {
-				                powerActivated.setText(null);
-				            }
-				        });
-				        t.setRepeats(false);
-				        t.start();
-					}
-				} else {
-					if(VariableRepository.getInstance().searchPlayer("Player 3").getPlayerMana()>=VariableRepository.getInstance().searchPlayer("Player 3").getPower(0).getCost2()) {					
-						VariableRepository.getInstance().searchPlayer("Player 3").addPlayerMana(-VariableRepository.getInstance().searchPlayer("Player 3").getPower(0).getCost2());
-						progressBar.setValue( ( int ) VariableRepository.getInstance().searchPlayer("Player 3").getPlayerMana() );
-						
-						model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + VariableRepository.getInstance().searchPlayer("Player 3").getPower(0).getName());
-						
-						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer("Player 3").getPower(0).getName()+" Activated");						
-						add(powerActivated);
-						Timer t = new Timer(2000, new ActionListener() {
-				            @Override
-				            public void actionPerformed(ActionEvent e) {
-				                powerActivated.setText(null);
-				            }
-				        });
-				        t.setRepeats(false);
-				        t.start();
-					}
-				}
-				
+					}	
 			}
 		});
 		
 		btnPower2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if ( GameVariableRepository.getInstance().getPlayerTurn() == 0 ) {
-					if(VariableRepository.getInstance().searchPlayer("Player 1").getPlayerMana()>=VariableRepository.getInstance().searchPlayer("Player 1").getPower(1).getCost2()) {					
-						VariableRepository.getInstance().searchPlayer("Player 1").addPlayerMana(-VariableRepository.getInstance().searchPlayer("Player 1").getPower(1).getCost2());
-						progressBar.setValue( ( int ) VariableRepository.getInstance().searchPlayer("Player 1").getPlayerMana() );
+					if(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerMana()>=VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPower(1).getCost2()) {					
+						updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), -VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPower(1).getCost2());
+						updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+						//System.out.println("mana="+VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerMana());
+						VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(1);
 						
-						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer("Player 1").getPower(1).getName()+" Activated");						
+						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPower(1).getName()+" Activated");						
 						add(powerActivated);
 						Timer t = new Timer(2000, new ActionListener() {
 				            @Override
@@ -608,63 +718,27 @@ public class Board extends JPanel {
 				        t.start();
 						
 					}
-				} else if ( GameVariableRepository.getInstance().getPlayerTurn() == 1 ) {
-					if(VariableRepository.getInstance().searchPlayer("Player 2").getPlayerMana()>=VariableRepository.getInstance().searchPlayer("Player 1").getPower(1).getCost2()) {					
-						VariableRepository.getInstance().searchPlayer("Player 2").addPlayerMana(-VariableRepository.getInstance().searchPlayer("Player 2").getPower(1).getCost2());
-						progressBar.setValue( ( int ) VariableRepository.getInstance().searchPlayer("Player 2").getPlayerMana() );
-						
-						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer("Player 2").getPower(1).getName()+" Activated");						
-						add(powerActivated);
-						Timer t = new Timer(2000, new ActionListener() {
-				            @Override
-				            public void actionPerformed(ActionEvent e) {
-				                powerActivated.setText(null);
-				            }
-				        });
-				        t.setRepeats(false);
-				        t.start();
-					}
-				} else {
-					if(VariableRepository.getInstance().searchPlayer("Player 3").getPlayerMana()>=VariableRepository.getInstance().searchPlayer("Player 3").getPower(1).getCost2()) {					
-						VariableRepository.getInstance().searchPlayer("Player 3").addPlayerMana(-VariableRepository.getInstance().searchPlayer("Player 3").getPower(1).getCost2());
-						progressBar.setValue( ( int ) VariableRepository.getInstance().searchPlayer("Player 3").getPlayerMana() );
-						
-						powerActivated.setText("Power "+VariableRepository.getInstance().searchPlayer("Player 3").getPower(1).getName()+" Activated");						
-						add(powerActivated);
-						Timer t = new Timer(2000, new ActionListener() {
-				            @Override
-				            public void actionPerformed(ActionEvent e) {
-				                powerActivated.setText(null);
-				            }
-				        });
-				        t.setRepeats(false);
-				        t.start();
-					}
-				}
+				
 			}
 		});
 		
 	}
 	
 	@Override
-	protected void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);
+		g.setColor(getBackground());
+		g.fillRect(0, 0, GTParameters.WINDOW_WIDTH,GTParameters.WINDOW_HEIGHT);
+		g.setColor(getForeground());
 		
-		setOpaque(true);
-		// g.setColor(getBackground());
-		// g.fillRect(0, 0, GTParameters.WINDOW_WIDTH,GTParameters.WINDOW_HEIGHT);
-		// g.setColor(getForeground());
-		// setOptimizedDrawing(true);
-		// this.setDebugGraphicsOptions(DebugGraphics.FLASH_OPTION);
 		
 		// g.clearRect(0, 0, GTParameters.WINDOW_WIDTH, GTParameters.WINDOW_HEIGHT);
 		// g.fillRect(0, 0, GTParameters.WINDOW_WIDTH, GTParameters.WINDOW_HEIGHT);
 		graphicContext = this.getGraphics();
 		
 		Player playerToUpdate = null;
-		if (GameVariableRepository.getInstance().getPlayerTurn() == 0 ) {
-			playerToUpdate = VariableRepository.getInstance().searchPlayer("Player 1");
+			playerToUpdate = VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName());
 			
 			if(playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(0).getCost2()){
 				btnPower1.setBorder(BorderFactory.createLineBorder(Color.green, 4));
@@ -694,63 +768,7 @@ public class Board extends JPanel {
 			btnPower1.setIcon(new ImageIcon(playerToUpdate.getPower(0).getImage()));
 			btnPower2.setIcon(new ImageIcon(playerToUpdate.getPower(1).getImage()));
 				
-		} else if ( GameVariableRepository.getInstance().getPlayerTurn() == 1 ) {
-			playerToUpdate = VariableRepository.getInstance().searchPlayer("Player 2");
-			
-			if(playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(0).getCost2()) {
-				btnPower1.setBorder(BorderFactory.createLineBorder(Color.red, 4));
-				btnPower1.setEnabled(true);
-			} else {
-				btnPower1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));		
-				btnPower1.setEnabled(false);
-			}
-			
-			if(playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(1).getCost2()) {
-				btnPower2.setBorder(BorderFactory.createLineBorder(Color.red, 4));
-				btnPower2.setEnabled(true);
-			} else {
-				btnPower2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-				btnPower2.setEnabled(false);
-			}
-			btnPower1.setIcon(new ImageIcon(playerToUpdate.getPower(0).getImage()));
-			btnPower2.setIcon(new ImageIcon(playerToUpdate.getPower(1).getImage()));
-			
-			btnPower1.setToolTipText("<html><center>"+playerToUpdate.getPower(0).getName()+
-					" power:<br>"+playerToUpdate.getPower(0).getDescription2()+
-					"<br>cost:"+playerToUpdate.getPower(0).getCost2()+"</center></html>");
-			btnPower2.setToolTipText("<html><center>"+playerToUpdate.getPower(1).getName()+
-					" power:<br>"+playerToUpdate.getPower(1).getDescription2()+
-					"<br>cost:"+playerToUpdate.getPower(1).getCost2()+"</center></html>");
-			
-		} else {
-			playerToUpdate = VariableRepository.getInstance().searchPlayer("Player 3");
-			
-			if(playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(0).getCost2()) {
-				btnPower1.setBorder(BorderFactory.createLineBorder(Color.yellow, 4));
-				btnPower1.setEnabled(true);
-			} else {
-				btnPower1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));		
-				btnPower1.setEnabled(false);
-			}
-			
-			if(playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(1).getCost2()) {
-				btnPower2.setBorder(BorderFactory.createLineBorder(Color.yellow, 4));
-				btnPower2.setEnabled(true);
-			} else {
-				btnPower2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
-				btnPower2.setEnabled(false);
-			}
-						
-			btnPower1.setIcon(new ImageIcon(playerToUpdate.getPower(0).getImage()));
-			btnPower2.setIcon(new ImageIcon(playerToUpdate.getPower(1).getImage()));			
-			
-			btnPower1.setToolTipText("<html><center>"+playerToUpdate.getPower(0).getName()+
-					" power:<br>"+playerToUpdate.getPower(0).getDescription2()+
-					"<br>cost:"+playerToUpdate.getPower(0).getCost2()+"</center></html>");
-			btnPower2.setToolTipText("<html><center>"+playerToUpdate.getPower(1).getName()+
-					" power:<br>"+playerToUpdate.getPower(1).getDescription2()+
-					"<br>cost:"+playerToUpdate.getPower(1).getCost2()+"</center></html>");
-		}
+		
 		
 		this.modifyPlayerNamesGUI();
 		// System.out.println("efzefze");
@@ -768,7 +786,7 @@ public class Board extends JPanel {
 		GameVariableRepository.getInstance().updatePiecesState();
 		
 		labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
-		// repaint();
+		//repaint();
 	}
 }
 
