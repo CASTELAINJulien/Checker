@@ -25,6 +25,9 @@ public class GameVariableRepository {
 	private ArrayList<Emplacement> firstStartingAreaEmplacements;
 	private ArrayList<Emplacement> secondStartingAreaEmplacements;
 	private ArrayList<Emplacement> thirdStartingAreaEmplacements;
+	private ArrayList<Emplacement> firstVictoryAreaEmplacements;
+	private ArrayList<Emplacement> secondVictoryAreaEmplacements;
+	private ArrayList<Emplacement> thirdVictoryAreaEmplacements;
 	private ArrayList<Piece> firstPlayerPieces;
 	private ArrayList<Piece> secondPlayerPieces;
 	private ArrayList<Piece> thirdPlayerPieces;
@@ -48,6 +51,9 @@ public class GameVariableRepository {
 		this.firstStartingAreaEmplacements = new ArrayList<Emplacement>();
 		this.secondStartingAreaEmplacements = new ArrayList<Emplacement>();
 		this.thirdStartingAreaEmplacements = new ArrayList<Emplacement>();
+		this.firstVictoryAreaEmplacements = new ArrayList<Emplacement>();
+		this.secondVictoryAreaEmplacements = new ArrayList<Emplacement>();
+		this.thirdVictoryAreaEmplacements = new ArrayList<Emplacement>();
 		this.firstPlayerPieces = new ArrayList<Piece>();
 		this.secondPlayerPieces = new ArrayList<Piece>();
 		this.thirdPlayerPieces = new ArrayList<Piece>();
@@ -248,6 +254,18 @@ public class GameVariableRepository {
 	
 	public ArrayList<Emplacement> getThirdStartingAreaEmplacements() {
 		return this.thirdStartingAreaEmplacements;
+	}
+	
+	public ArrayList<Emplacement> getFirstVictoryAreaEmplacements() {
+		return this.firstVictoryAreaEmplacements;
+	}
+	
+	public ArrayList<Emplacement> getSecondVictoryAreaEmplacements() {
+		return this.secondVictoryAreaEmplacements;
+	}
+	
+	public ArrayList<Emplacement> getThirdVictoryAreaEmplacements() {
+		return this.thirdVictoryAreaEmplacements;
 	}
 	
 	public ArrayList<Emplacement> getFieldAreaEmplacements() {

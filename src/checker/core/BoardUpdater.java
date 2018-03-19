@@ -37,7 +37,7 @@ public class BoardUpdater {
 	public void updatePieceSelectionState (Piece pieceToBeSelected, Emplacement currentEmplacement) {
     	GameVariableRepository.getInstance().setSelectedPiece(pieceToBeSelected);
     	GameVariableRepository.getInstance().setEmplacementToBeEmptied(currentEmplacement);
-    	
+    	//System.out.println(currentEmplacement.toString());
     	// xTempValue = currentEmplacement.getPositionX();
         // yTempValue = currentEmplacement.getPositionY();
         
@@ -57,7 +57,8 @@ public class BoardUpdater {
     	Emplacement toUpdateAsEmpty = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied());
     	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).setIsOccupied(false);
     	GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()).setOccupyingPiece(null);
-    	
+    	// System.out.println(GameVariableRepository.getInstance().getEmplacementToBeEmptied().toString()+"daZDZAZD");
+    	// System.out.println(GameVariableRepository.getInstance().getEmplacementTable()[toUpdateAsEmpty.getPositionX()][toUpdateAsEmpty.getPositionY()].toString());
     	GameVariableRepository.getInstance().getEmplacementTable()[toUpdateAsEmpty.getPositionX()][toUpdateAsEmpty.getPositionY()].setIsOccupied(false);
     	GameVariableRepository.getInstance().getEmplacementTable()[toUpdateAsEmpty.getPositionX()][toUpdateAsEmpty.getPositionY()].setOccupyingPiece(null);
     	
@@ -73,6 +74,33 @@ public class BoardUpdater {
 		for (ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator(); iter.hasNext(); ) {
             Emplacement currentEmplacement = iter.next();
             g.setColor(Color.BLACK);
+            // System.out.println(number.getPositionX());    // insert a number right before this
+            g.fillOval((int) (currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint) ,currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces,BoardParameter.pieceRadius,BoardParameter.pieceRadius);
+            g.drawOval((int) (currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint) ,currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces,BoardParameter.pieceRadius,BoardParameter.pieceRadius);            
+        }
+	}
+	
+	public void drawCheckerBoardVictoryEmplacements ( Graphics g ) {
+		// Set up the checker board at first
+		for (ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getFirstVictoryAreaEmplacements().listIterator(); iter.hasNext(); ) {
+            Emplacement currentEmplacement = iter.next();
+            g.setColor(currentEmplacement.getColor());
+            // System.out.println(number.getPositionX());    // insert a number right before this
+            g.fillOval((int) (currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint) ,currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces,BoardParameter.pieceRadius,BoardParameter.pieceRadius);
+            g.drawOval((int) (currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint) ,currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces,BoardParameter.pieceRadius,BoardParameter.pieceRadius);            
+        }
+		
+		for (ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getSecondVictoryAreaEmplacements().listIterator(); iter.hasNext(); ) {
+            Emplacement currentEmplacement = iter.next();
+            g.setColor(currentEmplacement.getColor());
+            // System.out.println(number.getPositionX());    // insert a number right before this
+            g.fillOval((int) (currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint) ,currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces,BoardParameter.pieceRadius,BoardParameter.pieceRadius);
+            g.drawOval((int) (currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint) ,currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces,BoardParameter.pieceRadius,BoardParameter.pieceRadius);            
+        }
+		
+		for (ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getThirdVictoryAreaEmplacements().listIterator(); iter.hasNext(); ) {
+            Emplacement currentEmplacement = iter.next();
+            g.setColor(currentEmplacement.getColor());
             // System.out.println(number.getPositionX());    // insert a number right before this
             g.fillOval((int) (currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint) ,currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces,BoardParameter.pieceRadius,BoardParameter.pieceRadius);
             g.drawOval((int) (currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint) ,currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces,BoardParameter.pieceRadius,BoardParameter.pieceRadius);            

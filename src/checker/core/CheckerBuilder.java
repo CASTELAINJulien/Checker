@@ -467,16 +467,16 @@ public class CheckerBuilder {
 					if( ( (indexY == 1) || (indexY == 33) ) && ( (indexX == 10) || (indexX == 12) || (indexX == 14) || (indexX == 16) || (indexX == 18) ) ) {
 						
 						if(indexY ==  1) {
-							
-							GameVariableRepository.getInstance().getEmplacementTable()[11][indexY] = new Emplacement( 11, indexY);
+							// Zone d'arrivée 1
+							GameVariableRepository.getInstance().getEmplacementTable()[11][indexY] = new Emplacement( 11, indexY, 4);
 													
-							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY );
+							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY, 4 );
 													
-							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY );
+							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY, 4 );
 													
-							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY );
+							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY, 4 );
 													
-							GameVariableRepository.getInstance().getEmplacementTable()[19][indexY] = new Emplacement( 19, indexY );
+							GameVariableRepository.getInstance().getEmplacementTable()[19][indexY] = new Emplacement( 19, indexY, 4 );
 						}
 						
 						if(indexY == 33) {
@@ -484,15 +484,14 @@ public class CheckerBuilder {
 							GameVariableRepository.getInstance().getEmplacementTable()[11][indexY] = new Emplacement( 11, indexY, 1 );
 														
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY, 1 );
+														
+							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY, 1 );
 
 														
-							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 15, indexY, 1 );
+							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY, 1 );
 
 														
-							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 17, indexY, 1 );
-
-														
-							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 19, indexY, 1 );
+							GameVariableRepository.getInstance().getEmplacementTable()[19][indexY] = new Emplacement( 19, indexY, 1 );
 
 							
 						}
@@ -502,13 +501,14 @@ public class CheckerBuilder {
 				
 					if( ( (indexY == 3) || (indexY == 31) ) && ( (indexX == 11) || (indexX == 13) || (indexX == 15) || (indexX == 17) ) ) {		
 						if(indexY == 3) {		
-							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY);
+							// Zone d'arrivée 1 ligne 2
+							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY, 4);
 										
-							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY);
+							GameVariableRepository.getInstance().getEmplacementTable()[14][indexY] = new Emplacement( 14, indexY, 4);
 							
-							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY);
+							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY, 4);
 										
-							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY);
+							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY, 4);
 						}
 						
 						if(indexY == 31) {							
@@ -529,27 +529,28 @@ public class CheckerBuilder {
 						
 						if(indexY == 5) {						
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY, 2 );
-													
+							// Zone d'arrivée 1 dernier pion						
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY);
 													
-							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY);
+							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY, 4);
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY);
 													
-							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 25, indexY, 3);
+							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY, 3);
 
 						}
 						
 						if(indexY == 29) {							
-							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY );
+							// Zone d'arrivée 2 ligne 5
+							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY, 6 );
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[13][indexY] = new Emplacement( 13, indexY);
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[15][indexY] = new Emplacement( 15, indexY, 1);
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[17][indexY] = new Emplacement( 17, indexY);
-					
-							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY);					
+							// Zone d'arrivée 3 ligne 5
+							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY, 5 );					
 						}
 					}
 					
@@ -568,15 +569,16 @@ public class CheckerBuilder {
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY);
 													
-							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 24, indexY, 3);
+							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY, 3);
 													
-							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 26, indexY, 3);
+							GameVariableRepository.getInstance().getEmplacementTable()[26][indexY] = new Emplacement( 26, indexY, 3);
 						}
 						
 						if(indexY == 27) {							
-							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY);
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY);
+							// Zone d'arrivée 3 ligne 2
+							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY, 6 );
+							// Zone d'arrivée 3 ligne 2						
+							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY, 6 );
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[12][indexY] = new Emplacement( 12, indexY);
 													
@@ -585,10 +587,10 @@ public class CheckerBuilder {
 							GameVariableRepository.getInstance().getEmplacementTable()[16][indexY] = new Emplacement( 16, indexY );
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[18][indexY] = new Emplacement( 18, indexY );
-
-							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY );
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY );
+							// Zone d'arrivée 2 ligne 4
+							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY, 5 );
+							// Zone d'arrivée 2 ligne 4						
+							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY, 5 );
 						}			
 					}
 					
@@ -623,11 +625,11 @@ public class CheckerBuilder {
 						}
 						
 						if(indexY == 25) {
-							
-							GameVariableRepository.getInstance().getEmplacementTable()[3][indexY] = new Emplacement( 3, indexY );
+							// Zone d'arrivée 2 ligne 3
+							GameVariableRepository.getInstance().getEmplacementTable()[3][indexY] = new Emplacement( 3, indexY, 6 );
 
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY );
+							// Zone d'arrivée 2 ligne 3					
+							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY, 6 );
 
 												
 							GameVariableRepository.getInstance().getEmplacementTable()[7][indexY] = new Emplacement( 7, indexY );
@@ -656,11 +658,11 @@ public class CheckerBuilder {
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[23][indexY] = new Emplacement( 23, indexY );
 
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY );
+							// Zone d'arrivée 3 ligne 4						
+							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY, 5 );
 
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[27][indexY] = new Emplacement( 27, indexY );
+							// Zone d'arrivée 3 ligne 4						
+							GameVariableRepository.getInstance().getEmplacementTable()[27][indexY] = new Emplacement( 27, indexY, 5 );
 
 							
 						}
@@ -672,13 +674,13 @@ public class CheckerBuilder {
 					if( ( (indexY == 11) || (indexY == 23) ) && ( (indexX == 2) || (indexX == 4) || (indexX == 6) || (indexX == 8)|| (indexX == 10) || (indexX == 12) || (indexX == 14) || (indexX == 16) || (indexX == 18) || (indexX == 20) || (indexX  == 22) || (indexX == 24) || (indexX == 26) || (indexX == 28) ) ) {	
 						
 						if(indexY == 11) {
-						
+							
 							GameVariableRepository.getInstance().getEmplacementTable()[2][indexY] = new Emplacement( 2, indexY, 2 );
 
-													
+							
 							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY, 2 );
 
-													
+							
 							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY, 2 );
 
 													
@@ -719,13 +721,13 @@ public class CheckerBuilder {
 						
 						if(indexY == 23) {
 							
-							GameVariableRepository.getInstance().getEmplacementTable()[2][indexY] = new Emplacement( 2, indexY );
+							GameVariableRepository.getInstance().getEmplacementTable()[2][indexY] = new Emplacement( 2, indexY, 6  );
 
 													
-							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY );
+							GameVariableRepository.getInstance().getEmplacementTable()[4][indexY] = new Emplacement( 4, indexY, 6  );
 
 													
-							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY );
+							GameVariableRepository.getInstance().getEmplacementTable()[6][indexY] = new Emplacement( 6, indexY, 6  );
 
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[8][indexY] = new Emplacement( 8, indexY );
@@ -751,14 +753,14 @@ public class CheckerBuilder {
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[22][indexY] = new Emplacement( 22, indexY );
 
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY );
+							// Zone d'arrivée 3 ligne 2						
+							GameVariableRepository.getInstance().getEmplacementTable()[24][indexY] = new Emplacement( 24, indexY, 5 );
 
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[26][indexY] = new Emplacement( 26, indexY );
+							// Zone d'arrivée 3 ligne 2						
+							GameVariableRepository.getInstance().getEmplacementTable()[26][indexY] = new Emplacement( 26, indexY, 5 );
 
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[28][indexY] = new Emplacement( 28, indexY );
+							// Zone d'arrivée 3 ligne 2						
+							GameVariableRepository.getInstance().getEmplacementTable()[28][indexY] = new Emplacement( 28, indexY, 5 );
 
 							
 							
@@ -770,10 +772,10 @@ public class CheckerBuilder {
 					if( ( (indexY == 13) || (indexY == 21) ) && ( (indexX == 1) || (indexX == 3) || (indexX == 5) || (indexX == 7) || (indexX == 9) || (indexX == 11) || (indexX == 13) || (indexX == 15) || (indexX == 17) || (indexX == 19) || (indexX == 21) || (indexX == 23) || (indexX == 25) || (indexX == 27) || (indexX == 29) ) ) {	
 						
 						if(indexY == 13) {
-						
+							
 							GameVariableRepository.getInstance().getEmplacementTable()[1][indexY] = new Emplacement( 1, indexY, 2 );
 
-													
+								
 							GameVariableRepository.getInstance().getEmplacementTable()[3][indexY] = new Emplacement( 3, indexY, 2 );
 
 													
@@ -820,11 +822,11 @@ public class CheckerBuilder {
 						}
 						
 						if(indexY == 21) {
-						
-							GameVariableRepository.getInstance().getEmplacementTable()[1][indexY] = new Emplacement( 1, indexY );
+							// Zone d'arrivée 2 ligne 1
+							GameVariableRepository.getInstance().getEmplacementTable()[1][indexY] = new Emplacement( 1, indexY, 6 );
 
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[3][indexY] = new Emplacement( 3, indexY );
+							// Zone d'arrivée 2 ligne 1						
+							GameVariableRepository.getInstance().getEmplacementTable()[3][indexY] = new Emplacement( 3, indexY, 6 );
 
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[5][indexY] = new Emplacement( 5, indexY );
@@ -859,11 +861,11 @@ public class CheckerBuilder {
 													
 							GameVariableRepository.getInstance().getEmplacementTable()[25][indexY] = new Emplacement( 25, indexY );
 
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[27][indexY] = new Emplacement( 27, indexY );
+							// Zone d'arrivée 3 ligne 1						
+							GameVariableRepository.getInstance().getEmplacementTable()[27][indexY] = new Emplacement( 27, indexY, 5 );
 
-													
-							GameVariableRepository.getInstance().getEmplacementTable()[29][indexY] = new Emplacement( 29, indexY );
+							// Zone d'arrivée 3 ligne 1						
+							GameVariableRepository.getInstance().getEmplacementTable()[29][indexY] = new Emplacement( 29, indexY, 5 );
 
 							
 							

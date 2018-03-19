@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -69,8 +70,8 @@ public class Board extends JPanel {
 
 	private Emplacement[][] emplacements;
 
-	private int xTempValue =0;
-	private int yTempValue =0;
+	//private int xTempValue =0;
+	// private int yTempValue =0;
 	private boolean justPlayed = false;
 	
 	private static final int IDEAL_WIDTH=22;
@@ -178,8 +179,7 @@ public class Board extends JPanel {
 	}
 	
 	public void initLayout () {
-		TurnTimer.getInstance();
-		
+		TurnTimer.getInstance();	
 		
 		playersInternalPanel = new JPanel();
 		playersInternalPanel.setBorder(new TitledBorder(null, "Players", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -291,7 +291,7 @@ public class Board extends JPanel {
 		
 		labelPlayerActualTurn = new JLabel("New label");
 		labelPlayerActualTurn.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		labelPlayerActualTurn.setBounds(836, 160, 128, 39);
+		labelPlayerActualTurn.setBounds(833, 160, 128, 39);
 		add(labelPlayerActualTurn);
 		
 		powerActivated=new JLabel("power");
@@ -386,8 +386,6 @@ public class Board extends JPanel {
 				boolean aPieceIsSelectedTemp = GameVariableRepository.getInstance().getAPieceIsSelected();
 				// xTempValue = 0;
 			    // yTempValue = 0;
-			    int i = 0;
-			    int j = 0;
 			    // System.out.println("testSouris");
 			    
 			    ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator();
@@ -401,9 +399,7 @@ public class Board extends JPanel {
 			            Emplacement currentEmplacement = iter.next();
 			            Piece currentPiece = currentEmplacement.getOccupyingPiece();
 			            isOnEmplacementTemp = currentEmplacement.isCursorOnEmplacement(arg0.getX(), arg0.getY());
-			            isOccupiedTemp = currentEmplacement.getIsOccupied();
-			            
-			            
+			            isOccupiedTemp = currentEmplacement.getIsOccupied();          
 			            
 			            //si une piece est gelé
 			            if(pieceFrozen!=null) {
@@ -541,7 +537,7 @@ public class Board extends JPanel {
 							}).start();      
 							
 							repaint();					
-			            } else if(currentEmplacement.ifIsEligibleForMove() == true ) {
+			            } else if( isOnEmplacementTemp == true && isOccupiedTemp == false && aPieceIsSelectedTemp == true && currentEmplacement.ifIsEligibleForMove() == true ) {
 		            		Piece currentSelectedPiece = GameVariableRepository.getInstance().getSelectedPiece();
 		            	
 		            		BoardUpdater.getInstance().updateAfterMovePieceState(currentSelectedPiece, currentEmplacement);
@@ -730,8 +726,10 @@ public class Board extends JPanel {
 		super.paintComponent(g);
 		g.setColor(getBackground());
 		g.fillRect(0, 0, GTParameters.WINDOW_WIDTH,GTParameters.WINDOW_HEIGHT);
-		g.setColor(getForeground());
 		
+		// g.setColor(getForeground());
+		Image background = Toolkit.getDefaultToolkit().createImage("./background1.jpeg");
+		g.drawImage(background, 0, 0, GTParameters.WINDOW_WIDTH, GTParameters.WINDOW_HEIGHT,null);
 		
 		// g.clearRect(0, 0, GTParameters.WINDOW_WIDTH, GTParameters.WINDOW_HEIGHT);
 		// g.fillRect(0, 0, GTParameters.WINDOW_WIDTH, GTParameters.WINDOW_HEIGHT);
@@ -777,6 +775,8 @@ public class Board extends JPanel {
 		// Set up the checker board at first
 		BoardUpdater.getInstance().drawCheckerBoardEmplacements(g);		
 		
+		BoardUpdater.getInstance().drawCheckerBoardVictoryEmplacements(g);
+
 		// Set up the different pieces for all the players
 		BoardUpdater.getInstance().drawPlayersPieces(g);
 		
