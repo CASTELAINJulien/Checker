@@ -38,18 +38,16 @@ public class BoardUpdater {
 	}
 	
 	public void updatePieceSelectionState (Piece pieceToBeSelected, Emplacement currentEmplacement) {
-		if ( pieceToBeSelected != null ) {
-			GameVariableRepository.getInstance().setSelectedPiece(pieceToBeSelected);
-	    	GameVariableRepository.getInstance().setEmplacementToBeEmptied(currentEmplacement);
-	    	//System.out.println(currentEmplacement.toString());
-	    	// xTempValue = currentEmplacement.getPositionX();
-	        // yTempValue = currentEmplacement.getPositionY();
-	        
-	        // System.out.println(number.getPositionX());    // insert a number right before this
-	        GameVariableRepository.getInstance().setAPieceIsSelected(true);
-	        
-	        GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement));
-		}
+    	GameVariableRepository.getInstance().setSelectedPiece(pieceToBeSelected);
+    	GameVariableRepository.getInstance().setEmplacementToBeEmptied(currentEmplacement);
+    	//System.out.println(currentEmplacement.toString());
+    	// xTempValue = currentEmplacement.getPositionX();
+        // yTempValue = currentEmplacement.getPositionY();
+        
+        // System.out.println(number.getPositionX());    // insert a number right before this
+        GameVariableRepository.getInstance().setAPieceIsSelected(true);
+        
+        GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement));
 	}
 	public void updatePieceDeselectionState (/*Piece pieceToBeSelected, Emplacement currentEmplacement*/) {
     	//GameVariableRepository.getInstance().setSelectedPiece(pieceToBeSelected);
@@ -145,13 +143,13 @@ public class BoardUpdater {
 		}
 	}
 	
-	public void animateSelectedPiece ( Graphics g ) {		
+	public void animateSelectedPiece ( Graphics g ) {
 		if ( GameVariableRepository.getInstance().getAPieceIsSelected() == true ) {
 			Emplacement toUpdate = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied());
 			g.setColor(Color.MAGENTA);
 			g.fillOval(toUpdate.getPositionX() * BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint, toUpdate.getPositionY()*BoardParameter.interEmplacementSpaces, BoardParameter.pieceRadius, BoardParameter.pieceRadius);
 			// justPlayed = false;
-		} else if ( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied()) != null ) {
+		} else {
 			Emplacement toUpdate = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied());
 			if ( toUpdate != null ) {
 				g.setColor(Color.BLACK);

@@ -491,7 +491,7 @@ public class Board extends JPanel {
 			            		
 				            	GameVariableRepository.getInstance().setPreviousTurnEmplacementsArrayList( GameVariableRepository.getInstance().getEmplacementsArrayList() );
 				            	Piece pieceToBeSelected = currentEmplacement.getOccupyingPiece();
-				            	// System.out.println(currentEmplacement.toString());
+				            	
 				            	BoardUpdater.getInstance().updatePieceSelectionState(pieceToBeSelected, currentEmplacement);
 								
 								validate();
@@ -514,12 +514,13 @@ public class Board extends JPanel {
 			            			endTurn(currentEmplacement);
 			            		}			
 			            		else if( isOnEmplacementTemp == true && isOccupiedTemp == false && aPieceIsSelectedTemp == true && currentEmplacement.ifIsEligibleForMove() == true ) {
-					            	model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Classic Move");
-			            			endTurn(currentEmplacement);
+			            	model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Classic Move");
+	            			endTurn(currentEmplacement);
 
 					// repaint(xEmplacementToEmpty,yEmplacementToEmpty, radius, radius);
 		            // repaint(x,y, radius, radius);
-			            		}
+			            }
+		            
 			            }
 			            //permet de selectionner un autre pion 
 			            else if( isOnEmplacementTemp == true &&  isOccupiedTemp==true && aPieceIsSelectedTemp==true && currentEmplacement.ifIsEligibleForMove() == true) {
@@ -667,10 +668,6 @@ public class Board extends JPanel {
 		GameVariableRepository.getInstance().updatePiecesState();
 		
 		labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
-		
-		if (GameVariableRepository.getInstance().checkIfVictoryState()) {
-				System.out.println("VICTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOIRE");
-		}
 		//repaint();
 	}
 	
@@ -680,7 +677,6 @@ public class Board extends JPanel {
     	
 		BoardUpdater.getInstance().updateAfterMovePieceState(currentSelectedPiece, currentEmplacement);
 	
-		GameVariableRepository.getInstance().isonVictoryEmplacementThenUpdate(currentSelectedPiece.getXPosition(), currentSelectedPiece.getYPosition(), currentSelectedPiece);
 		updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), 50);
 		
 		//model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Déplacement classique");
