@@ -1,3 +1,4 @@
+
 package checker.panels;
 
 import javax.swing.JPanel;
@@ -31,6 +32,7 @@ public class OptionsScreenPanel extends JPanel {
 	private Box horizontalBox;
 	private JButton previousButton;
 	private JButton okButton;
+	private JButton rulesButton;
 	private Box horizontalBox_1;
 	private Box horizontalBox_2;
 	/**
@@ -86,6 +88,9 @@ public class OptionsScreenPanel extends JPanel {
 		
 		okButton = (JButton) ClassFactory.createTextContainingComponent("JButton", "OK");
 		horizontalBox.add(okButton);
+		
+		rulesButton = (JButton) ClassFactory.createTextContainingComponent("JButton","Rules");
+		horizontalBox.add(rulesButton);
 	}
 	
 	public void initActions () {
@@ -94,6 +99,13 @@ public class OptionsScreenPanel extends JPanel {
 		muteSoundCheckBox.addActionListener(new CheckBoxValueListener());
 		okButton.addActionListener(new okAction());
 		previousButton.addActionListener(new PreviousAction());
+		rulesButton.addActionListener(new rulesAction());
+	}
+	
+	private class rulesAction implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			PanelsContainer.getInstance().getCardLayout().last(PanelsContainer.getInstance());
+		}
 	}
 	
 	private class okAction implements ActionListener{	
@@ -126,7 +138,7 @@ public class OptionsScreenPanel extends JPanel {
 	}
 	
 	private class CheckBoxValueListener implements ActionListener {
-		@Override
+		
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 		    if (muteSoundCheckBox.isSelected()) {

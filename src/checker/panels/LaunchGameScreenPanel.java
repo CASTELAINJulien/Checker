@@ -1,6 +1,4 @@
-
 package checker.panels;
-
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -34,6 +32,8 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -42,6 +42,10 @@ public class LaunchGameScreenPanel extends JPanel {
 	private JTextField textFieldSecondPlayerName;
 	private JTextField textFieldThirdPlayerName;
 	
+	private JCheckBox checkBoxBeginnerP1;
+	private JCheckBox checkBoxBeginnerP2;
+	private JCheckBox checkBoxBeginnerP3;
+
 	JLabel labelGameConfigurationTitle;
 	JLabel labelFirstPlayerInfo;
 	JLabel labelSecondPlayerInfo;
@@ -54,6 +58,10 @@ public class LaunchGameScreenPanel extends JPanel {
 	JLabel labelFirstPlayerName;
 	JLabel labelSecondPlayerName; 
 	JLabel labelThirdPlayerName;
+	
+	JLabel labelFirstPlayerBeginner;
+	JLabel labelSecondPlayerBeginner; 
+	JLabel labelThirdPlayerBeginner;
 	
 	JLabel labelFirstPlayerType;
 	JLabel labelSecondPlayerType;
@@ -137,12 +145,20 @@ public class LaunchGameScreenPanel extends JPanel {
 		}
 		return ifIsAI;
 	}
+	public boolean returnCheckBoxValue(JCheckBox checkBox) {
+		if(checkBox.isSelected()==true) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
 	private class PlayAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
 			Player player1;
 			Player player2;
 			Player player3;
+					
 			// True si AI, Faux si joueur Human
 			if ( returnComboBoxValue(comboBoxFirstPlayerChoice) == true ) {
 				if ( textFieldFirstPlayerName.getText().length() > 0 ) {
@@ -190,6 +206,15 @@ public class LaunchGameScreenPanel extends JPanel {
 			VariableRepository.getInstance().registerPlayer( "Player 2", player2 );
 			VariableRepository.getInstance().registerPlayer( "Player 3", player3 );
 			
+			if ( returnCheckBoxValue(checkBoxBeginnerP1) == true ) {
+				player1.setIsBeginner(true);
+			}
+			if ( returnCheckBoxValue(checkBoxBeginnerP2) == true ) {
+				player2.setIsBeginner(true);
+			}
+			if ( returnCheckBoxValue(checkBoxBeginnerP3) == true ) {
+				player3.setIsBeginner(true);
+			}
 			
 			//random selection of the power(s)
 			Power[] randomPower=new Power[5];
@@ -260,12 +285,15 @@ public class LaunchGameScreenPanel extends JPanel {
 			
 			player1.addPower(al1.get(0));
 			player1.addPower(al1.get(1));
+			player1.setColor(Color.red);
 			
 			player2.addPower(al2.get(0));
 			player2.addPower(al2.get(1));
+			player2.setColor(Color.yellow);
 			
 			player3.addPower(al3.get(0));
 			player3.addPower(al3.get(1));
+			player3.setColor(Color.green);
 			
 			CheckerBuilder.getInstance().initializeEmplacements();
 			
@@ -282,12 +310,12 @@ public class LaunchGameScreenPanel extends JPanel {
 		
 		labelFirstPlayerInfo = new JLabel("Informations Player 1 :");
 		labelFirstPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		labelFirstPlayerInfo.setBounds(71, 131, 162, 14);
+		labelFirstPlayerInfo.setBounds(61, 131, 162, 14);
 		add(labelFirstPlayerInfo);
 		
 		labelSecondPlayerInfo = new JLabel("Informations Player 2 :");
 		labelSecondPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		labelSecondPlayerInfo.setBounds(400, 131, 168, 14);
+		labelSecondPlayerInfo.setBounds(390, 131, 168, 14);
 		add(labelSecondPlayerInfo);
 		
 		labelThirdPlayerInfo = new JLabel("Informations Player 3 :");
@@ -325,6 +353,35 @@ public class LaunchGameScreenPanel extends JPanel {
 		comboBoxThirdPlayerChoice.setBounds(829, 187, 135, 20);
 		add(comboBoxThirdPlayerChoice);
 		
+		
+		labelFirstPlayerBeginner = new JLabel("Beginner?");
+		labelFirstPlayerBeginner.setBounds(61, 350, 78, 14);
+		add(labelFirstPlayerBeginner);
+		
+		checkBoxBeginnerP1=new JCheckBox();
+		checkBoxBeginnerP1.setBounds(180, 350, 135, 20);
+		checkBoxBeginnerP1.setOpaque(false);
+		add(checkBoxBeginnerP1);
+		
+		labelSecondPlayerBeginner = new JLabel("Beginner?");
+		labelSecondPlayerBeginner.setBounds(390, 350, 78, 14);
+		add(labelSecondPlayerBeginner);
+
+		checkBoxBeginnerP2=new JCheckBox();
+		checkBoxBeginnerP2.setBounds(509, 350, 135, 20);
+		checkBoxBeginnerP2.setOpaque(false);
+		add(checkBoxBeginnerP2);
+			
+		checkBoxBeginnerP3=new JCheckBox();
+		checkBoxBeginnerP3.setBounds(819, 350, 135, 20);
+		checkBoxBeginnerP3.setOpaque(false);
+		add(checkBoxBeginnerP3);
+		
+		labelThirdPlayerBeginner = new JLabel("Beginner?");
+		labelThirdPlayerBeginner.setBounds(710, 350, 78, 14);
+		add(labelThirdPlayerBeginner);
+		
+		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
 		separator.setBounds(350, 112, 2, 340);
@@ -336,11 +393,11 @@ public class LaunchGameScreenPanel extends JPanel {
 		add(separator_1);
 		
 		labelFirstPlayerName = new JLabel("Player Name :");
-		labelFirstPlayerName.setBounds(71, 159, 78, 14);
+		labelFirstPlayerName.setBounds(61, 159, 78, 14);
 		add(labelFirstPlayerName);
 		
 		labelSecondPlayerName = new JLabel("Player Name :");
-		labelSecondPlayerName.setBounds(400, 159, 78, 14);
+		labelSecondPlayerName.setBounds(390, 159, 78, 14);
 		add(labelSecondPlayerName);
 		
 		labelThirdPlayerName = new JLabel("Player Name :");
@@ -348,11 +405,11 @@ public class LaunchGameScreenPanel extends JPanel {
 		add(labelThirdPlayerName);
 		
 		labelFirstPlayerType = new JLabel("Player type :");
-		labelFirstPlayerType.setBounds(71, 190, 78, 14);
+		labelFirstPlayerType.setBounds(61, 190, 78, 14);
 		add(labelFirstPlayerType);
 		
 		labelSecondPlayerType = new JLabel("Player type :");
-		labelSecondPlayerType.setBounds(400, 190, 78, 14);
+		labelSecondPlayerType.setBounds(390, 190, 78, 14);
 		add(labelSecondPlayerType);
 		
 		labelThirdPlayerType = new JLabel("Player type :");
@@ -360,19 +417,19 @@ public class LaunchGameScreenPanel extends JPanel {
 		add(labelThirdPlayerType);
 		
 		labelFirstPlayerPowers = new JLabel("Select two powers :");
-		labelFirstPlayerPowers.setBounds(71, 215, 95, 14);
+		labelFirstPlayerPowers.setBounds(61, 215, 115, 14);
 		add(labelFirstPlayerPowers);
 		
 		labelSecondPlayerPowers = new JLabel("Select two powers :");
-		labelSecondPlayerPowers.setBounds(400, 215, 104, 14);
+		labelSecondPlayerPowers.setBounds(390, 215, 115, 14);
 		add(labelSecondPlayerPowers);
 		
 		labelThirdPlayerPowers = new JLabel("Select two powers :");
-		labelThirdPlayerPowers.setBounds(710, 215, 104, 14);
+		labelThirdPlayerPowers.setBounds(710, 215, 115, 14);
 		add(labelThirdPlayerPowers);
 		
 		buttonLaunchGame = new JButton("Launch Game");
-		buttonLaunchGame.setBounds(400, 522, 104, 23);
+		buttonLaunchGame.setBounds(400, 522, 114, 23);
 		add(buttonLaunchGame);
 		
 		buttonPrevious = new JButton("Previous");

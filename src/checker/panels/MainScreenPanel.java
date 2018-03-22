@@ -1,4 +1,3 @@
-
 package checker.panels;
 
 import java.awt.Color;
@@ -73,6 +72,7 @@ public class MainScreenPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			// musicPlayer.closeClip();
 			PanelsContainer.getInstance().getCardLayout().last((PanelsContainer.getInstance()));
+			PanelsContainer.getInstance().getCardLayout().previous((PanelsContainer.getInstance()));
 		}
 	}
 	

@@ -14,29 +14,28 @@ public class PanelsVisitor implements CheckerVisitor<Void> {
 		return panel.getComponents();
 	}
 	
-	@Override
+	
 	public Void visit(JPanel node) {
 		return null;
 	}
 
 	// T visit(Piece node);
-	@Override
+	
 	public Void visit(Component node) {
 		return null;
 	}
 	
-	@Override
+	
 	public Void visit(Player node) {
 		return null;
 	}
 
-	@Override
+
 	public Void visit(Board node) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public Void visit(Emplacement node) {
 		// TODO Auto-generated method stub
 		return null;

@@ -3,7 +3,7 @@ package customEventsPackage;
 import checker.core.GameVariableRepository;
 import checker.core.VariableRepository;
 import checker.data.Piece;
-
+//cost 80
 public class PowerTwoMoves extends Power{
 	public PowerTwoMoves() {
 		

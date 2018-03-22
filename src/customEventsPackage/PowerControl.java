@@ -2,7 +2,7 @@ package customEventsPackage;
 
 import checker.core.VariableRepository;
 import checker.data.Piece;
-
+//cost 90
 public class PowerControl extends Power {
 	public PowerControl(){
 	}

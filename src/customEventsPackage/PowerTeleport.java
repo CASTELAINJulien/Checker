@@ -2,7 +2,7 @@ package customEventsPackage;
 
 import checker.core.VariableRepository;
 import checker.data.Piece;
-
+//cost 100
 public class PowerTeleport extends Power{
 	public PowerTeleport() {
 		

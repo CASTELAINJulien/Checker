@@ -6,11 +6,10 @@ import checker.core.GameVariableRepository;
 import checker.core.VariableRepository;
 import checker.data.Piece;
 import checker.data.Player;
-
+//cost 80
 public class PowerFreeze extends Power {
 	private int round;
 	public PowerFreeze() {
-	
 	}
 	public String getName() {
 		return "Freeze";
@@ -30,8 +29,6 @@ public class PowerFreeze extends Power {
 	public int getCost2() {
 		return 5;
 	}
-	
-
 	
 	public void effect(Piece pieceFrozen) {
 		//pieceFrozen.setIsClickeable(false);

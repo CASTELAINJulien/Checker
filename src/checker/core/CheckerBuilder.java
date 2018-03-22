@@ -1,4 +1,5 @@
 
+
 package checker.core;
 
 import checker.data.Emplacement;

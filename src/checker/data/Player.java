@@ -1,5 +1,6 @@
 package checker.data;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,11 +11,12 @@ public class Player {
 	private double playerScore;
 	private double playerMana;
 	private ArrayList<Power> alPowers=new ArrayList<Power>();
-	//pb with int
-	//private HashMap<int ,Piece> pieces = new HashMap<int, Piece>();
 	private boolean round;
 	private boolean isAI;
-	private int powerActivated=9;//9 is the default value=no power activated
+	private int powerActivated=9;//9 is the default value=no power activated	
+	private Statistics stats=new Statistics();
+	private boolean isBeginner=false;
+	private Color color;
 	
 	public Player(String nameParameter, boolean isAIParameter) {
 		this.playerName = nameParameter;
@@ -44,19 +46,16 @@ public class Player {
 	}
 
 	public void setPlayerMana(double playerManaParam) {
-		this.playerMana = playerMana;
+		this.playerMana = playerManaParam;
 	}
 	
 	public void addPlayerMana(double playerManaParam) {
 		if ( (this.playerMana+playerManaParam < 100) && (this.playerMana+playerManaParam >= 0) ) {
 			this.playerMana += playerManaParam;
 		} else if ( this.playerMana+playerManaParam < 0 ) {
-			System.out.println("pouvoir");
 			this.playerMana = 0;
 		} else {
-			System.out.println("test\n");
 			this.playerMana += (100-this.playerMana);
-			System.out.println(this.playerMana);
 		}
 	}
 
@@ -92,6 +91,20 @@ public class Player {
 	public void setPowerActivated(int powerNumber) {
 		powerActivated=powerNumber;
 	}
-	
+	public Statistics getStats() {
+		return stats;
+	}
+	public void setIsBeginner(boolean isBeginner) {
+		this.isBeginner=isBeginner;
+	}
+	public boolean getIsBeginner() {
+		return this.isBeginner;
+	}
+	public void setColor(Color color) {
+		this.color=color;
+	}
+	public Color getColor() {
+		return this.color;
+	}
 	
 }

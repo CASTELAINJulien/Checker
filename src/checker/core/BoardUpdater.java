@@ -1,4 +1,3 @@
-
 package checker.core;
 
 import java.awt.Color;
@@ -7,12 +6,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ListIterator;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import checker.data.Emplacement;
 import checker.data.Piece;
+import checker.data.Player;
 import checker.gui.BoardParameter;
 import checker.panels.Board;
 
@@ -45,6 +48,18 @@ public class BoardUpdater {
         GameVariableRepository.getInstance().setAPieceIsSelected(true);
         
         GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement));
+	}
+	public void updatePieceDeselectionState (/*Piece pieceToBeSelected, Emplacement currentEmplacement*/) {
+    	//GameVariableRepository.getInstance().setSelectedPiece(pieceToBeSelected);
+    	//GameVariableRepository.getInstance().setEmplacementToBeEmptied(currentEmplacement);
+    	//System.out.println(currentEmplacement.toString());
+    	// xTempValue = currentEmplacement.getPositionX();
+        // yTempValue = currentEmplacement.getPositionY();
+        
+        // System.out.println(number.getPositionX());    // insert a number right before this
+        GameVariableRepository.getInstance().setAPieceIsSelected(false);
+        
+        //GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement));
 	}
 	
 	public void updateAfterMovePieceState(Piece currentSelectedPiece, Emplacement currentEmplacement) {
@@ -145,5 +160,72 @@ public class BoardUpdater {
 			// GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(0);
 			// System.out.println(toUpdate.toString());
 		}
+	}
+	public void animateAvailableEmplacement ( Graphics g ) {
+		Player currentPlayer=VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName());
+		if ( GameVariableRepository.getInstance().getAPieceIsSelected() == true && currentPlayer.getIsBeginner()==true) {
+			ListIterator<Emplacement> iter2 = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator();
+			while (iter2.hasNext()) {
+				Emplacement currentEmplacement = iter2.next();
+				if(currentEmplacement.getIsOccupied()==false && currentEmplacement.ifIsEligibleForMove()==true) {
+					g.setColor(Color.WHITE);
+					g.fillOval(currentEmplacement.getPositionX() * BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint, currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces, BoardParameter.pieceRadius, BoardParameter.pieceRadius);	
+				}
+				//if teleport power is activated
+				//TODO need to be improved
+				else if(currentPlayer.getPowerActivated()!=9 && currentPlayer.getPower(currentPlayer.getPowerActivated()).getName()=="Teleport") {
+					if(currentEmplacement.getIsOccupied()==false) {
+						g.setColor(Color.WHITE);
+						g.fillOval(currentEmplacement.getPositionX() * BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint, currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces, BoardParameter.pieceRadius, BoardParameter.pieceRadius);	
+					
+					}
+				}
+				//if jump power is activated
+				else if(currentPlayer.getPowerActivated()!=9 && currentEmplacement.getIsOccupied()==false && currentPlayer.getPower(currentPlayer.getPowerActivated()).getName()=="Jump") {
+					if( currentEmplacement.ifIsEligibleForJump()==true) {
+						g.setColor(Color.WHITE);
+						g.fillOval(currentEmplacement.getPositionX() * BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint, currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces, BoardParameter.pieceRadius, BoardParameter.pieceRadius);	
+					
+					}
+				}
+			}
+		}
+		
+		
+	}
+	
+	public void updatePlayerPowerButtons(JButton btnPower1,JButton btnPower2,JLabel labelPlayerActualTurn) {
+		
+		Player playerToUpdate = VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName());
+		
+		if((playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(0).getCost2())&& (VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPowerActivated()==9)){
+			btnPower1.setBorder(BorderFactory.createLineBorder(Color.green, 4));
+			btnPower1.setEnabled(true);
+			
+		} 
+		
+		else {
+			btnPower1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			btnPower1.setEnabled(false);
+		}
+		
+		if((playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(1).getCost2())&& (VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPowerActivated()==9)){
+			btnPower2.setBorder(BorderFactory.createLineBorder(Color.green, 4));
+			btnPower2.setEnabled(true);
+		} else {				
+			btnPower2.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+			btnPower2.setEnabled(false);
+		}
+		
+		btnPower1.setToolTipText("<html><center>"+playerToUpdate.getPower(0).getName()+
+				" power:<br>"+playerToUpdate.getPower(0).getDescription2()+
+				"<br>cost:"+playerToUpdate.getPower(0).getCost2()+"</center></html>");
+		btnPower2.setToolTipText("<html><center>"+playerToUpdate.getPower(1).getName()+
+				" power:<br>"+playerToUpdate.getPower(1).getDescription2()+
+				"<br>cost:"+playerToUpdate.getPower(1).getCost2()+"</center></html>");
+		
+		
+		btnPower1.setIcon(new ImageIcon(playerToUpdate.getPower(0).getImage()));
+		btnPower2.setIcon(new ImageIcon(playerToUpdate.getPower(1).getImage()));
 	}
 }

@@ -1,4 +1,3 @@
-
 package checker.gui;
 
 import java.awt.Color;
@@ -19,6 +18,7 @@ import checker.panels.LaunchGameScreenPanel;
 import checker.panels.MainScreenPanel;
 import checker.panels.OptionsScreenPanel;
 import checker.panels.PanelsContainer;
+import checker.panels.Rules;
 
 public class GraphicalChecker extends JFrame {
 	/**
@@ -31,6 +31,7 @@ public class GraphicalChecker extends JFrame {
 	// private CheckerBoardPanel checkerBoardPanel;
 	private Board checkerBoardPanel;
 	private OptionsScreenPanel optionsScreenPanel;
+	private Rules rulesPanel;
 
 	public GraphicalChecker() throws IllegalArgumentException, InterruptedException, LineUnavailableException, UnsupportedAudioFileException {
 		super("Checker");
@@ -41,6 +42,7 @@ public class GraphicalChecker extends JFrame {
 			launchGameScreenPanel = (LaunchGameScreenPanel) ClassFactory.createPanel("LaunchGameScreenPanel");
 			checkerBoardPanel = (Board) ClassFactory.createPanel("BoardPanel");
 			optionsScreenPanel = (OptionsScreenPanel) ClassFactory.createPanel("OptionsScreenPanel");
+			rulesPanel = new Rules();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -50,6 +52,7 @@ public class GraphicalChecker extends JFrame {
 		panelsContainer.addPanel(launchGameScreenPanel);
 		panelsContainer.addPanel(checkerBoardPanel);
 		panelsContainer.addPanel(optionsScreenPanel);
+		panelsContainer.addPanel(rulesPanel);
 		
 		VariableRepository.getInstance();
 		
@@ -75,7 +78,7 @@ public class GraphicalChecker extends JFrame {
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
-	         @Override
+	        
 	         public void run() {
 	        	 try {
 	     			new GraphicalChecker();
