@@ -39,6 +39,7 @@ import customEventsPackage.PowerTeleport;
 
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JDesktopPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.JList;
@@ -380,11 +381,13 @@ public class Board extends JPanel {
 		//TODO stats en fin de partie
 		btnEndGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
 			}
 		});
 		
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
+				
 				//if the player is not an AI
 				if(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getIsAI()==false && GameVariableRepository.getInstance().getGameStarted()==true) {
 					boolean isOnEmplacementTemp = false;//curseur sur empla
@@ -392,7 +395,6 @@ public class Board extends JPanel {
 					boolean aPieceIsSelectedTemp = GameVariableRepository.getInstance().getAPieceIsSelected();
 				// xTempValue = 0;
 			    // yTempValue = 0;
-			    // System.out.println("testSouris");
 					ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator();
 					if (GameVariableRepository.getInstance().getIsUpdating() == true ) {
 						return;
@@ -634,6 +636,9 @@ public class Board extends JPanel {
 		GameVariableRepository.getInstance().updatePiecesState();
 		
 		labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
+		if (GameVariableRepository.getInstance().checkIfVictoryState()) {
+			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
+		}
 		//repaint();
 	}
 	

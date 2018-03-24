@@ -48,6 +48,13 @@ public class Statistics {
 	public int ratioSpecialMove() {
 		return (numberSpecialMove/totalNumberOfMove)*100;
 	}
+	public void reset() {
+		this.totalNumberOfMove=0;
+		this.numberSpecialMove=0;
+		this.numberSimpleMove=0;
+		this.numberPowerUsed=0;
+		this.score=0;
+	}
 
 
 }

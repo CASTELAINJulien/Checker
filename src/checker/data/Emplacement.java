@@ -1,3 +1,4 @@
+
 package checker.data;
 
 import java.awt.Color;
@@ -176,6 +177,10 @@ public class Emplacement {
 	
 	
 	
+
+	
+	
+	
 	public boolean ifIsEligibleForJump() {
 		Piece currentPiece = GameVariableRepository.getInstance().getSelectedPiece();
 		
@@ -248,10 +253,6 @@ public class Emplacement {
 		}
 		return isEligibleForJump;
 	}
-	
-	
-	
-	
 	
 	
 	public boolean getIsOccupied() {

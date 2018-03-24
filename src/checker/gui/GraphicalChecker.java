@@ -14,6 +14,7 @@ import checker.core.CheckerBuilder;
 import checker.core.VariableRepository;
 import checker.data.ClassFactory;
 import checker.panels.Board;
+import checker.panels.EndGame;
 import checker.panels.LaunchGameScreenPanel;
 import checker.panels.MainScreenPanel;
 import checker.panels.OptionsScreenPanel;
@@ -32,6 +33,7 @@ public class GraphicalChecker extends JFrame {
 	private Board checkerBoardPanel;
 	private OptionsScreenPanel optionsScreenPanel;
 	private Rules rulesPanel;
+	private EndGame endGamePanel;
 
 	public GraphicalChecker() throws IllegalArgumentException, InterruptedException, LineUnavailableException, UnsupportedAudioFileException {
 		super("Checker");
@@ -43,6 +45,7 @@ public class GraphicalChecker extends JFrame {
 			checkerBoardPanel = (Board) ClassFactory.createPanel("BoardPanel");
 			optionsScreenPanel = (OptionsScreenPanel) ClassFactory.createPanel("OptionsScreenPanel");
 			rulesPanel = new Rules();
+			endGamePanel=new EndGame();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,8 +54,10 @@ public class GraphicalChecker extends JFrame {
 		panelsContainer.addPanel(mainScreenPanel);
 		panelsContainer.addPanel(launchGameScreenPanel);
 		panelsContainer.addPanel(checkerBoardPanel);
+		panelsContainer.addPanel(endGamePanel);
 		panelsContainer.addPanel(optionsScreenPanel);
 		panelsContainer.addPanel(rulesPanel);
+		
 		
 		VariableRepository.getInstance();
 		

@@ -51,6 +51,7 @@ public class Rules extends JPanel {
 	private class PreviousAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
 			PanelsContainer.getInstance().getCardLayout().first(PanelsContainer.getInstance());
+			
 		}
 	}
 }
