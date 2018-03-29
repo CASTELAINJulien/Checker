@@ -49,17 +49,9 @@ public class BoardUpdater {
         
         GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement));
 	}
-	public void updatePieceDeselectionState (/*Piece pieceToBeSelected, Emplacement currentEmplacement*/) {
-    	//GameVariableRepository.getInstance().setSelectedPiece(pieceToBeSelected);
-    	//GameVariableRepository.getInstance().setEmplacementToBeEmptied(currentEmplacement);
-    	//System.out.println(currentEmplacement.toString());
-    	// xTempValue = currentEmplacement.getPositionX();
-        // yTempValue = currentEmplacement.getPositionY();
-        
-        // System.out.println(number.getPositionX());    // insert a number right before this
+	public void updatePieceDeselectionState () {
+
         GameVariableRepository.getInstance().setAPieceIsSelected(false);
-        
-        //GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(GameVariableRepository.getInstance().getEmplacementsArrayList().indexOf(currentEmplacement));
 	}
 	
 	public void updateAfterMovePieceState(Piece currentSelectedPiece, Emplacement currentEmplacement) {
@@ -86,6 +78,7 @@ public class BoardUpdater {
 	
 	public void drawCheckerBoardEmplacements ( Graphics g ) {
 		// Set up the checker board at first
+		
 		for (ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator(); iter.hasNext(); ) {
             Emplacement currentEmplacement = iter.next();
             g.setColor(Color.BLACK);
@@ -175,6 +168,7 @@ public class BoardUpdater {
 				//TODO need to be improved
 				else if(currentPlayer.getPowerActivated()!=9 && currentPlayer.getPower(currentPlayer.getPowerActivated()).getName()=="Teleport") {
 					if(currentEmplacement.getIsOccupied()==false) {
+						
 						g.setColor(Color.WHITE);
 						g.fillOval(currentEmplacement.getPositionX() * BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint, currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces, BoardParameter.pieceRadius, BoardParameter.pieceRadius);	
 					
@@ -200,11 +194,8 @@ public class BoardUpdater {
 		
 		if((playerToUpdate.getPlayerMana()>=playerToUpdate.getPower(0).getCost2())&& (VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPowerActivated()==9)){
 			btnPower1.setBorder(BorderFactory.createLineBorder(Color.green, 4));
-			btnPower1.setEnabled(true);
-			
-		} 
-		
-		else {
+			btnPower1.setEnabled(true);	
+		} else {
 			btnPower1.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 			btnPower1.setEnabled(false);
 		}
@@ -223,8 +214,7 @@ public class BoardUpdater {
 		btnPower2.setToolTipText("<html><center>"+playerToUpdate.getPower(1).getName()+
 				" power:<br>"+playerToUpdate.getPower(1).getDescription2()+
 				"<br>cost:"+playerToUpdate.getPower(1).getCost2()+"</center></html>");
-		
-		
+			
 		btnPower1.setIcon(new ImageIcon(playerToUpdate.getPower(0).getImage()));
 		btnPower2.setIcon(new ImageIcon(playerToUpdate.getPower(1).getImage()));
 	}

@@ -26,9 +26,8 @@ public class PowerTwoMoves extends Power{
 	public int getCost2() {
 		return 5;
 	}
-	public void effect(Piece currentPiece) {
-		
-		GameVariableRepository.getInstance().decrementPlayerTurn();
+	public void effect(Piece currentPiece) {	
+		GameVariableRepository.getInstance().decrementPlayerTurnForPower();
 	}
 	public static boolean testTwoMoves(String player) {
 		if( VariableRepository.getInstance().searchPlayer(player).getPowerActivated()!=9) {//un pouvoir est activé

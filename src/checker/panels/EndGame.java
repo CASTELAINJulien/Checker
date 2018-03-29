@@ -39,9 +39,14 @@ private JLabel nbTotalMoveP1;
 private JLabel nbTotalMoveP2;
 private JLabel nbTotalMoveP3;
 
+private JLabel rankP1;
+private JLabel rankP2;
+private JLabel rankP3;
 
 	public EndGame() {
 		super();
+		//GameVariableRepository.getInstance().scoreCalculator();
+
 		initLayout();
 		initAction();
 	}
@@ -82,24 +87,24 @@ private JLabel nbTotalMoveP3;
 		add(lblPlayer1);
 		
 		nbTotalMoveP1 = new JLabel();
-		nbTotalMoveP1.setBounds(61, 170, 130, 14);
+		nbTotalMoveP1.setBounds(61, 170, 280, 14);
 		add(nbTotalMoveP1);
 		
 		nbSimpleMoveP1 = new JLabel();
-		nbSimpleMoveP1.setBounds(61, 190, 130, 14);
+		nbSimpleMoveP1.setBounds(61, 190, 280, 14);
 		add(nbSimpleMoveP1);
 		
 		nbSpecialMoveP1 = new JLabel();
-		nbSpecialMoveP1.setBounds(61, 215, 130, 14);
+		nbSpecialMoveP1.setBounds(61, 215, 280, 14);
 		add(nbSpecialMoveP1);
 		
 		nbPowerActivatedP1 = new JLabel();
-		nbPowerActivatedP1.setBounds(61, 235, 130, 14);
+		nbPowerActivatedP1.setBounds(61, 235, 280, 14);
 		add(nbPowerActivatedP1);
 			
 		//a completer
-		JLabel rankP1 = new JLabel();
-		rankP1.setBounds(21, 200, 115, 14);
+		rankP1 = new JLabel();
+		rankP1.setBounds(61, 255, 115, 14);
 		add(rankP1);
 				
 		
@@ -109,24 +114,24 @@ private JLabel nbTotalMoveP3;
 		add(lblPlayer2);
 		
 		nbTotalMoveP2 = new JLabel();
-		nbTotalMoveP2.setBounds(390, 170, 130, 14);
+		nbTotalMoveP2.setBounds(390, 170, 280, 14);
 		add(nbTotalMoveP2);
 		
 		nbSimpleMoveP2 = new JLabel();
-		nbSimpleMoveP2.setBounds(390, 190, 130, 14);
+		nbSimpleMoveP2.setBounds(390, 190, 280, 14);
 		add(nbSimpleMoveP2);
 		
 		nbSpecialMoveP2 = new JLabel();
-		nbSpecialMoveP2.setBounds(390, 215, 130, 14);
+		nbSpecialMoveP2.setBounds(390, 215, 280, 14);
 		add(nbSpecialMoveP2);
 		
 		nbPowerActivatedP2 = new JLabel();
-		nbPowerActivatedP2.setBounds(390, 235, 130, 14);
+		nbPowerActivatedP2.setBounds(390, 235, 280, 14);
 		add(nbPowerActivatedP2);
 		
-		//a completer
-		JLabel rankP2 = new JLabel();
-		rankP2.setBounds(170, 200, 115, 14);
+	
+		rankP2 = new JLabel();
+		rankP2.setBounds(390, 255, 115, 14);
 		add(rankP2);
 		
 			
@@ -136,23 +141,23 @@ private JLabel nbTotalMoveP3;
 		add(lblPlayer3);
 		
 		nbTotalMoveP3 = new JLabel();
-		nbTotalMoveP3.setBounds(710, 170, 130, 14);
+		nbTotalMoveP3.setBounds(710, 170, 280, 14);
 		add(nbTotalMoveP3);
 		
 		nbSimpleMoveP3 = new JLabel();
-		nbSimpleMoveP3.setBounds(710, 190, 130, 14);
+		nbSimpleMoveP3.setBounds(710, 190, 280, 14);
 		add(nbSimpleMoveP3);
 		
 		nbSpecialMoveP3 = new JLabel();
-		nbSpecialMoveP3.setBounds(710, 215, 130, 14);
+		nbSpecialMoveP3.setBounds(710, 215, 280, 14);
 		add(nbSpecialMoveP3);
 		
 		nbPowerActivatedP3 = new JLabel();
-		nbPowerActivatedP3.setBounds(710, 235, 130, 14);
+		nbPowerActivatedP3.setBounds(710, 235, 280, 14);
 		add(nbPowerActivatedP3);
 			
-		JLabel rankP3 = new JLabel();
-		rankP3.setBounds(324, 200, 115, 14);
+		rankP3 = new JLabel();
+		rankP3.setBounds(710, 255, 200, 14);
 		add(rankP3);			
 	}
 	
@@ -169,33 +174,50 @@ private JLabel nbTotalMoveP3;
 	}
 	private class MainMenuAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
+			VariableRepository.getInstance().searchPlayer("Player 1").getStats().reset();
+			VariableRepository.getInstance().searchPlayer("Player 2").getStats().reset();
+			VariableRepository.getInstance().searchPlayer("Player 3").getStats().reset();
 			PanelsContainer.getInstance().getCardLayout().first(PanelsContainer.getInstance());
 		}
 	}
 	private class ReplayAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
-			//TODO reinitialisé board et stats
+			//TODO reinitialisé board
 			//CheckerBuilder.getInstance().initializeEmplacements();
+			VariableRepository.getInstance().searchPlayer("Player 1").getStats().reset();
+			VariableRepository.getInstance().searchPlayer("Player 2").getStats().reset();
+			VariableRepository.getInstance().searchPlayer("Player 3").getStats().reset();
 			PanelsContainer.getInstance().getCardLayout().previous(PanelsContainer.getInstance());
 		}
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if(GameVariableRepository.getInstance().getGameStarted()==true) {
-			nbSimpleMoveP1.setText("Simple Moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getSimpleMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().ratioSimpleMove())+"%)");
-			nbSpecialMoveP1.setText("Special Moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getSpecialMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().ratioSimpleMove())+"%)");			
-			nbPowerActivatedP1.setText("Power Activated: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getPowerUsed()));
-			nbTotalMoveP1.setText("Total Moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getTotalNumberOfMove()));
+			nbSimpleMoveP1.setText("Number of simple moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getSimpleMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().ratioSimpleMove())+"%)");
+			nbSpecialMoveP1.setText("Number of special moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getSpecialMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().ratioSpecialMove())+"%)");			
+			nbPowerActivatedP1.setText("Number of power activated: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getPowerUsed()));
+			nbTotalMoveP1.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getTotalNumberOfMove()));
+			//scoreP1.setText("score: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getScore()));
+			rankP1.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getRank()));
+
 			
-			nbSimpleMoveP2.setText("Simple Moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getSimpleMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().ratioSimpleMove())+"%)");
-			nbSpecialMoveP2.setText("Special Moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getSpecialMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().ratioSimpleMove())+"%)");
-			nbPowerActivatedP2.setText("Power Activated: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getPowerUsed()));
-			nbTotalMoveP2.setText("Total Moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getTotalNumberOfMove()));
+
 			
-			nbSimpleMoveP3.setText("Simple Moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSimpleMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().ratioSimpleMove())+"%)");
-			nbSpecialMoveP3.setText("Special Moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSpecialMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().ratioSimpleMove())+"%)");
-			nbPowerActivatedP3.setText("Power Activated: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getPowerUsed()));
-			nbTotalMoveP3.setText("Total Moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getTotalNumberOfMove()));
+			nbSimpleMoveP2.setText("Number of simple moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getSimpleMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().ratioSimpleMove())+"%)");
+			nbSpecialMoveP2.setText("Number of special moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getSpecialMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().ratioSpecialMove())+"%)");
+			nbPowerActivatedP2.setText("Number of power activated: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getPowerUsed()));
+			nbTotalMoveP2.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getTotalNumberOfMove()));
+			//scoreP2.setText("score: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getScore()));
+			rankP2.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getRank()));
+
+			
+			nbSimpleMoveP3.setText("Number of simple moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSimpleMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().ratioSimpleMove())+"%)");
+			nbSpecialMoveP3.setText("Number of special moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSpecialMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().ratioSpecialMove())+"%)");
+			nbPowerActivatedP3.setText("Number of power activated: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getPowerUsed()));
+			nbTotalMoveP3.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getTotalNumberOfMove()));
+			//scoreP3.setText("score: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getScore()));
+			rankP3.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getRank()));
+
 		}
 		repaint();	
 	}

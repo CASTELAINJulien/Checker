@@ -2,17 +2,14 @@
 package checker.panels;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 
-import javax.swing.BorderFactory;
+
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -20,15 +17,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import checker.core.BoardUpdater;
-import checker.core.CheckerBuilder;
 import checker.core.GameVariableRepository;
 import checker.core.VariableRepository;
-import checker.data.ClassFactory;
+import checker.data.Ai;
 import checker.data.Emplacement;
 import checker.data.Piece;
 import checker.data.Player;
 import checker.data.TurnTimer;
-import checker.gui.BoardParameter;
 import checker.gui.GTParameters;
 import customEventsPackage.Power;
 import customEventsPackage.PowerControl;
@@ -38,26 +33,19 @@ import customEventsPackage.PowerJump;
 import customEventsPackage.PowerTeleport;
 
 import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JDesktopPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.JList;
 import javax.swing.JButton;
-import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Button;
 import java.awt.Font;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.util.ArrayList;
+
 import java.util.ListIterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -67,7 +55,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
 
 
 public class Board extends JPanel {
@@ -101,12 +88,9 @@ public class Board extends JPanel {
 	private static JLabel labelPlayerActualTurn;
 	private JButton btnPower1;
 	private JButton btnAskMoveCorrection;
-	private JButton btnSimulateClassicMove;
 	private JButton btnPower2;
-	private JButton btnSimulateSpecialMove;
 	private JButton btnEndGame;
 	private JPanel panel;
-	private Timer gameTimer;
 	JButton launchGameButton;
 	private static JLabel powerActivated;
 	
@@ -119,6 +103,15 @@ public class Board extends JPanel {
 	private int turnPlayerFreezer2;
 	private int roundFreeze3;
 	private int turnPlayerFreezer3;
+	private Emplacement randomEmplacementToGo;
+	//for correction asked
+	private Emplacement initialEmplacement;
+	private Emplacement finalEmplacement;
+	private Piece movedPiece;
+	private String typeOfLastMove;
+	
+	private int counter=0;
+	
 	
 	private Graphics graphicContext;
 	
@@ -255,9 +248,10 @@ public class Board extends JPanel {
 		historicList.setValueIsAdjusting(true);
 		historicList.setEnabled(false);
 		historicList.setBounds(6, 16, 192, 227);
-		 
+		//	JScrollPane jsp=new JScrollPane(historicList,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		//historicList.ensureIndexIsVisible( historicList.getModel().getSize() -1 );
 		panel.add(historicList);
-		
+			//	panel.add(jsp);
 		
 		btnPower1 = new JButton();
 		btnPower1.setBackground(Color.white);
@@ -271,14 +265,14 @@ public class Board extends JPanel {
 		btnPower2.setBounds(98, 565, 100, 100);
 		add(btnPower2);
 		
-		textField_3 = new JTextField();
+		/*textField_3 = new JTextField();
 		textField_3.setEnabled(false);
 		textField_3.setFont(new Font("Tahoma", Font.PLAIN, 34));
 		textField_3.setBackground(Color.WHITE);
 		textField_3.setEditable(false);
 		textField_3.setBounds(35, 36, 204, 58);
 		add(textField_3);
-		textField_3.setColumns(2);
+		textField_3.setColumns(2);*/
 				
 		btnAskMoveCorrection = new JButton("Ask correction");
 		btnAskMoveCorrection.setBounds(35, 370, 204, 23);
@@ -367,7 +361,14 @@ public class Board extends JPanel {
 		Player playerToUpdate = VariableRepository.getInstance().searchPlayer(playerManaToUpdate);
 		progressBar.setValue( ( int ) playerToUpdate.getPlayerMana() );
 	}
-	
+	public void aiMove() {
+		Ai ai=new Ai();
+		randomEmplacementToGo=ai.randomSelection();
+		
+		//validate();
+		//repaint();
+		endTurn(randomEmplacementToGo);
+	}
 	public void initActions() throws InterruptedException {
 		launchGameButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -378,9 +379,10 @@ public class Board extends JPanel {
 			}
 		});
 		
-		//TODO stats en fin de partie
 		btnEndGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().setRank("First");
+				GameVariableRepository.getInstance().determineRank();
 				PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
 			}
 		});
@@ -388,8 +390,17 @@ public class Board extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				
+				if(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getIsAI()==true && GameVariableRepository.getInstance().getGameStarted()==true) {
+					aiMove();	
+					/*Ai ai=new Ai();
+						randomEmplacementToGo=ai.randomSelection();
+						//validate();
+						//repaint();
+						endTurn(randomEmplacementToGo);*/
+				}
+				
 				//if the player is not an AI
-				if(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getIsAI()==false && GameVariableRepository.getInstance().getGameStarted()==true) {
+				else if(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getIsAI()==false && GameVariableRepository.getInstance().getGameStarted()==true) {
 					boolean isOnEmplacementTemp = false;//curseur sur empla
 					boolean isOccupiedTemp = false;//piece sur empla
 					boolean aPieceIsSelectedTemp = GameVariableRepository.getInstance().getAPieceIsSelected();
@@ -444,7 +455,7 @@ public class Board extends JPanel {
 			            	}
 			            }	            
 			          
-			            if ( isOnEmplacementTemp == true && isOccupiedTemp == true && aPieceIsSelectedTemp == false && currentPiece != null) {// && currentPiece.getIsClickeable() == true ) {
+			            if ( isOnEmplacementTemp == true && isOccupiedTemp == true/* && aPieceIsSelectedTemp == false*/ && currentPiece != null) {// && currentPiece.getIsClickeable() == true ) {
 			            	
 			            	//check if the power control is activated
 		            		if(PowerControl.testControl(GameVariableRepository.getInstance().getActualPlayerName())==true) { 
@@ -497,6 +508,10 @@ public class Board extends JPanel {
 				            	
 				            	BoardUpdater.getInstance().updatePieceSelectionState(pieceToBeSelected, currentEmplacement);
 								
+				            	initialEmplacement=currentEmplacement;
+								movedPiece=pieceToBeSelected;
+								System.out.println(currentEmplacement.getPositionX()+currentEmplacement.getPositionY());
+								
 								validate();
 								repaint();
 					            
@@ -507,26 +522,51 @@ public class Board extends JPanel {
 			            		if(PowerJump.testJump(GameVariableRepository.getInstance().getActualPlayerName())==true) {
 			            			if(currentEmplacement.ifIsEligibleForJump()) {
 			            				model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Jump Power Used");
-				            			endTurn(currentEmplacement);
+			            		    	model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Special Move");
+			            		    	VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSpecialMove();	
+			            				System.out.println("special move");
+			            				endTurn(currentEmplacement);
 			            			}
 			            		}
 			            		
 			            	//check if the power teleport is activated
 			            		else if(PowerTeleport.testTeleport(GameVariableRepository.getInstance().getActualPlayerName())==true) { 
 			            			model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Teleport Power Used");
+
+			            			
+			            	    		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Special Move");
+			            	    		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSpecialMove();	
+			            				System.out.println("special move");
+			            			
 			            			endTurn(currentEmplacement);
 			            		}	
 			            		
 			            		else if( isOnEmplacementTemp == true && isOccupiedTemp == false && aPieceIsSelectedTemp == true && currentEmplacement.ifIsEligibleForMove() == true ) {
-			            			model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Classic Move");
-			            			endTurn(currentEmplacement);
+
+			            			if(currentEmplacement.isSpecialMove()) {
+			            	    		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Special Move");
+			            	    		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSpecialMove();	
+			            				System.out.println("special move");
+			            				typeOfLastMove="special";
+			            			}
+			            			else {
+			            				model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Classic Move");
+			            	    		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSimpleMove();
+			            				System.out.println("classic move");
+			            				typeOfLastMove="classic";
+
+			            			}
+									
+									finalEmplacement=currentEmplacement;
+			            			
+									endTurn(currentEmplacement);
 			            		}
 		            
 			            }
 			            //permet de selectionner un autre pion 
-			            else if( isOnEmplacementTemp == true &&  isOccupiedTemp==true && aPieceIsSelectedTemp==true && currentEmplacement.ifIsEligibleForMove() == true) {
+			            /*else if( isOnEmplacementTemp == true &&  isOccupiedTemp==true && aPieceIsSelectedTemp==true && currentEmplacement.ifIsEligibleForMove() == true) {
 			            	BoardUpdater.getInstance().updatePieceDeselectionState(); 
-			            }
+			            }*/
 				 }
 			}
 			}
@@ -546,11 +586,45 @@ public class Board extends JPanel {
 		
 		btnAskMoveCorrection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getPreviousPlayerName()).getIsBeginner()==true) {
+					GameVariableRepository.getInstance().decrementPlayerTurnForCorrection();
+					BoardUpdater.getInstance().updatePieceSelectionState(movedPiece, finalEmplacement);
+					BoardUpdater.getInstance().updateAfterMovePieceState(movedPiece, initialEmplacement);
 				
-				ArrayList<Emplacement> toRefresh = GameVariableRepository.getInstance().getPreviousTurnEmplacementsArrayList();
+					labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
+					labelPlayerActualTurn.setForeground(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getColor());
+				
+					//for stats
+					if(typeOfLastMove=="classic") {
+						VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().substractSimpleMove();
+						//quantité de mana a changer
+						updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), -100);
+						updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+
+					}
+					else {
+						VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().substractSpecialMove();
+						//quantite de mana a changer
+						updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), -100);
+						updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
+
+					}
+					VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().substractTotalNumberOfMove();		
+            		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Correction Asked");
+
+					
+				/*ArrayList<Emplacement> toRefresh = GameVariableRepository.getInstance().getPreviousTurnEmplacementsArrayList();
 				GameVariableRepository.getInstance().setEmplacementsArrayList(toRefresh);
-				repaint();
-			}
+				GameVariableRepository.getInstance().decrementPlayerTurn();
+				labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
+				labelPlayerActualTurn.setForeground(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getColor());
+				*/
+					repaint();
+				}
+				else {
+					setEnabled(false);
+				}
+			}		
 		});
 		
 		btnPower1.addActionListener(new ActionListener() {
@@ -602,7 +676,8 @@ public class Board extends JPanel {
 	
 	@Override
 	public void paintComponent(Graphics g) {
-		
+
+
 		super.paintComponent(g);
 		g.setColor(getBackground());
 		g.fillRect(0, 0, GTParameters.WINDOW_WIDTH,GTParameters.WINDOW_HEIGHT);
@@ -621,44 +696,56 @@ public class Board extends JPanel {
 		//emplacements = new Emplacement[x][y];
 		
 		// Set up the checker board at first
-		BoardUpdater.getInstance().drawCheckerBoardEmplacements(g);		
+		if(counter==0) {
+			
 		
+		}
+
+		BoardUpdater.getInstance().drawCheckerBoardEmplacements(g);	
 		BoardUpdater.getInstance().drawCheckerBoardVictoryEmplacements(g);
 
 		// Set up the different pieces for all the players
 		BoardUpdater.getInstance().drawPlayersPieces(g);
+		//BoardUpdater.getInstance().drawPreviousPlayersPieces(g);
 		
 		BoardUpdater.getInstance().updatePlayerPowerButtons(btnPower1,btnPower2,labelPlayerActualTurn);
 		
 		// Update the Board with the right animations when a Piece is being selected or not
 		BoardUpdater.getInstance().animateSelectedPiece(g);
 		BoardUpdater.getInstance().animateAvailableEmplacement(g);
-		GameVariableRepository.getInstance().updatePiecesState();
+		//if(correctionAsked==false) {
+			GameVariableRepository.getInstance().updatePiecesState();
+		/*}
+		else if(correctionAsked==true) {
+			GameVariableRepository.getInstance().updatePiecesPreviousState();
+			correctionAsked=false;
+		}*/
+		
+		
+	//	GameVariableRepository.getInstance().scoreCalculator();
 		
 		labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
 		if (GameVariableRepository.getInstance().checkIfVictoryState()) {
+			System.out.println("VICTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOIRE");
+			VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().setRank("First");
+			GameVariableRepository.getInstance().determineRank();
 			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
 		}
-		//repaint();
+		
 	}
 	
 	public void endTurn(Emplacement currentEmplacement) {
 		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(9);
 		Piece currentSelectedPiece = GameVariableRepository.getInstance().getSelectedPiece();
-    	
+    		
 		BoardUpdater.getInstance().updateAfterMovePieceState(currentSelectedPiece, currentEmplacement);
-		
+		counter++;
 		
 		//stats
 		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addTotalNumberOfMove();
-		//System.out.println(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().getTotalNumberOfMove());
-		
-		
+		//quantite de mana a changer
 		updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), 100);
 		
-		//model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Déplacement classique");
-		//GameVariableRepository.getInstance().incrementPlayerTurn();//deplacer pour pouvoir control
-	
 		new Thread(new Runnable(){
 			public void run(){
 				Thread t = new Thread(new Runnable(){
@@ -667,7 +754,7 @@ public class Board extends JPanel {
 						Timer t = new Timer(2000, new ActionListener() {
 				            @Override
 				            public void actionPerformed(ActionEvent e) {
-								GameVariableRepository.getInstance().incrementPlayerTurn();//deplacer au dessus
+								GameVariableRepository.getInstance().incrementPlayerTurn();
 								GameVariableRepository.getInstance().updatePiecesState();
 								updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
 								labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
@@ -690,7 +777,6 @@ public class Board extends JPanel {
 				}
 			}
 		}).start();      
-
 		repaint();
 	}
 }

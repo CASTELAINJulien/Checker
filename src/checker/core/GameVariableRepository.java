@@ -18,7 +18,8 @@ public class GameVariableRepository {
 	// Varies from 0 to 2, each digits indicating a player. Will varies between the turns.
 	private int playerTurn;
 	private String actualPlayerName;
-	
+	private String previousPlayerName;
+
 	private ArrayList<Emplacement> emplacementsList;
 	private Emplacement[][] emplacements;
 	private HashMap<int[],Emplacement> emplacementsHashMap;
@@ -84,7 +85,12 @@ public class GameVariableRepository {
 		updateActualPlayerName();
 		return this.playerTurn;
 	}
-	public int decrementPlayerTurn() {
+	public int decrementPlayerTurnForCorrection() {
+		this.playerTurn--;
+		updateActualPlayerName();
+		return this.playerTurn;
+	}
+	public int decrementPlayerTurnForPower() {
 		this.playerTurn--;
 		return this.playerTurn;
 	}
@@ -119,6 +125,8 @@ public class GameVariableRepository {
 		}
 		return -1;
 	}
+	
+	
 	public boolean checkIfVictoryState() {
 		boolean itIsAVictory = false;
 		boolean firstAreaNotFilledCorrectly = false;
@@ -266,8 +274,94 @@ public class GameVariableRepository {
 		return -1;
 	}
 	
+	public void determineRank() {
+		if(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getRank()!=null) {
+			if(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getSpecialMove() < VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSpecialMove()) {
+				VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Second");
+				VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Third");
+			}
+			else if(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getSpecialMove() > VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSpecialMove()){
+				VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Third");
+				VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Second");
+			}
+			//si egalite
+			else {
+				if(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getPowerUsed()<VariableRepository.getInstance().searchPlayer("Player 3").getStats().getPowerUsed()) {
+					VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Second");
+					VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Third");
+				}
+				else if(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getPowerUsed()<VariableRepository.getInstance().searchPlayer("Player 2").getStats().getPowerUsed()) {
+					VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Third");
+					VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Second");
+				}
+			}
+		}
+		
+		else if(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getRank()!=null) {
+			if(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getSpecialMove() < VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSpecialMove()) {
+				VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Second");
+				VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Third");
+			}
+			else if(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getSpecialMove() > VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSpecialMove()){
+				VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Third");
+				VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Second");
+			}
+			//si egalité
+			else {
+					if(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getPowerUsed()<VariableRepository.getInstance().searchPlayer("Player 3").getStats().getPowerUsed()) {
+						VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Second");
+						VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Third");
+					}
+					else if(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getPowerUsed()<VariableRepository.getInstance().searchPlayer("Player 1").getStats().getPowerUsed()) {
+						VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Third");
+						VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Second");
+					}
+					else {
+						VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Second");
+						VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Second");
+					}
+				}		
+		}
+		
+		else if(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getRank()!=null) {
+			if(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getSpecialMove() < VariableRepository.getInstance().searchPlayer("Player 1").getStats().getSpecialMove()) {
+				VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Second");
+				VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Third");
+			}
+			else if(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getSpecialMove() > VariableRepository.getInstance().searchPlayer("Player 1").getStats().getSpecialMove()){
+				VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Third");
+				VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Second");
+			}
+			//si egalite
+			else {
+				if(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getPowerUsed()<VariableRepository.getInstance().searchPlayer("Player 1").getStats().getPowerUsed()) {
+					VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Second");
+					VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Third");
+				}
+				else if(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getPowerUsed()<VariableRepository.getInstance().searchPlayer("Player 2").getStats().getPowerUsed()) {
+					VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Third");
+					VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Second");
+				}
+				else {
+				VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Second");
+				VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Second");
+				}
+			}
+		}
+	}
+	
 	public String getActualPlayerName () {
 		return this.actualPlayerName;
+	}
+	public String getPreviousPlayerName () {
+		if ( this.playerTurn == 0 ) {
+			this.previousPlayerName = "Player 3";
+		} else if ( this.playerTurn == 1 ) {
+			this.previousPlayerName = "Player 1";
+		} else {
+			this.previousPlayerName = "Player 2";
+		}
+		return this.previousPlayerName;
 	}
 	
 	public void updateActualPlayerName() {
@@ -439,4 +533,6 @@ public class GameVariableRepository {
 	public int getNbRound() {
 		return this.nbRound;
 	}
+	
+
 }
