@@ -23,6 +23,10 @@ private JButton btnReplay;
 private JButton btnQuit;
 private JButton btnMainMenu;
 
+private JLabel lblPlayer1;
+private JLabel lblPlayer2;
+private JLabel lblPlayer3;
+
 private JLabel nbSimpleMoveP1;
 private JLabel nbSimpleMoveP2;
 private JLabel nbSimpleMoveP3;
@@ -81,7 +85,7 @@ private JLabel rankP3;
 		add(separator_2);
 		
 		
-		JLabel lblPlayer1 = new JLabel("Player 1:");
+		lblPlayer1 = new JLabel("Player 1:");
 		lblPlayer1.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblPlayer1.setBounds(81, 121, 162, 50);
 		add(lblPlayer1);
@@ -108,7 +112,7 @@ private JLabel rankP3;
 		add(rankP1);
 				
 		
-		JLabel lblPlayer2 = new JLabel("Player 2:");
+		lblPlayer2 = new JLabel("Player 2:");
 		lblPlayer2.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblPlayer2.setBounds(410, 121, 168, 50);
 		add(lblPlayer2);
@@ -135,7 +139,7 @@ private JLabel rankP3;
 		add(rankP2);
 		
 			
-		JLabel lblPlayer3 = new JLabel("Player 3:");
+		lblPlayer3 = new JLabel("Player 3:");
 		lblPlayer3.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblPlayer3.setBounds(730, 121, 192, 50);
 		add(lblPlayer3);
@@ -199,7 +203,7 @@ private JLabel rankP3;
 			nbTotalMoveP1.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getTotalNumberOfMove()));
 			//scoreP1.setText("score: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getScore()));
 			rankP1.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getRank()));
-
+			lblPlayer1.setText(VariableRepository.getInstance().searchPlayer("Player 1").getPlayerName());
 			
 
 			
@@ -209,6 +213,7 @@ private JLabel rankP3;
 			nbTotalMoveP2.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getTotalNumberOfMove()));
 			//scoreP2.setText("score: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getScore()));
 			rankP2.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getRank()));
+			lblPlayer2.setText(VariableRepository.getInstance().searchPlayer("Player 2").getPlayerName());
 
 			
 			nbSimpleMoveP3.setText("Number of simple moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSimpleMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().ratioSimpleMove())+"%)");
@@ -217,6 +222,7 @@ private JLabel rankP3;
 			nbTotalMoveP3.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getTotalNumberOfMove()));
 			//scoreP3.setText("score: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getScore()));
 			rankP3.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getRank()));
+			lblPlayer3.setText(VariableRepository.getInstance().searchPlayer("Player 3").getPlayerName());
 
 		}
 		repaint();	

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -46,7 +49,8 @@ public class MainScreenPanel extends JPanel {
 		}
 
 		setPreferredSize(new Dimension(windowWidth, GTParameters.WINDOW_HEIGHT));
-		setBackground(Color.WHITE);
+		setBackground(Color.LIGHT_GRAY);
+		
 		
 		this.initLayout();
 		

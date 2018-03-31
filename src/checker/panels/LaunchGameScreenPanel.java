@@ -289,7 +289,7 @@ public class LaunchGameScreenPanel extends JPanel {
 			
 			player2.addPower(al2.get(0));
 			player2.addPower(al2.get(1));
-			player2.setColor(Color.yellow);
+			player2.setColor(Color.orange);
 			
 			player3.addPower(al3.get(0));
 			player3.addPower(al3.get(1));

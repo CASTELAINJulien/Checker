@@ -1,12 +1,18 @@
-
 package checker.panels;
 
 import java.awt.Color;
-
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -15,6 +21,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.JProgressBar;
+import javax.swing.JDesktopPane;
+import javax.swing.border.TitledBorder;
+import javax.swing.JList;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.ListSelectionModel;
 
 import checker.core.BoardUpdater;
 import checker.core.GameVariableRepository;
@@ -32,29 +47,9 @@ import customEventsPackage.PowerTwoMoves;
 import customEventsPackage.PowerJump;
 import customEventsPackage.PowerTeleport;
 
-import javax.swing.JProgressBar;
-import javax.swing.JDesktopPane;
-import javax.swing.border.TitledBorder;
-import javax.swing.JList;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import java.util.ListIterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.ListSelectionModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.SwingConstants;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 
 public class Board extends JPanel {
@@ -109,10 +104,9 @@ public class Board extends JPanel {
 	private Emplacement finalEmplacement;
 	private Piece movedPiece;
 	private String typeOfLastMove;
-	
+	private boolean specialMoveDone=false;
 	private int counter=0;
-	
-	
+		
 	private Graphics graphicContext;
 	
 	DefaultListModel<String> model = new DefaultListModel<>();
@@ -188,23 +182,34 @@ public class Board extends JPanel {
 		desktopPane = new JDesktopPane();
 		desktopPane.setBounds(6, 16, 126, 100);
 		playersInternalPanel.add(desktopPane);
-		desktopPane.setBackground(Color.WHITE);
+		desktopPane.setBackground(Color.red);
+		desktopPane.setBorder(null);
+		desktopPane.setOpaque(false);
 		
 		verticalBox = Box.createVerticalBox();
-		verticalBox.setBounds(0, 0, 135, 60);
+		verticalBox.setBounds(0, 0, 125, 100);
+		verticalBox.setOpaque(false);
+		verticalBox.setBorder(null);
 		desktopPane.add(verticalBox);
-		
+			
 		horizontalBox = Box.createHorizontalBox();
+		horizontalBox.setBounds(0, 0, 135, 200);
+		horizontalBox.setOpaque(false);
+		horizontalBox.setBorder(null);
+
 		verticalBox.add(horizontalBox);
 		
 		// JLabel firstPlayerName = new JLabel( VariableRepository.getInstance().searchPlayer("Player 1").getPlayerName() );
 		firstPlayerName = new JLabel("Player 1 : ");
+		firstPlayerName.setForeground(Color.red);
 		horizontalBox.add(firstPlayerName);
 		
 		textField = new JTextField();
 		firstPlayerName.setLabelFor(textField);
 		textField.setEnabled(false);
 		textField.setEditable(false);
+		textField.setBorder(null);
+
 		horizontalBox.add(textField);
 		textField.setColumns(10);
 		
@@ -213,12 +218,15 @@ public class Board extends JPanel {
 		
 		// JLabel lblNewLabel_1 = new JLabel( VariableRepository.getInstance().searchPlayer("Player 2").getPlayerName() );
 		secondPlayerName = new JLabel("Player 2 : ");
+		secondPlayerName.setForeground(Color.orange);
+
 		horizontalBox_1.add(secondPlayerName);
 		
 		textField_1 = new JTextField();
 		secondPlayerName.setLabelFor(textField_1);
 		textField_1.setEnabled(false);
 		textField_1.setEditable(false);
+		textField_1.setBorder(null);
 		horizontalBox_1.add(textField_1);
 		textField_1.setColumns(10);
 		
@@ -227,12 +235,16 @@ public class Board extends JPanel {
 		
 		// JLabel lblNewLabel_2 = new JLabel( VariableRepository.getInstance().searchPlayer("Player 3").getPlayerName() );
 		thirdPlayerName  = new JLabel("Player 3 : ");
+		thirdPlayerName.setForeground(Color.green);
+
 		horizontalBox_2.add(thirdPlayerName );
 		
 		textField_2 = new JTextField();
 		thirdPlayerName.setLabelFor(textField_2);
 		textField_2.setEnabled(false);
 		textField_2.setEditable(false);
+		textField_2.setBorder(null);
+
 		horizontalBox_2.add(textField_2);
 		textField_2.setColumns(10);
 		
@@ -248,11 +260,8 @@ public class Board extends JPanel {
 		historicList.setValueIsAdjusting(true);
 		historicList.setEnabled(false);
 		historicList.setBounds(6, 16, 192, 227);
-		//	JScrollPane jsp=new JScrollPane(historicList,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		//historicList.ensureIndexIsVisible( historicList.getModel().getSize() -1 );
 		panel.add(historicList);
-			//	panel.add(jsp);
-		
+			
 		btnPower1 = new JButton();
 		btnPower1.setBackground(Color.white);
 		btnPower1.setBounds(98, 435, 100, 100);
@@ -294,8 +303,8 @@ public class Board extends JPanel {
 		powerActivated.setBounds(370, 270, 500, 39);
 		
 		labelProgressBarValue = new JLabel("0");
-		labelProgressBarValue.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		labelProgressBarValue.setBounds(938, 417, 29, 28);
+		labelProgressBarValue.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		labelProgressBarValue.setBounds(938, 587, 39, 28);
 		labelProgressBarValue.setComponentOrientation(getComponentOrientation());
 		add(labelProgressBarValue);
 		
@@ -308,7 +317,7 @@ public class Board extends JPanel {
 		add(progressBar);
 		
 		launchGameButton = new JButton("Start Game !");
-		launchGameButton.setBounds(531, 454, 159, 58);
+		launchGameButton.setBounds(500, 325, 159, 58);
 		add(launchGameButton);
 	}
 	
@@ -361,6 +370,16 @@ public class Board extends JPanel {
 		Player playerToUpdate = VariableRepository.getInstance().searchPlayer(playerManaToUpdate);
 		progressBar.setValue( ( int ) playerToUpdate.getPlayerMana() );
 	}
+	
+	//remove the first half of the historic list when it's full
+	public void manageHistoricList() {
+		if(model.getSize()==12) {
+			for(int i=0;i<6;i++) {
+				model.removeElementAt(i);
+			}
+		}
+	}
+	
 	public void aiMove() {
 		Ai ai=new Ai();
 		randomEmplacementToGo=ai.randomSelection();
@@ -400,7 +419,9 @@ public class Board extends JPanel {
 				}
 				
 				//if the player is not an AI
-				else if(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getIsAI()==false && GameVariableRepository.getInstance().getGameStarted()==true) {
+				else if(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getIsAI()==false &&
+						GameVariableRepository.getInstance().getGameStarted()==true) {
+					manageHistoricList();
 					boolean isOnEmplacementTemp = false;//curseur sur empla
 					boolean isOccupiedTemp = false;//piece sur empla
 					boolean aPieceIsSelectedTemp = GameVariableRepository.getInstance().getAPieceIsSelected();
@@ -462,7 +483,7 @@ public class Board extends JPanel {
 		            			Power activated=VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPower(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPowerActivated());
 		            			activated.effect(currentPiece);
 		            			VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(9);
-			            		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Control Power Used");
+			            		model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Control Power Used");
 
 		            		}	            		
 		            		
@@ -488,7 +509,7 @@ public class Board extends JPanel {
 		            				turnPlayerFreezer3=GameVariableRepository.getInstance().getPlayerTurn();
 		            				VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(9);
 		            			}
-			            		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Freeze Power Used");
+			            		model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Freeze Power Used");
 
 		            		}	            	
 			            	
@@ -499,7 +520,7 @@ public class Board extends JPanel {
 			            			Power activated=VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPower(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPowerActivated());
 				            		activated.effect(currentPiece);
 				            		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).setPowerActivated(9);
-				            		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Two Moves Power Used");
+				            		model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Two Moves Power Used");
 			            		}
 			            		
 			            		
@@ -510,7 +531,6 @@ public class Board extends JPanel {
 								
 				            	initialEmplacement=currentEmplacement;
 								movedPiece=pieceToBeSelected;
-								System.out.println(currentEmplacement.getPositionX()+currentEmplacement.getPositionY());
 								
 								validate();
 								repaint();
@@ -521,8 +541,8 @@ public class Board extends JPanel {
 			            	//check if the power jump is activated
 			            		if(PowerJump.testJump(GameVariableRepository.getInstance().getActualPlayerName())==true) {
 			            			if(currentEmplacement.ifIsEligibleForJump()) {
-			            				model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Jump Power Used");
-			            		    	model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Special Move");
+			            				model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Jump Power Used");
+			            		    	model.addElement( VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Special Move");
 			            		    	VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSpecialMove();	
 			            				System.out.println("special move");
 			            				endTurn(currentEmplacement);
@@ -531,10 +551,10 @@ public class Board extends JPanel {
 			            		
 			            	//check if the power teleport is activated
 			            		else if(PowerTeleport.testTeleport(GameVariableRepository.getInstance().getActualPlayerName())==true) { 
-			            			model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Teleport Power Used");
+			            			model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Teleport Power Used");
 
 			            			
-			            	    		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Special Move");
+			            	    		model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Special Move");
 			            	    		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSpecialMove();	
 			            				System.out.println("special move");
 			            			
@@ -544,22 +564,26 @@ public class Board extends JPanel {
 			            		else if( isOnEmplacementTemp == true && isOccupiedTemp == false && aPieceIsSelectedTemp == true && currentEmplacement.ifIsEligibleForMove() == true ) {
 
 			            			if(currentEmplacement.isSpecialMove()) {
-			            	    		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Special Move");
+			            	    		model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Special Move");
 			            	    		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSpecialMove();	
 			            				System.out.println("special move");
 			            				typeOfLastMove="special";
+			            				Piece currentSelectedPiece = GameVariableRepository.getInstance().getSelectedPiece();
+			            				BoardUpdater.getInstance().updateAfterMovePieceState(currentSelectedPiece, currentEmplacement);
+			            				specialMoveDone=true;
 			            			}
 			            			else {
-			            				model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Classic Move");
+			            				model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Classic Move");
 			            	    		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSimpleMove();
 			            				System.out.println("classic move");
 			            				typeOfLastMove="classic";
-
+			            				specialMoveDone=false;
+			            				endTurn(currentEmplacement);
 			            			}
 									
 									finalEmplacement=currentEmplacement;
 			            			
-									endTurn(currentEmplacement);
+									
 			            		}
 		            
 			            }
@@ -610,7 +634,7 @@ public class Board extends JPanel {
 
 					}
 					VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().substractTotalNumberOfMove();		
-            		model.addElement( GameVariableRepository.getInstance().getActualPlayerName() + " : " + "Correction Asked");
+            		model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Correction Asked");
 
 					
 				/*ArrayList<Emplacement> toRefresh = GameVariableRepository.getInstance().getPreviousTurnEmplacementsArrayList();
@@ -696,11 +720,6 @@ public class Board extends JPanel {
 		//emplacements = new Emplacement[x][y];
 		
 		// Set up the checker board at first
-		if(counter==0) {
-			
-		
-		}
-
 		BoardUpdater.getInstance().drawCheckerBoardEmplacements(g);	
 		BoardUpdater.getInstance().drawCheckerBoardVictoryEmplacements(g);
 
@@ -713,18 +732,11 @@ public class Board extends JPanel {
 		// Update the Board with the right animations when a Piece is being selected or not
 		BoardUpdater.getInstance().animateSelectedPiece(g);
 		BoardUpdater.getInstance().animateAvailableEmplacement(g);
-		//if(correctionAsked==false) {
-			GameVariableRepository.getInstance().updatePiecesState();
-		/*}
-		else if(correctionAsked==true) {
-			GameVariableRepository.getInstance().updatePiecesPreviousState();
-			correctionAsked=false;
-		}*/
+
+		GameVariableRepository.getInstance().updatePiecesState();
+
 		
-		
-	//	GameVariableRepository.getInstance().scoreCalculator();
-		
-		labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
+		labelPlayerActualTurn.setText(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName());
 		if (GameVariableRepository.getInstance().checkIfVictoryState()) {
 			System.out.println("VICTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOIRE");
 			VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().setRank("First");
@@ -757,7 +769,7 @@ public class Board extends JPanel {
 								GameVariableRepository.getInstance().incrementPlayerTurn();
 								GameVariableRepository.getInstance().updatePiecesState();
 								updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
-								labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
+								labelPlayerActualTurn.setText(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName());
 								labelPlayerActualTurn.setForeground(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getColor());
 								GameVariableRepository.getInstance().setIsUpdating(false);
 				            }
@@ -771,7 +783,7 @@ public class Board extends JPanel {
 				if(SwingUtilities.isEventDispatchThread()) {
 					t.start();
 				} else {
-					labelPlayerActualTurn.setText(GameVariableRepository.getInstance().getActualPlayerName());
+					labelPlayerActualTurn.setText(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName());
 					updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
 					SwingUtilities.invokeLater(t);
 				}
