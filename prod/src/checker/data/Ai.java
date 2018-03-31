@@ -42,14 +42,12 @@ public class Ai {
 			
 			
 			//ENLEVER LE COMMENTAIRE DANS LE WHILE POUR IA "FOLLE"
-			while (randomEmplacementToGo.ifIsEligibleForMove() != true  /*&& randomEmplacementToGo.getIsOccupied()!=false*/ ) {		 			
+			while (randomEmplacementToGo.ifIsEligibleForMove() != true || randomEmplacementToGo.getIsOccupied()!=false ) {		 			
 				randomIndex = random.nextInt(GameVariableRepository.getInstance().getEmplacementsArrayList().size());
 				randomEmplacementToGo=GameVariableRepository.getInstance().getEmplacementsArrayList().get(randomIndex);
 			}
 		}
-		
-		
-		
+
 		//si aucun saut possible avec le pion selectionné
 		else  {
 			System.out.println("chercher un autre pion eligible");
@@ -57,11 +55,8 @@ public class Ai {
 		}
 		
         System.out.println("random selection to go OKKKKK");
-
 		return randomEmplacementToGo;
 	}
-	
-	
 	
 	public Emplacement randomSelection() {
 			boolean isOnEmplacementTemp = false;//curseur sur empla
@@ -72,7 +67,7 @@ public class Ai {
 			if (GameVariableRepository.getInstance().getIsUpdating() == true ) {
 				//return;
 			}
-			 Random random = new Random();			
+			Random random = new Random();			
 	        int randomIndex = random.nextInt(GameVariableRepository.getInstance().getEmplacementsArrayList().size());
 	        Emplacement randomEmplacement=GameVariableRepository.getInstance().getEmplacementsArrayList().get(randomIndex);
 
@@ -97,15 +92,7 @@ public class Ai {
 				 Emplacement emplacementToGo=randomMove(randomEmplacement);
 		       
 		        return emplacementToGo;
-		        } 
-
-		        
-	//}
-	
-
-
-
-
+	} 
 }
 
 
