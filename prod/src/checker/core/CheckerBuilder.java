@@ -346,13 +346,13 @@ public class CheckerBuilder {
 		GameVariableRepository.getInstance().getEmplacementTable()[13][5] = ClassFactory.createEmplacement( 13, 5 );
 		GameVariableRepository.getInstance().getEmplacementTable()[15][5] = ClassFactory.createEmplacement( 15, 5, 4);
 		GameVariableRepository.getInstance().getEmplacementTable()[17][5] = ClassFactory.createEmplacement( 17, 5 );
-		GameVariableRepository.getInstance().getEmplacementTable()[24][5] = ClassFactory.createEmplacement( 24, 5, 3);
+		GameVariableRepository.getInstance().getEmplacementTable()[25][5] = ClassFactory.createEmplacement( 25, 5, 3);
 
 		GameVariableRepository.getInstance().getEmplacementTable()[5][29] = ClassFactory.createEmplacement( 5, 29, 6);
 		GameVariableRepository.getInstance().getEmplacementTable()[13][29] = ClassFactory.createEmplacement( 13, 29 );
 		GameVariableRepository.getInstance().getEmplacementTable()[15][29] = ClassFactory.createEmplacement( 15, 29, 1);
 		GameVariableRepository.getInstance().getEmplacementTable()[17][29] = ClassFactory.createEmplacement( 17, 29 );
-		GameVariableRepository.getInstance().getEmplacementTable()[24][29] = ClassFactory.createEmplacement( 24, 29, 5);
+		GameVariableRepository.getInstance().getEmplacementTable()[25][29] = ClassFactory.createEmplacement( 25, 29, 5);
 
 	//line 4 & 14
 	
@@ -362,8 +362,8 @@ public class CheckerBuilder {
 		GameVariableRepository.getInstance().getEmplacementTable()[14][7] = ClassFactory.createEmplacement( 14, 7 );
 		GameVariableRepository.getInstance().getEmplacementTable()[16][7] = ClassFactory.createEmplacement( 16, 7 );
 		GameVariableRepository.getInstance().getEmplacementTable()[18][7] = ClassFactory.createEmplacement( 18, 7 );
-		GameVariableRepository.getInstance().getEmplacementTable()[23][7] = ClassFactory.createEmplacement( 23, 7, 3);
-		GameVariableRepository.getInstance().getEmplacementTable()[25][7] = ClassFactory.createEmplacement( 25, 7, 3);
+		GameVariableRepository.getInstance().getEmplacementTable()[24][7] = ClassFactory.createEmplacement( 24, 7, 3);
+		GameVariableRepository.getInstance().getEmplacementTable()[26][7] = ClassFactory.createEmplacement( 26, 7, 3);
 
 		GameVariableRepository.getInstance().getEmplacementTable()[4][27] = ClassFactory.createEmplacement( 4, 27, 6);
 		GameVariableRepository.getInstance().getEmplacementTable()[6][27] = ClassFactory.createEmplacement( 6, 27, 6);
@@ -371,8 +371,8 @@ public class CheckerBuilder {
 		GameVariableRepository.getInstance().getEmplacementTable()[14][27] = ClassFactory.createEmplacement( 14, 27 );
 		GameVariableRepository.getInstance().getEmplacementTable()[16][27] = ClassFactory.createEmplacement( 16, 27 );
 		GameVariableRepository.getInstance().getEmplacementTable()[18][27] = ClassFactory.createEmplacement( 18, 27 );
-		GameVariableRepository.getInstance().getEmplacementTable()[23][27] = ClassFactory.createEmplacement( 23, 27, 5);
-		GameVariableRepository.getInstance().getEmplacementTable()[25][27] = ClassFactory.createEmplacement( 25, 27, 5);
+		GameVariableRepository.getInstance().getEmplacementTable()[24][27] = ClassFactory.createEmplacement( 24, 27, 5);
+		GameVariableRepository.getInstance().getEmplacementTable()[26][27] = ClassFactory.createEmplacement( 26, 27, 5);
 
 	//line 5 & 13
 	
@@ -464,11 +464,11 @@ public class CheckerBuilder {
 		GameVariableRepository.getInstance().getEmplacementTable()[15][21] = ClassFactory.createEmplacement( 15, 21 );
 		GameVariableRepository.getInstance().getEmplacementTable()[17][21] = ClassFactory.createEmplacement( 17, 21 );
 		GameVariableRepository.getInstance().getEmplacementTable()[19][21] = ClassFactory.createEmplacement( 19, 21 );
-		GameVariableRepository.getInstance().getEmplacementTable()[11][21] = ClassFactory.createEmplacement( 21, 21 );
-		GameVariableRepository.getInstance().getEmplacementTable()[13][21] = ClassFactory.createEmplacement( 23, 21 );
-		GameVariableRepository.getInstance().getEmplacementTable()[15][21] = ClassFactory.createEmplacement( 25, 21 );
-		GameVariableRepository.getInstance().getEmplacementTable()[17][21] = ClassFactory.createEmplacement( 27, 21, 5);
-		GameVariableRepository.getInstance().getEmplacementTable()[19][21] = ClassFactory.createEmplacement( 29, 21, 5);
+		GameVariableRepository.getInstance().getEmplacementTable()[21][21] = ClassFactory.createEmplacement( 21, 21 );
+		GameVariableRepository.getInstance().getEmplacementTable()[23][21] = ClassFactory.createEmplacement( 23, 21 );
+		GameVariableRepository.getInstance().getEmplacementTable()[25][21] = ClassFactory.createEmplacement( 25, 21 );
+		GameVariableRepository.getInstance().getEmplacementTable()[27][21] = ClassFactory.createEmplacement( 27, 21, 5);
+		GameVariableRepository.getInstance().getEmplacementTable()[29][21] = ClassFactory.createEmplacement( 29, 21, 5);
 
 	//line 8 & 10
 
