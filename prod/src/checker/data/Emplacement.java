@@ -32,19 +32,19 @@ public class Emplacement {
 		// Mettre un parametre startingAreaIndex par défaut ?
 		if ( AreaIndex == 1 ) {
 			GameVariableRepository.getInstance().getFirstStartingAreaEmplacements().add(this);
-			currentPiece = new Piece(this.positionX, this.positionY, Color.red, "Player 1");
+			currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.red, "Player 1");
 			this.isOccupied = true;
 			this.occupyingPiece = currentPiece;
 			GameVariableRepository.getInstance().getFirstPlayerPieces().add(currentPiece);
 		} else if ( AreaIndex == 2 ) {
 			GameVariableRepository.getInstance().getSecondStartingAreaEmplacements().add(this);
-			currentPiece = new Piece(this.positionX, this.positionY, Color.yellow, "Player 2");
+			currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.yellow, "Player 2");
 			this.isOccupied = true;
 			this.occupyingPiece = currentPiece;
 			GameVariableRepository.getInstance().getSecondPlayerPieces().add(currentPiece);
 		} else if ( AreaIndex == 3 ) {
 			GameVariableRepository.getInstance().getThirdStartingAreaEmplacements().add(this);
-			currentPiece = new Piece(this.positionX, this.positionY, Color.green, "Player 3");
+			currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.green, "Player 3");
 			this.isOccupied = true;
 			this.occupyingPiece = currentPiece;
 			GameVariableRepository.getInstance().getThirdPlayerPieces().add(currentPiece);
@@ -223,8 +223,12 @@ public boolean isSpecialMove() {
 			}
 		}
 	}
-	if(isEligibleForMove==true) return true;
-	else return false;
+	if(isEligibleForMove==true) {
+		System.out.println("Movement still possible ?");
+		return true;
+	} else {
+		return false;
+	}
 }
 	
 	

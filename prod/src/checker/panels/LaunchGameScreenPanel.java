@@ -311,6 +311,7 @@ public class LaunchGameScreenPanel extends JPanel {
 			player3.addPower(al3.get(1));
 			player3.setColor(Color.green);
 			
+			GameVariableRepository.getInstance().resetGameVariableRepository();
 			CheckerBuilder.getInstance().initializeEmplacements();
 			
 			// GameVariableRepository.getInstance().setGameStarted(true);

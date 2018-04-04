@@ -54,8 +54,6 @@ import java.util.concurrent.Executors;
 
 public class Board extends JPanel {
 
-	private Emplacement[][] emplacements;
-
 	//private int xTempValue =0;
 	// private int yTempValue =0;
 	private boolean justPlayed = false;
@@ -139,21 +137,20 @@ public class Board extends JPanel {
 	
 	public Board() throws InterruptedException {
 		super();
+		/*
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent arg0) {
 				repaint();
 			}
 		});
-
+	*/
 		setLayout(null);
 		
 		initLayout();
 		
 		initActions();
 	}
-	
-	
 	
 	public void modifyPlayerNamesGUI() {
 		String firstPlayerName = VariableRepository.getInstance().searchPlayer("Player 1").getPlayerName();
@@ -402,6 +399,19 @@ public class Board extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().setRank("First");
 				GameVariableRepository.getInstance().determineRank();
+				
+				removeAll();
+				
+				setLayout(null);
+				
+				initLayout();
+				
+				try {
+					initActions();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
 			}
 		});
@@ -421,16 +431,17 @@ public class Board extends JPanel {
 				//if the player is not an AI
 				else if(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getIsAI()==false &&
 						GameVariableRepository.getInstance().getGameStarted()==true) {
-					manageHistoricList();
 					boolean isOnEmplacementTemp = false;//curseur sur empla
 					boolean isOccupiedTemp = false;//piece sur empla
 					boolean aPieceIsSelectedTemp = GameVariableRepository.getInstance().getAPieceIsSelected();
 				// xTempValue = 0;
 			    // yTempValue = 0;
+					manageHistoricList();
 					ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator();
 					if (GameVariableRepository.getInstance().getIsUpdating() == true ) {
 						return;
 					}
+					
 					while (iter.hasNext() && isOnEmplacementTemp == false ) {
 			            Emplacement currentEmplacement = iter.next();
 			            Piece currentPiece = currentEmplacement.getOccupyingPiece();
@@ -447,6 +458,10 @@ public class Board extends JPanel {
 			            	else {
 			            		pieceFrozen.setIsClickeable(false);
 			            		pieceFrozen.setColor(Color.blue);
+			            		System.err.println("=========" + GameVariableRepository.getInstance().getEmplacementsArrayList().size() + "\n");
+			            		System.err.println("=========" + GameVariableRepository.getInstance().getFirstPlayerPieces().size() + "\n");
+			            		System.err.println("=========" + GameVariableRepository.getInstance().getSecondPlayerPieces().size() + "\n");
+			            		System.err.println("=========" + GameVariableRepository.getInstance().getThirdPlayerPieces().size() + "\n");
 			            		repaint();
 			            	}
 			            }
@@ -460,6 +475,7 @@ public class Board extends JPanel {
 			            	else {
 			            		pieceFrozen2.setIsClickeable(false);
 			            		pieceFrozen2.setColor(Color.blue);
+			            		System.err.println("Frozen");
 			            		repaint();
 			            	}
 			            }
@@ -472,6 +488,7 @@ public class Board extends JPanel {
 			            	else {
 			            		pieceFrozen3.setIsClickeable(false);
 			            		pieceFrozen3.setColor(Color.blue);
+			            		System.err.println("Frozen");
 			            		repaint();
 			            	}
 			            }	            
@@ -543,6 +560,7 @@ public class Board extends JPanel {
 			            				model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Jump Power Used");
 			            		    	model.addElement( VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Special Move");
 			            		    	VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSpecialMove();	
+			            		    	VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addTotalNumberOfMove();
 			            				System.out.println("special move");
 			            				endTurn(currentEmplacement);
 			            			}
@@ -553,20 +571,25 @@ public class Board extends JPanel {
 			            			model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Teleport Power Used"); 
 			            	    	model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Special Move");
 			            	    	VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSpecialMove();	
+			            	    	VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addTotalNumberOfMove();
 			            			System.out.println("special move");
 			            			endTurn(currentEmplacement);
-			            		}	
-			            		
+			            		}				            		
 			            		else if( isOnEmplacementTemp == true && isOccupiedTemp == false && aPieceIsSelectedTemp == true && currentEmplacement.ifIsEligibleForMove() == true ) {
-			            			
-			            			if(currentEmplacement.isSpecialMove()) {
+			            			if(currentEmplacement.isSpecialMove() ) {
 			            	    		model.addElement(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName() + " : " + "Special Move");
 			            	    		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addSpecialMove();	
 			            				System.out.println("special move");
 			            				typeOfLastMove="special";
 			            				Piece currentSelectedPiece = GameVariableRepository.getInstance().getSelectedPiece();
 			            				BoardUpdater.getInstance().updateAfterMovePieceState(currentSelectedPiece, currentEmplacement);
+			            				repaint();
+			            				// GameVariableRepository.getInstance().setSelectedPiece(currentEmplacement.getOccupyingPiece());
+			            				// GameVariableRepository.getInstance().setAPieceIsSelected(true);
+			            				VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addTotalNumberOfMove();
+			            				BoardUpdater.getInstance().animateSelectedPiece(graphicContext);
 			            				specialMoveDone=true;
+			            				// endTurn(currentEmplacement);
 			            				//GameVariableRepository.getInstance().disablePiecesAfterSpecialMove(currentSelectedPiece);
 			            			}
 			            			else {
@@ -575,11 +598,12 @@ public class Board extends JPanel {
 			            				System.out.println("classic move");
 			            				typeOfLastMove="classic";
 			            				specialMoveDone=false;
+			            				VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addTotalNumberOfMove();
 			            				endTurn(currentEmplacement);
 			            			}
-									
+			            			
 									finalEmplacement=currentEmplacement;
-									
+
 			            		}
 			            }
 			            //permet de selectionner un autre pion 
@@ -615,7 +639,7 @@ public class Board extends JPanel {
 					//for stats
 					if(typeOfLastMove=="classic") {
 						VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().substractSimpleMove();
-						//quantité de mana a changer
+						//quantitï¿½ de mana a changer
 						updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), -100);
 						updateManaBarUI(GameVariableRepository.getInstance().getPlayerTurn());
 
@@ -729,7 +753,7 @@ public class Board extends JPanel {
 		
 		labelPlayerActualTurn.setText(VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getPlayerName());
 		if (GameVariableRepository.getInstance().checkIfVictoryState()) {
-			System.out.println("VICTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOIRE");
+			// System.out.println("VICTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOIRE");
 			VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().setRank("First");
 			GameVariableRepository.getInstance().determineRank();
 			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
@@ -744,7 +768,7 @@ public class Board extends JPanel {
 		counter++;
 		
 		//stats
-		VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addTotalNumberOfMove();
+		// VariableRepository.getInstance().searchPlayer(GameVariableRepository.getInstance().getActualPlayerName()).getStats().addTotalNumberOfMove();
 		//quantite de mana a changer
 		updatePlayerMana(GameVariableRepository.getInstance().getPlayerTurn(), 100);
 		

@@ -1,5 +1,6 @@
 package checker.data;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.io.IOException;
 
@@ -16,11 +17,14 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
 import checker.panels.Board;
 import checker.panels.LaunchGameScreenPanel;
 import checker.panels.MainScreenPanel;
 import checker.panels.OptionsScreenPanel;
 import checker.panels.PanelsContainer;
+import checker.log.LoggerUtility;
 
 /**
  * The main purpose of this class is to follow the "Simple Factory" Design Pattern, as to reunite ALL instanciation inside the methods of the class.
@@ -28,7 +32,7 @@ import checker.panels.PanelsContainer;
  *
  */
 public class ClassFactory {
-	
+	private static Logger logger = LoggerUtility.getLogger(ClassFactory.class);
 	/**
 	 * A method that instantiate graphical components that contains no text.
 	 * @param type A String-class parameter that indicates which class of object of the Swing API we need to instantiate. Possible values are :
@@ -71,8 +75,40 @@ public class ClassFactory {
 	 * @return Returns a Player-lass object.
 	 */
 	public static Player createPlayer(String name, boolean isAi) {
+		if ( isAi == true  ) {
+			logger.info("Player creation with name : " + name + " and is an AI.");
+		} else {
+			logger.info("Player creation with name : " + name + " and is a human. ");
+		}
 		return new Player(name, isAi);
 		
+	}
+	
+	public static Emplacement createEmplacement(int x, int y, int typeIndex) {
+		if ( typeIndex == 1 ) {
+			logger.info("Emplacement creation, serving as the starting area for the first player with x = " + x + " y : " + y + ".");
+		} else if ( typeIndex == 2 ) {
+			logger.info("Emplacement creation, serving as the starting area for the second player with x = " + x + " y : " + y + ".");
+		} else if ( typeIndex == 3 ) {
+			logger.info("Emplacement creation, serving as the starting area for the third player with x = " + x + " y : " + y + ".");
+		} else if ( typeIndex == 4 ) {
+			logger.info("Emplacement creation, serving as the victory area for the first player with x = " + x + " y : " + y + ".");
+		} else if ( typeIndex == 5 ) {
+			logger.info("Emplacement creation, serving as the victory area for the second player with x = " + x + " y : " + y + ".");
+		} else if ( typeIndex == 6 ) {
+			logger.info("Emplacement creation, serving as the victory area for the third player with x = " + x + " y : " + y + ".");
+		}
+		return new Emplacement(x,y, typeIndex);
+	}
+	
+	// currentPiece = new Piece(this.positionX, this.positionY, Color.red, "Player 1");
+	public static Piece createPiece(int x, int y, Color color, String playerPieceOwner) {
+		logger.info("Piece creation with a "+ color.toString() + " color, owned by " + playerPieceOwner + " and with coordinates x : " + x + " and y : " + y + ".");
+		return new Piece(x,y,color,playerPieceOwner);
+	}
+	public static Emplacement createEmplacement(int x, int y) {
+		logger.info("Classic Emplacement creation with coordinates x : " + x + " and y : " + y + ".");
+		return new Emplacement(x,y);
 	}
 	
 	/**

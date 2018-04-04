@@ -191,6 +191,10 @@ private JLabel rankP3;
 			VariableRepository.getInstance().searchPlayer("Player 1").getStats().reset();
 			VariableRepository.getInstance().searchPlayer("Player 2").getStats().reset();
 			VariableRepository.getInstance().searchPlayer("Player 3").getStats().reset();
+			
+			GameVariableRepository.getInstance().resetGameVariableRepository();
+			CheckerBuilder.getInstance().initializeEmplacements();
+			
 			PanelsContainer.getInstance().getCardLayout().previous(PanelsContainer.getInstance());
 		}
 	}
@@ -225,6 +229,6 @@ private JLabel rankP3;
 			lblPlayer3.setText(VariableRepository.getInstance().searchPlayer("Player 3").getPlayerName());
 
 		}
-		repaint();	
+		// repaint();	
 	}
 }

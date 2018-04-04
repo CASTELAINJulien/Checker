@@ -70,6 +70,30 @@ public class GameVariableRepository {
 	
 	static GameVariableRepository instance = new GameVariableRepository();
 	
+	public void resetGameVariableRepository () {
+		getInstance().emplacements = new Emplacement[BoardParameter.doubleArrayRowCellsNumber][BoardParameter.doubleArrayColumnCellNumber];
+		getInstance().emplacementsList = new ArrayList<Emplacement>();
+		getInstance().playerTurn = 0;
+		getInstance().actualPlayerName = "Player 1";
+		getInstance().firstStartingAreaEmplacements = new ArrayList<Emplacement>();
+		getInstance().secondStartingAreaEmplacements = new ArrayList<Emplacement>();
+		getInstance().thirdStartingAreaEmplacements = new ArrayList<Emplacement>();
+		getInstance().firstVictoryAreaEmplacements = new ArrayList<Emplacement>();
+		getInstance().secondVictoryAreaEmplacements = new ArrayList<Emplacement>();
+		getInstance().thirdVictoryAreaEmplacements = new ArrayList<Emplacement>();
+		getInstance().firstPlayerPieces = new ArrayList<Piece>();
+		getInstance().secondPlayerPieces = new ArrayList<Piece>();
+		getInstance().thirdPlayerPieces = new ArrayList<Piece>();
+		getInstance().fieldAreaEmplacements = new ArrayList<Emplacement>();
+		getInstance().selectedPiece = null;
+		getInstance().emplacementToBeEmptied = null;
+		getInstance().indexOfEmplacementToBeEmptied = 0;
+		getInstance().gameStarted = false;
+		getInstance().isUpdating = false;
+		getInstance().nbRound=0;
+		getInstance().emplacementsHashMap = new HashMap<int[],Emplacement>();
+	}
+	
 	public static GameVariableRepository getInstance() {
 		return instance;
 	}
