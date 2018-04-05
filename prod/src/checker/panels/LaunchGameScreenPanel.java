@@ -76,6 +76,8 @@ public class LaunchGameScreenPanel extends JPanel {
 	JList listSecondPlayerPower;
 	JList listThirdPlayerPower;
 	
+	Boolean playerNone=false;//true if there insn't a third player
+	
 	JButton buttonLaunchGame;
 	JButton buttonPrevious;
 	
@@ -153,7 +155,7 @@ public class LaunchGameScreenPanel extends JPanel {
 			return false;
 		}
 	}
-	public void randomPowerSelection() {
+	public void randomPowerSelection(Boolean player3Exists) {
 		Power[] randomPower=new Power[5];
 		randomPower[0]=control;
 		randomPower[1]=freeze;
@@ -200,23 +202,25 @@ public class LaunchGameScreenPanel extends JPanel {
 				al2.add(powerRandomlySelected);
 			}
 		}
-		if(nbPowerChoosenJ3<2){
-			if(nbPowerChoosenJ3==0) {
-				Power powerRandomlySelected = randomPower[r.nextInt(5)];			
-				al3.add(powerRandomlySelected);
-				al3.add(powerRandomlySelected);
-				while(al3.get(0).equals(al3.get(1))) {
-					al3.remove(1);
-					powerRandomlySelected = randomPower[r.nextInt(5)];			
+		if(player3Exists==true) {
+			if(nbPowerChoosenJ3<2){
+				if(nbPowerChoosenJ3==0) {
+					Power powerRandomlySelected = randomPower[r.nextInt(5)];			
+					al3.add(powerRandomlySelected);
+					al3.add(powerRandomlySelected);
+					while(al3.get(0).equals(al3.get(1))) {
+						al3.remove(1);
+						powerRandomlySelected = randomPower[r.nextInt(5)];			
+						al3.add(powerRandomlySelected);
+					}
+				}
+				if(nbPowerChoosenJ3==1) {
+					Power powerRandomlySelected = randomPower[r.nextInt(5)];
+					while(powerRandomlySelected.equals(al3.get(0))) {
+						powerRandomlySelected = randomPower[r.nextInt(5)];
+					}
 					al3.add(powerRandomlySelected);
 				}
-			}
-			if(nbPowerChoosenJ3==1) {
-				Power powerRandomlySelected = randomPower[r.nextInt(5)];
-				while(powerRandomlySelected.equals(al3.get(0))) {
-					powerRandomlySelected = randomPower[r.nextInt(5)];
-				}
-				al3.add(powerRandomlySelected);
 			}
 		}
 	}
@@ -263,7 +267,11 @@ public class LaunchGameScreenPanel extends JPanel {
 					player3 = ClassFactory.createPlayer("Player 3" + " ( AI )", returnComboBoxValue(comboBoxThirdPlayerChoice));
 				} 
 			} else {
-				if ( textFieldThirdPlayerName.getText().length() > 0 ) {
+				if(comboBoxThirdPlayerChoice.getSelectedItem()=="None") {
+					playerNone=true;
+					GameVariableRepository.getInstance().setPlayer3Exists(false);
+				}
+				if ( textFieldThirdPlayerName.getText().length() > 0 && comboBoxThirdPlayerChoice.getSelectedItem()=="Human" ) {
 					player3 = ClassFactory.createPlayer(textFieldThirdPlayerName.getText(), returnComboBoxValue(comboBoxThirdPlayerChoice));
 				} else {
 					player3 = ClassFactory.createPlayer("Player 3", returnComboBoxValue(comboBoxThirdPlayerChoice));
@@ -272,27 +280,48 @@ public class LaunchGameScreenPanel extends JPanel {
 		
 			VariableRepository.getInstance().registerPlayer( "Player 1", player1 );
 			VariableRepository.getInstance().registerPlayer( "Player 2", player2 );
-			VariableRepository.getInstance().registerPlayer( "Player 3", player3 );
-			
+				
 			if ( returnCheckBoxValue(checkBoxBeginnerP1) == true ) {
 				player1.setIsBeginner(true);
 			}
 			if ( returnCheckBoxValue(checkBoxBeginnerP2) == true ) {
 				player2.setIsBeginner(true);
 			}
-			if ( returnCheckBoxValue(checkBoxBeginnerP3) == true ) {
-				player3.setIsBeginner(true);
-			}
 			
+			//if there is a third player
+			if(playerNone==false) {
+				VariableRepository.getInstance().registerPlayer( "Player 3", player3 );
+				if ( returnCheckBoxValue(checkBoxBeginnerP3) == true ) {
+					player3.setIsBeginner(true);
+				}
+				if(nbPowerChoosenJ1<2||nbPowerChoosenJ2<2||nbPowerChoosenJ3<2){
+					JOptionPane jop = new JOptionPane();	
+					String[] options= {"OK","Cancel"};
+					String warningMessage="At least one player hasn't choosen 2 powers; power(s) will be assigned randomly";
+					int option = jop.showOptionDialog(null, warningMessage, "Warning", JOptionPane.OK_CANCEL_OPTION ,JOptionPane.WARNING_MESSAGE,null,options,options[1]);
+					
+					if(option==JOptionPane.OK_OPTION) {
+						randomPowerSelection(true);
+					}
+					else {
+						return;
+					}
+				}
+				player3.addPower(al3.get(0));
+				player3.addPower(al3.get(1));
+				player3.setColor(Color.green);
+			}
+			//if there isn't a third player
+			else if(playerNone==true) 
 			//if at least one player hasn't choosen 2 powers
-			if(nbPowerChoosenJ1<2||nbPowerChoosenJ2<2||nbPowerChoosenJ3<2){
+			if(nbPowerChoosenJ1<2||nbPowerChoosenJ2<2){
 				JOptionPane jop = new JOptionPane();	
 				String[] options= {"OK","Cancel"};
 				String warningMessage="At least one player hasn't choosen 2 powers; power(s) will be assigned randomly";
 				int option = jop.showOptionDialog(null, warningMessage, "Warning", JOptionPane.OK_CANCEL_OPTION ,JOptionPane.WARNING_MESSAGE,null,options,options[1]);
 				
 				if(option==JOptionPane.OK_OPTION) {
-					randomPowerSelection();
+					randomPowerSelection(false);
 				}
 				else {
 					return;
@@ -307,14 +336,12 @@ public class LaunchGameScreenPanel extends JPanel {
 			player2.addPower(al2.get(1));
 			player2.setColor(Color.orange);
 			
-			player3.addPower(al3.get(0));
-			player3.addPower(al3.get(1));
-			player3.setColor(Color.green);
-			
 			GameVariableRepository.getInstance().resetGameVariableRepository();
 			CheckerBuilder.getInstance().initializeEmplacements();
 			
-			// GameVariableRepository.getInstance().setGameStarted(true);
+			if(playerNone==true) {
+				PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());	
+			}
 			PanelsContainer.getInstance().getCardLayout().next(PanelsContainer.getInstance());
 		}
 	}
@@ -366,7 +393,7 @@ public class LaunchGameScreenPanel extends JPanel {
 		add(comboBoxSecondPlayerChoice);
 		
 		comboBoxThirdPlayerChoice = new JComboBox();
-		comboBoxThirdPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Human", "AI"}));
+		comboBoxThirdPlayerChoice.setModel(new DefaultComboBoxModel(new String[] {"Human", "AI","None"}));
 		comboBoxThirdPlayerChoice.setBounds(829, 187, 135, 20);
 		add(comboBoxThirdPlayerChoice);
 		

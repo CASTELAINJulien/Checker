@@ -30,35 +30,67 @@ public class Emplacement {
 		
 		Piece currentPiece = null;
 		// Mettre un parametre startingAreaIndex par défaut ?
-		if ( AreaIndex == 1 ) {
-			GameVariableRepository.getInstance().getFirstStartingAreaEmplacements().add(this);
-			currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.red, "Player 1");
-			this.isOccupied = true;
-			this.occupyingPiece = currentPiece;
-			GameVariableRepository.getInstance().getFirstPlayerPieces().add(currentPiece);
-		} else if ( AreaIndex == 2 ) {
-			GameVariableRepository.getInstance().getSecondStartingAreaEmplacements().add(this);
-			currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.yellow, "Player 2");
-			this.isOccupied = true;
-			this.occupyingPiece = currentPiece;
-			GameVariableRepository.getInstance().getSecondPlayerPieces().add(currentPiece);
-		} else if ( AreaIndex == 3 ) {
-			GameVariableRepository.getInstance().getThirdStartingAreaEmplacements().add(this);
-			currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.green, "Player 3");
-			this.isOccupied = true;
-			this.occupyingPiece = currentPiece;
-			GameVariableRepository.getInstance().getThirdPlayerPieces().add(currentPiece);
-		} else if ( AreaIndex == 4 ) {
-			this.color = Color.PINK;
-			GameVariableRepository.getInstance().getFirstVictoryAreaEmplacements().add(this);
-		} else if ( AreaIndex == 5 ) {
-			this.color = Color.ORANGE.darker();
-			GameVariableRepository.getInstance().getSecondVictoryAreaEmplacements().add(this);
-		} else if ( AreaIndex == 6 ) {
-			this.color = Color.CYAN;
-			GameVariableRepository.getInstance().getThirdVictoryAreaEmplacements().add(this);
-		}
 		
+		//if it's a three players game
+		if(	GameVariableRepository.getInstance().getPlayer3Exists()==true) {
+
+			if ( AreaIndex == 1 ) {
+				GameVariableRepository.getInstance().getFirstStartingAreaEmplacements().add(this);
+				currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.red, "Player 1");
+				this.isOccupied = true;
+				this.occupyingPiece = currentPiece;
+				GameVariableRepository.getInstance().getFirstPlayerPieces().add(currentPiece);
+			} else if ( AreaIndex == 2 ) {
+				GameVariableRepository.getInstance().getSecondStartingAreaEmplacements().add(this);
+				currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.yellow, "Player 2");
+				this.isOccupied = true;
+				this.occupyingPiece = currentPiece;
+				GameVariableRepository.getInstance().getSecondPlayerPieces().add(currentPiece);
+			} else if ( AreaIndex == 3 ) {
+				GameVariableRepository.getInstance().getThirdStartingAreaEmplacements().add(this);
+				currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.green, "Player 3");
+				this.isOccupied = true;
+				this.occupyingPiece = currentPiece;
+				GameVariableRepository.getInstance().getThirdPlayerPieces().add(currentPiece);
+			} else if ( AreaIndex == 4 ) {
+				this.color = Color.PINK;
+				GameVariableRepository.getInstance().getFirstVictoryAreaEmplacements().add(this);
+			} else if ( AreaIndex == 5 ) {
+				this.color = Color.ORANGE.darker().darker();
+				GameVariableRepository.getInstance().getSecondVictoryAreaEmplacements().add(this);
+			} else if ( AreaIndex == 6 ) {
+				this.color = Color.green.darker().darker().darker();
+				GameVariableRepository.getInstance().getThirdVictoryAreaEmplacements().add(this);
+			}
+		
+		}
+		//if it's a 2 players game
+		else {
+			if ( AreaIndex == 1 ) {
+				GameVariableRepository.getInstance().getFirstStartingAreaEmplacements().add(this);
+				currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.red, "Player 1");
+				this.isOccupied = true;
+				this.occupyingPiece = currentPiece;
+				GameVariableRepository.getInstance().getFirstPlayerPieces().add(currentPiece);
+				GameVariableRepository.getInstance().getSecondVictoryAreaEmplacements().add(this);
+			} else if ( AreaIndex == 4 ) {
+				GameVariableRepository.getInstance().getSecondStartingAreaEmplacements().add(this);
+				currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.yellow, "Player 2");
+				this.isOccupied = true;
+				this.occupyingPiece = currentPiece;
+				GameVariableRepository.getInstance().getSecondPlayerPieces().add(currentPiece);
+				GameVariableRepository.getInstance().getFirstVictoryAreaEmplacements().add(this);
+			} else if ( AreaIndex == 2 ) {
+				this.color = Color.black;
+			} else if ( AreaIndex == 3 ) {
+				this.color = Color.black;
+			}  else if ( AreaIndex == 5 ) {
+				this.color = Color.black;
+			} else if ( AreaIndex == 6 ) {
+				this.color = Color.black;
+			}
+		}
+
 		GameVariableRepository.getInstance().getEmplacementsArrayList().add(this);
 		GameVariableRepository.getInstance().getEmplacementsHashMap().put(keyCoordinates,this);
 	}

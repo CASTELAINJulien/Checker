@@ -47,6 +47,7 @@ private JLabel rankP1;
 private JLabel rankP2;
 private JLabel rankP3;
 
+
 	public EndGame() {
 		super();
 		//GameVariableRepository.getInstance().scoreCalculator();
@@ -138,7 +139,7 @@ private JLabel rankP3;
 		rankP2.setBounds(390, 255, 115, 14);
 		add(rankP2);
 		
-			
+	if(GameVariableRepository.getInstance().getPlayer3Exists()==true) {
 		lblPlayer3 = new JLabel("Player 3:");
 		lblPlayer3.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblPlayer3.setBounds(730, 121, 192, 50);
@@ -162,8 +163,9 @@ private JLabel rankP3;
 			
 		rankP3 = new JLabel();
 		rankP3.setBounds(710, 255, 200, 14);
-		add(rankP3);			
+		add(rankP3);	
 	}
+}
 	
 	public void initAction() {
 		btnQuit.addActionListener(new QuitAction());
@@ -180,7 +182,9 @@ private JLabel rankP3;
 		public void actionPerformed(ActionEvent e) {
 			VariableRepository.getInstance().searchPlayer("Player 1").getStats().reset();
 			VariableRepository.getInstance().searchPlayer("Player 2").getStats().reset();
-			VariableRepository.getInstance().searchPlayer("Player 3").getStats().reset();
+			if(GameVariableRepository.getInstance().getPlayer3Exists()==true) {
+				VariableRepository.getInstance().searchPlayer("Player 3").getStats().reset();
+			}
 			PanelsContainer.getInstance().getCardLayout().first(PanelsContainer.getInstance());
 		}
 	}
@@ -190,12 +194,16 @@ private JLabel rankP3;
 			//CheckerBuilder.getInstance().initializeEmplacements();
 			VariableRepository.getInstance().searchPlayer("Player 1").getStats().reset();
 			VariableRepository.getInstance().searchPlayer("Player 2").getStats().reset();
-			VariableRepository.getInstance().searchPlayer("Player 3").getStats().reset();
-			
+			if(GameVariableRepository.getInstance().getPlayer3Exists()==true) {
+				VariableRepository.getInstance().searchPlayer("Player 3").getStats().reset();
+			}
 			GameVariableRepository.getInstance().resetGameVariableRepository();
 			CheckerBuilder.getInstance().initializeEmplacements();
-			
+			if(GameVariableRepository.getInstance().getPlayer3Exists()==true) {
+				PanelsContainer.getInstance().getCardLayout().previous(PanelsContainer.getInstance());
+			}
 			PanelsContainer.getInstance().getCardLayout().previous(PanelsContainer.getInstance());
+
 		}
 	}
 	public void paintComponent(Graphics g) {
@@ -205,7 +213,6 @@ private JLabel rankP3;
 			nbSpecialMoveP1.setText("Number of special moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getSpecialMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().ratioSpecialMove())+"%)");			
 			nbPowerActivatedP1.setText("Number of power activated: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getPowerUsed()));
 			nbTotalMoveP1.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getTotalNumberOfMove()));
-			//scoreP1.setText("score: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getScore()));
 			rankP1.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getRank()));
 			lblPlayer1.setText(VariableRepository.getInstance().searchPlayer("Player 1").getPlayerName());
 			
@@ -215,19 +222,18 @@ private JLabel rankP3;
 			nbSpecialMoveP2.setText("Number of special moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getSpecialMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().ratioSpecialMove())+"%)");
 			nbPowerActivatedP2.setText("Number of power activated: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getPowerUsed()));
 			nbTotalMoveP2.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getTotalNumberOfMove()));
-			//scoreP2.setText("score: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getScore()));
 			rankP2.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getRank()));
 			lblPlayer2.setText(VariableRepository.getInstance().searchPlayer("Player 2").getPlayerName());
 
+			if(GameVariableRepository.getInstance().getPlayer3Exists()==true) {
+				nbSimpleMoveP3.setText("Number of simple moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSimpleMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().ratioSimpleMove())+"%)");
+				nbSpecialMoveP3.setText("Number of special moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSpecialMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().ratioSpecialMove())+"%)");
+				nbPowerActivatedP3.setText("Number of power activated: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getPowerUsed()));
+				nbTotalMoveP3.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getTotalNumberOfMove()));
+				rankP3.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getRank()));
+				lblPlayer3.setText(VariableRepository.getInstance().searchPlayer("Player 3").getPlayerName());
+			}
 			
-			nbSimpleMoveP3.setText("Number of simple moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSimpleMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().ratioSimpleMove())+"%)");
-			nbSpecialMoveP3.setText("Number of special moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getSpecialMove())+" ("+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().ratioSpecialMove())+"%)");
-			nbPowerActivatedP3.setText("Number of power activated: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getPowerUsed()));
-			nbTotalMoveP3.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getTotalNumberOfMove()));
-			//scoreP3.setText("score: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getScore()));
-			rankP3.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getRank()));
-			lblPlayer3.setText(VariableRepository.getInstance().searchPlayer("Player 3").getPlayerName());
-
 		}
 		// repaint();	
 	}
