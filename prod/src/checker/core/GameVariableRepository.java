@@ -39,7 +39,7 @@ public class GameVariableRepository {
 	private boolean gameStarted;
 	private boolean isUpdating;
 	private int indexOfEmplacementToBeEmptied;
-	private int nbRound=0;
+	private int nbRound;
 	private boolean player3Exists;
 	
 	// Everything that concerned the last turn state data
@@ -164,11 +164,13 @@ public class GameVariableRepository {
 		boolean firstAreaNotFilledCorrectly = false;
 		boolean secondAreaNotFilledCorrectly = false;
 		boolean thirdAreaNotFilledCorrectly = false;
+		Color firstPlayerColor = Color.RED;
+		Color secondPlayerColor = Color.YELLOW;
+		Color thirdPlayerColor = Color.GREEN;
 		ListIterator<Emplacement> listIterator = this.firstVictoryAreaEmplacements.listIterator();
 		Color colorToCompare = null;
 		// int 
-		while(listIterator.hasNext() && itIsAVictory == false && firstAreaNotFilledCorrectly == false){
-			System.out.println("check1");
+		while( listIterator.hasNext() && itIsAVictory == false && firstAreaNotFilledCorrectly == false){
 			Emplacement currentEmplacement = listIterator.next();
 			if( this.firstVictoryAreaEmplacements.indexOf(currentEmplacement) == 0) {
 				if ( currentEmplacement.getIsOccupied() == true ) {
@@ -179,7 +181,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( currentEmplacement.getIsOccupied() == true ) {
-				if ( currentEmplacement.getOccupyingPiece().getColor() != colorToCompare) {
+				if ( currentEmplacement.getOccupyingPiece().getColor() != firstPlayerColor) {
 					firstAreaNotFilledCorrectly = true;
 				}
 			} else {
@@ -187,13 +189,13 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.firstVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
+				System.out.println("check1");
 				return itIsAVictory = true;
 			}
 		}
 		
 		listIterator = this.secondVictoryAreaEmplacements.listIterator();
 		while(listIterator.hasNext() && itIsAVictory == false && secondAreaNotFilledCorrectly ==false){
-			System.out.println("check2");
 
 			Emplacement currentEmplacement = listIterator.next();
 			if( this.secondStartingAreaEmplacements.indexOf(currentEmplacement) == 0) {
@@ -205,7 +207,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( currentEmplacement.getIsOccupied() == true ) {
-				if ( currentEmplacement.getOccupyingPiece().getColor() != colorToCompare) {
+				if ( currentEmplacement.getOccupyingPiece().getColor() != secondPlayerColor) {
 					secondAreaNotFilledCorrectly = true;
 				}
 			} else {
@@ -213,6 +215,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.secondVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
+				System.out.println("check2");
 				return itIsAVictory = true;
 			}
 			
@@ -220,8 +223,6 @@ public class GameVariableRepository {
 		
 		listIterator = this.thirdVictoryAreaEmplacements.listIterator();
 		while(listIterator.hasNext() && itIsAVictory == false && thirdAreaNotFilledCorrectly == false){
-			System.out.println("check3");
-
 			Emplacement currentEmplacement = listIterator.next();
 			if( this.thirdStartingAreaEmplacements.indexOf(currentEmplacement) == 0) {
 				if ( currentEmplacement.getIsOccupied() == true ) {
@@ -232,7 +233,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( currentEmplacement.getIsOccupied() == true ) {
-				if ( currentEmplacement.getOccupyingPiece().getColor() != colorToCompare) {
+				if ( currentEmplacement.getOccupyingPiece().getColor() != thirdPlayerColor) {
 					thirdAreaNotFilledCorrectly = true;
 				}
 			} else {
@@ -240,6 +241,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.thirdVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
+				System.out.println("check3");
 				return itIsAVictory = true;
 			}
 			
@@ -568,13 +570,13 @@ public class GameVariableRepository {
 	public int getNbRound() {
 		return this.nbRound;
 	}
-	
-	
-	
+
 	public boolean checkIfVictoryState2Players() {
 		boolean itIsAVictory = false;
 		boolean firstAreaNotFilledCorrectly = false;
 		boolean secondAreaNotFilledCorrectly = false;
+		Color firstPlayerColor = Color.RED;
+		Color secondPlayerColor = Color.YELLOW;
 		ListIterator<Emplacement> listIterator = this.firstVictoryAreaEmplacements.listIterator();
 		Color colorToCompare = null;
 		// int 
@@ -590,7 +592,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( currentEmplacement.getIsOccupied() == true ) {
-				if ( currentEmplacement.getOccupyingPiece().getColor() != colorToCompare) {
+				if ( currentEmplacement.getOccupyingPiece().getColor() != firstPlayerColor) {
 					firstAreaNotFilledCorrectly = true;
 				}
 			} else {
@@ -616,7 +618,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( currentEmplacement.getIsOccupied() == true ) {
-				if ( currentEmplacement.getOccupyingPiece().getColor() != colorToCompare) {
+				if ( currentEmplacement.getOccupyingPiece().getColor() != secondPlayerColor) {
 					secondAreaNotFilledCorrectly = true;
 				}
 			} else {
