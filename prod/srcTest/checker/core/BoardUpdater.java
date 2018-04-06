@@ -23,7 +23,6 @@ public class BoardUpdater {
 	private BoardUpdater() {
 
 	}
-
 	/**
 	 * The instance attribute is actually the self-scoped object/class.
 	 */

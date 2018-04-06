@@ -86,17 +86,17 @@ public class ClassFactory {
 	
 	public static Emplacement createEmplacement(int x, int y, int typeIndex) {
 		if ( typeIndex == 1 ) {
-			logger.info("Emplacement creation, serving as the starting area for the first player.");
+			logger.info("Emplacement creation, serving as the starting area for the first player with x = " + x + " y : " + y + ".");
 		} else if ( typeIndex == 2 ) {
-			logger.info("Emplacement creation, serving as the starting area for the second player.");
+			logger.info("Emplacement creation, serving as the starting area for the second player with x = " + x + " y : " + y + ".");
 		} else if ( typeIndex == 3 ) {
-			logger.info("Emplacement creation, serving as the starting area for the third player.");
+			logger.info("Emplacement creation, serving as the starting area for the third player with x = " + x + " y : " + y + ".");
 		} else if ( typeIndex == 4 ) {
-			logger.info("Emplacement creation, serving as the victory area for the first player.");
+			logger.info("Emplacement creation, serving as the victory area for the first player with x = " + x + " y : " + y + ".");
 		} else if ( typeIndex == 5 ) {
-			logger.info("Emplacement creation, serving as the victory area for the second player.");
+			logger.info("Emplacement creation, serving as the victory area for the second player with x = " + x + " y : " + y + ".");
 		} else if ( typeIndex == 6 ) {
-			logger.info("Emplacement creation, serving as the victory area for the third player.");
+			logger.info("Emplacement creation, serving as the victory area for the third player with x = " + x + " y : " + y + ".");
 		}
 		return new Emplacement(x,y, typeIndex);
 	}

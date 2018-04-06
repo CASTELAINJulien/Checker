@@ -39,7 +39,9 @@ public class GameVariableRepository {
 	private boolean gameStarted;
 	private boolean isUpdating;
 	private int indexOfEmplacementToBeEmptied;
-	private int nbRound=0;
+	private int nbRound;
+	private boolean player3Exists;
+	private Emplacement lastSpecialMoveEmplacement;
 	
 	// Everything that concerned the last turn state data
 	private ArrayList<Emplacement> previousTurnEmplacementsList;
@@ -66,6 +68,7 @@ public class GameVariableRepository {
 		this.isUpdating = false;
 		this.nbRound=0;
 		this.emplacementsHashMap = new HashMap<int[],Emplacement>();
+		this.player3Exists=true;
 	}
 	
 	static GameVariableRepository instance = new GameVariableRepository();
@@ -100,12 +103,18 @@ public class GameVariableRepository {
 	
 	public int incrementPlayerTurn() {
 		this.playerTurn++;
-		
-		if ( playerTurn >= 3 ) {
-			this.playerTurn = 0;
-			this.nbRound++;
+		if(player3Exists==false) {
+			if ( playerTurn >= 2 ) {
+				this.playerTurn = 0;
+				this.nbRound++;
+			}
 		}
-		
+		else{
+			if ( playerTurn >= 3 ) {
+				this.playerTurn = 0;
+				this.nbRound++;
+			}
+		}
 		updateActualPlayerName();
 		return this.playerTurn;
 	}
@@ -125,23 +134,8 @@ public class GameVariableRepository {
 	
 	public int isSetEmplacement( int x, int y ) {
 		boolean isSetEmplacement = false;
-		// int[] keyArray = {x,y};
-		
-		// Map<String, String> map = ...
-		// Interesting link for comparing two arrays => https://www.geeksforgeeks.org/compare-two-arrays-java/
-		/*
-		Iterator<Entry<int[], Emplacement>> iterator = this.emplacementsHashMap.entrySet().iterator();
-		while(iterator.hasNext() && isSetEmplacement == false ){
-			Entry<int[], Emplacement> entry = iterator.next();
-			
-			if ( ( entry.getKey()[0] == x ) && ( entry.getKey()[1] == y ) ) {
-				return isSetEmplacement = true;
-			}
-		}
-		*/
 		ListIterator<Emplacement> listIterator = this.emplacementsList.listIterator();
 		while(listIterator.hasNext() && isSetEmplacement == false ){
-			// Entry<int[], Emplacement> entry = iterator.next();
 			Emplacement currentEmplacement = listIterator.next();
 			if ( currentEmplacement.getPositionX() == x && currentEmplacement.getPositionY() == y ) {
 				return this.emplacementsList.indexOf(currentEmplacement);
@@ -150,17 +144,34 @@ public class GameVariableRepository {
 		return -1;
 	}
 	
-	
+	public void stringSecondVictory() {
+		ListIterator<Emplacement> listIterator = this.secondVictoryAreaEmplacements.listIterator();
+		System.out.println("second emplacement\n");
+		while(listIterator.hasNext()) {
+			Emplacement currentEmplacement = listIterator.next();
+			System.out.println("X: "+currentEmplacement.getPositionX()+" Y: "+currentEmplacement.getPositionY());
+		}
+	}
+	public void stringThirdVictory() {
+		ListIterator<Emplacement> listIterator = this.thirdVictoryAreaEmplacements.listIterator();
+		System.out.println("third emplacement\n");
+		while(listIterator.hasNext()) {
+			Emplacement currentEmplacement = listIterator.next();
+			System.out.println("X: "+currentEmplacement.getPositionX()+" Y: "+currentEmplacement.getPositionY());
+		}
+	}
 	public boolean checkIfVictoryState() {
 		boolean itIsAVictory = false;
 		boolean firstAreaNotFilledCorrectly = false;
 		boolean secondAreaNotFilledCorrectly = false;
 		boolean thirdAreaNotFilledCorrectly = false;
+		Color firstPlayerColor = Color.RED;
+		Color secondPlayerColor = Color.YELLOW;
+		Color thirdPlayerColor = Color.GREEN;
 		ListIterator<Emplacement> listIterator = this.firstVictoryAreaEmplacements.listIterator();
 		Color colorToCompare = null;
 		// int 
-		while(listIterator.hasNext() && itIsAVictory == false && firstAreaNotFilledCorrectly == false){
-			// Entry<int[], Emplacement> entry = iterator.next();
+		while( listIterator.hasNext() && itIsAVictory == false && firstAreaNotFilledCorrectly == false){
 			Emplacement currentEmplacement = listIterator.next();
 			if( this.firstVictoryAreaEmplacements.indexOf(currentEmplacement) == 0) {
 				if ( currentEmplacement.getIsOccupied() == true ) {
@@ -171,7 +182,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( currentEmplacement.getIsOccupied() == true ) {
-				if ( currentEmplacement.getOccupyingPiece().getColor() != colorToCompare) {
+				if ( currentEmplacement.getOccupyingPiece().getColor() != firstPlayerColor) {
 					firstAreaNotFilledCorrectly = true;
 				}
 			} else {
@@ -179,13 +190,14 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.firstVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
+				System.out.println("check1");
 				return itIsAVictory = true;
 			}
 		}
 		
 		listIterator = this.secondVictoryAreaEmplacements.listIterator();
-		while(listIterator.hasNext() && itIsAVictory == false && secondAreaNotFilledCorrectly ){
-			// Entry<int[], Emplacement> entry = iterator.next();
+		while(listIterator.hasNext() && itIsAVictory == false && secondAreaNotFilledCorrectly ==false){
+
 			Emplacement currentEmplacement = listIterator.next();
 			if( this.secondStartingAreaEmplacements.indexOf(currentEmplacement) == 0) {
 				if ( currentEmplacement.getIsOccupied() == true ) {
@@ -196,7 +208,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( currentEmplacement.getIsOccupied() == true ) {
-				if ( currentEmplacement.getOccupyingPiece().getColor() != colorToCompare) {
+				if ( currentEmplacement.getOccupyingPiece().getColor() != secondPlayerColor) {
 					secondAreaNotFilledCorrectly = true;
 				}
 			} else {
@@ -204,6 +216,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.secondVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
+				System.out.println("check2");
 				return itIsAVictory = true;
 			}
 			
@@ -211,7 +224,6 @@ public class GameVariableRepository {
 		
 		listIterator = this.thirdVictoryAreaEmplacements.listIterator();
 		while(listIterator.hasNext() && itIsAVictory == false && thirdAreaNotFilledCorrectly == false){
-			// Entry<int[], Emplacement> entry = iterator.next();
 			Emplacement currentEmplacement = listIterator.next();
 			if( this.thirdStartingAreaEmplacements.indexOf(currentEmplacement) == 0) {
 				if ( currentEmplacement.getIsOccupied() == true ) {
@@ -222,7 +234,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( currentEmplacement.getIsOccupied() == true ) {
-				if ( currentEmplacement.getOccupyingPiece().getColor() != colorToCompare) {
+				if ( currentEmplacement.getOccupyingPiece().getColor() != thirdPlayerColor) {
 					thirdAreaNotFilledCorrectly = true;
 				}
 			} else {
@@ -230,6 +242,7 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.thirdVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
+				System.out.println("check3");
 				return itIsAVictory = true;
 			}
 			
@@ -240,23 +253,9 @@ public class GameVariableRepository {
 	public int isonVictoryEmplacementThenUpdate( int x, int y, Piece piece ) {
 		boolean isOnVictoryEmplacement = false;
 		Emplacement toUpdate = null;
-		// int[] keyArray = {x,y};
 		
-		// Map<String, String> map = ...
-		// Interesting link for comparing two arrays => https://www.geeksforgeeks.org/compare-two-arrays-java/
-		/*
-		Iterator<Entry<int[], Emplacement>> iterator = this.emplacementsHashMap.entrySet().iterator();
-		while(iterator.hasNext() && isSetEmplacement == false ){
-			Entry<int[], Emplacement> entry = iterator.next();
-			
-			if ( ( entry.getKey()[0] == x ) && ( entry.getKey()[1] == y ) ) {
-				return isSetEmplacement = true;
-			}
-		}
-		*/
 		ListIterator<Emplacement> listIterator = this.firstVictoryAreaEmplacements.listIterator();
 		while(listIterator.hasNext() && isOnVictoryEmplacement == false ){
-			// Entry<int[], Emplacement> entry = iterator.next();
 			Emplacement currentEmplacement = listIterator.next();
 			if ( currentEmplacement.getPositionX() == x && currentEmplacement.getPositionY() == y ) {
 				this.firstVictoryAreaEmplacements.indexOf(currentEmplacement);
@@ -270,7 +269,6 @@ public class GameVariableRepository {
 		
 		listIterator = this.secondVictoryAreaEmplacements.listIterator();
 		while(listIterator.hasNext() && isOnVictoryEmplacement == false ){
-			// Entry<int[], Emplacement> entry = iterator.next();
 			Emplacement currentEmplacement = listIterator.next();
 			if ( currentEmplacement.getPositionX() == x && currentEmplacement.getPositionY() == y ) {
 				this.secondVictoryAreaEmplacements.indexOf(currentEmplacement);
@@ -284,7 +282,6 @@ public class GameVariableRepository {
 		
 		listIterator = this.thirdVictoryAreaEmplacements.listIterator();
 		while(listIterator.hasNext() && isOnVictoryEmplacement == false ){
-			// Entry<int[], Emplacement> entry = iterator.next();
 			Emplacement currentEmplacement = listIterator.next();
 			if ( currentEmplacement.getPositionX() == x && currentEmplacement.getPositionY() == y ) {
 				this.thirdVictoryAreaEmplacements.indexOf(currentEmplacement);
@@ -330,7 +327,7 @@ public class GameVariableRepository {
 				VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Third");
 				VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Second");
 			}
-			//si egalité
+			//if 2 players are tied, we compare the number of powers activated
 			else {
 					if(VariableRepository.getInstance().searchPlayer("Player 1").getStats().getPowerUsed()<VariableRepository.getInstance().searchPlayer("Player 3").getStats().getPowerUsed()) {
 						VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Second");
@@ -393,10 +390,11 @@ public class GameVariableRepository {
 			this.actualPlayerName = "Player 1";
 		} else if ( this.playerTurn == 1 ) {
 			this.actualPlayerName = "Player 2";
-		} else {
+		} else if(player3Exists==true && this.playerTurn==2) {
 			this.actualPlayerName = "Player 3";
 		}
 	}
+	
 	
 	public boolean getIsUpdating() {
 		return this.isUpdating;
@@ -437,7 +435,7 @@ public class GameVariableRepository {
 	            }
 	            
 	        }
-		} else {
+		} else if(player3Exists==true && this.playerTurn == 2) {
 			for (ListIterator<Emplacement> iter = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator(); iter.hasNext(); ) {
 	            Emplacement currentEmplacement = iter.next();
 	            Piece currentPiece = currentEmplacement.getOccupyingPiece();
@@ -498,7 +496,12 @@ public class GameVariableRepository {
 	public int getPlayerTurn() {
 		return this.playerTurn;
 	}
-	
+	public void setPlayer3Exists(boolean exists) {
+		this.player3Exists=exists;
+	}
+	public boolean getPlayer3Exists() {
+		return this.player3Exists;
+	}
 	public ArrayList<Emplacement> getEmplacementsArrayList() {
 		return this.emplacementsList;
 	}
@@ -568,6 +571,82 @@ public class GameVariableRepository {
 	public int getNbRound() {
 		return this.nbRound;
 	}
+	
+	public Emplacement getLastSpecialMoveEmplacement() {
+		return this.lastSpecialMoveEmplacement;
+	}
+	
+	public void setLastSpecialMoveEmplacement(Emplacement toKeep) {
+		this.lastSpecialMoveEmplacement = toKeep;
+	}
+
+	public boolean checkIfVictoryState2Players() {
+		boolean itIsAVictory = false;
+		boolean firstAreaNotFilledCorrectly = false;
+		boolean secondAreaNotFilledCorrectly = false;
+		Color firstPlayerColor = Color.RED;
+		Color secondPlayerColor = Color.YELLOW;
+		ListIterator<Emplacement> listIterator = this.firstVictoryAreaEmplacements.listIterator();
+		Color colorToCompare = null;
+		// int 
+		while(listIterator.hasNext() && itIsAVictory == false && firstAreaNotFilledCorrectly == false){
+			Emplacement currentEmplacement = listIterator.next();
+			if( this.firstVictoryAreaEmplacements.indexOf(currentEmplacement) == 0) {
+				if ( currentEmplacement.getIsOccupied() == true ) {
+					colorToCompare = Color.red;
+				} else {
+					firstAreaNotFilledCorrectly = true;
+					
+				}
+			}
+			
+			if ( currentEmplacement.getIsOccupied() == true ) {
+				if ( currentEmplacement.getOccupyingPiece().getColor() != firstPlayerColor) {
+					firstAreaNotFilledCorrectly = true;
+				}
+			} else {
+				firstAreaNotFilledCorrectly = true;
+			}
+			
+			if ( this.firstVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
+				System.out.println("check1");
+				return itIsAVictory = true;
+				
+			}
+		}
+		
+		listIterator = this.secondVictoryAreaEmplacements.listIterator();
+		while(listIterator.hasNext() && itIsAVictory == false && secondAreaNotFilledCorrectly==false ){
+			Emplacement currentEmplacement = listIterator.next();
+			if( this.secondStartingAreaEmplacements.indexOf(currentEmplacement) == 0) {
+				if ( currentEmplacement.getIsOccupied() == true ) {
+					colorToCompare = Color.yellow;
+				} else {
+					secondAreaNotFilledCorrectly = true;
+				}
+			}
+			
+			if ( currentEmplacement.getIsOccupied() == true ) {
+				if ( currentEmplacement.getOccupyingPiece().getColor() != secondPlayerColor) {
+					secondAreaNotFilledCorrectly = true;
+				}
+			} else {
+				secondAreaNotFilledCorrectly = true;
+			}
+			
+			if ( this.secondVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
+				System.out.println("check2");
+
+				return itIsAVictory = true;
+			}
+			
+		}
+		
+		return itIsAVictory;
+	}
+	
+	
+	
 	
 
 }

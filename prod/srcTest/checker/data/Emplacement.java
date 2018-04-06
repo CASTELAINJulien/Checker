@@ -30,35 +30,67 @@ public class Emplacement {
 		
 		Piece currentPiece = null;
 		// Mettre un parametre startingAreaIndex par défaut ?
-		if ( AreaIndex == 1 ) {
-			GameVariableRepository.getInstance().getFirstStartingAreaEmplacements().add(this);
-			currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.red, "Player 1");
-			this.isOccupied = true;
-			this.occupyingPiece = currentPiece;
-			GameVariableRepository.getInstance().getFirstPlayerPieces().add(currentPiece);
-		} else if ( AreaIndex == 2 ) {
-			GameVariableRepository.getInstance().getSecondStartingAreaEmplacements().add(this);
-			currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.yellow, "Player 2");
-			this.isOccupied = true;
-			this.occupyingPiece = currentPiece;
-			GameVariableRepository.getInstance().getSecondPlayerPieces().add(currentPiece);
-		} else if ( AreaIndex == 3 ) {
-			GameVariableRepository.getInstance().getThirdStartingAreaEmplacements().add(this);
-			currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.green, "Player 3");
-			this.isOccupied = true;
-			this.occupyingPiece = currentPiece;
-			GameVariableRepository.getInstance().getThirdPlayerPieces().add(currentPiece);
-		} else if ( AreaIndex == 4 ) {
-			this.color = Color.PINK;
-			GameVariableRepository.getInstance().getFirstVictoryAreaEmplacements().add(this);
-		} else if ( AreaIndex == 5 ) {
-			this.color = Color.ORANGE.darker();
-			GameVariableRepository.getInstance().getSecondVictoryAreaEmplacements().add(this);
-		} else if ( AreaIndex == 6 ) {
-			this.color = Color.CYAN;
-			GameVariableRepository.getInstance().getThirdVictoryAreaEmplacements().add(this);
-		}
 		
+		//if it's a three players game
+		if(	GameVariableRepository.getInstance().getPlayer3Exists()==true) {
+
+			if ( AreaIndex == 1 ) {
+				GameVariableRepository.getInstance().getFirstStartingAreaEmplacements().add(this);
+				currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.red, "Player 1");
+				this.isOccupied = true;
+				this.occupyingPiece = currentPiece;
+				GameVariableRepository.getInstance().getFirstPlayerPieces().add(currentPiece);
+			} else if ( AreaIndex == 2 ) {
+				GameVariableRepository.getInstance().getSecondStartingAreaEmplacements().add(this);
+				currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.yellow, "Player 2");
+				this.isOccupied = true;
+				this.occupyingPiece = currentPiece;
+				GameVariableRepository.getInstance().getSecondPlayerPieces().add(currentPiece);
+			} else if ( AreaIndex == 3 ) {
+				GameVariableRepository.getInstance().getThirdStartingAreaEmplacements().add(this);
+				currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.green, "Player 3");
+				this.isOccupied = true;
+				this.occupyingPiece = currentPiece;
+				GameVariableRepository.getInstance().getThirdPlayerPieces().add(currentPiece);
+			} else if ( AreaIndex == 4 ) {
+				this.color = Color.PINK;
+				GameVariableRepository.getInstance().getFirstVictoryAreaEmplacements().add(this);
+			} else if ( AreaIndex == 5 ) {
+				this.color = Color.ORANGE.darker().darker();
+				GameVariableRepository.getInstance().getSecondVictoryAreaEmplacements().add(this);
+			} else if ( AreaIndex == 6 ) {
+				this.color = Color.green.darker().darker().darker();
+				GameVariableRepository.getInstance().getThirdVictoryAreaEmplacements().add(this);
+			}
+		
+		}
+		//if it's a 2 players game
+		else {
+			if ( AreaIndex == 1 ) {
+				GameVariableRepository.getInstance().getFirstStartingAreaEmplacements().add(this);
+				currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.red, "Player 1");
+				this.isOccupied = true;
+				this.occupyingPiece = currentPiece;
+				GameVariableRepository.getInstance().getFirstPlayerPieces().add(currentPiece);
+				GameVariableRepository.getInstance().getSecondVictoryAreaEmplacements().add(this);
+			} else if ( AreaIndex == 4 ) {
+				GameVariableRepository.getInstance().getSecondStartingAreaEmplacements().add(this);
+				currentPiece = ClassFactory.createPiece(this.positionX, this.positionY, Color.yellow, "Player 2");
+				this.isOccupied = true;
+				this.occupyingPiece = currentPiece;
+				GameVariableRepository.getInstance().getSecondPlayerPieces().add(currentPiece);
+				GameVariableRepository.getInstance().getFirstVictoryAreaEmplacements().add(this);
+			} else if ( AreaIndex == 2 ) {
+				this.color = Color.black;
+			} else if ( AreaIndex == 3 ) {
+				this.color = Color.black;
+			}  else if ( AreaIndex == 5 ) {
+				this.color = Color.black;
+			} else if ( AreaIndex == 6 ) {
+				this.color = Color.black;
+			}
+		}
+
 		GameVariableRepository.getInstance().getEmplacementsArrayList().add(this);
 		GameVariableRepository.getInstance().getEmplacementsHashMap().put(keyCoordinates,this);
 	}
@@ -162,74 +194,75 @@ public class Emplacement {
 		return isEligibleForMove;
 	}
 	
-	
-public boolean isSpecialMove() {
-	Piece currentPiece = GameVariableRepository.getInstance().getSelectedPiece();
-	
-	boolean isEligibleForMove = false;
-	int leftAndRightY = currentPiece.getYPosition();
-	int leftEmplacementX = currentPiece.getXPosition() - 2;
-	int rightEmplacementX = currentPiece.getXPosition() + 2;
-	
-	//Coordinates for the diagonales moves
-	int leftDiagonalEmplacementX = currentPiece.getXPosition() - 1;
-	int rightDiagonalEmplacementX = currentPiece.getXPosition() + 1;
-	int upperDiagonalEmplacementsY = currentPiece.getYPosition() + 2;
-	int lowerDiagonalEmplacementsY = currentPiece.getYPosition() - 2;
-	int leftAndRightYForJump = currentPiece.getYPosition();
-	int leftEmplacementXForJump = currentPiece.getXPosition() - 4;
-	int rightEmplacementXForJump = currentPiece.getXPosition() + 4;
-	
-	//Coordinates for the diagonales moves
-	int leftDiagonalEmplacementXForJump = currentPiece.getXPosition() - 2;
-	int rightDiagonalEmplacementXForJump = currentPiece.getXPosition() + 2;
-	int upperDiagonalEmplacementsYForJump = currentPiece.getYPosition() + 4;
-	int lowerDiagonalEmplacementsYForJump = currentPiece.getYPosition() - 4;
-	
-	if ( this.positionY == leftAndRightYForJump && this.positionX == leftEmplacementXForJump ) {
-		if ( GameVariableRepository.getInstance().isSetEmplacement(leftEmplacementX, leftAndRightY) != (-1) ) {
-			if ( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(leftEmplacementX, leftAndRightY)).getIsOccupied() == true) {
-				isEligibleForMove = true;
+	public boolean isSpecialMove(Emplacement currentEmplacement) {
+		Piece currentPiece = GameVariableRepository.getInstance().getSelectedPiece();
+		
+		boolean isEligibleForMove = false;
+		int leftAndRightY = currentPiece.getYPosition();
+		int leftEmplacementX = currentPiece.getXPosition() - 2;
+		int rightEmplacementX = currentPiece.getXPosition() + 2;
+		
+		//Coordinates for the diagonales moves
+		int leftDiagonalEmplacementX = currentPiece.getXPosition() - 1;
+		int rightDiagonalEmplacementX = currentPiece.getXPosition() + 1;
+		int upperDiagonalEmplacementsY = currentPiece.getYPosition() + 2;
+		int lowerDiagonalEmplacementsY = currentPiece.getYPosition() - 2;
+		int leftAndRightYForJump = currentPiece.getYPosition();
+		int leftEmplacementXForJump = currentPiece.getXPosition() - 4;
+		int rightEmplacementXForJump = currentPiece.getXPosition() + 4;
+		
+		//Coordinates for the diagonales moves
+		int leftDiagonalEmplacementXForJump = currentPiece.getXPosition() - 2;
+		int rightDiagonalEmplacementXForJump = currentPiece.getXPosition() + 2;
+		int upperDiagonalEmplacementsYForJump = currentPiece.getYPosition() + 4;
+		int lowerDiagonalEmplacementsYForJump = currentPiece.getYPosition() - 4;
+		if ( currentEmplacement != GameVariableRepository.getInstance().getLastSpecialMoveEmplacement() ) {
+			if ( this.positionY == leftAndRightYForJump && this.positionX == leftEmplacementXForJump ) {
+				if ( GameVariableRepository.getInstance().isSetEmplacement(leftEmplacementX, leftAndRightY) != (-1) ) {
+					if ( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(leftEmplacementX, leftAndRightY)).getIsOccupied() == true) {
+						isEligibleForMove = true;
+					}
+				}
+			} else if ( this.positionY == leftAndRightYForJump && this.positionX == rightEmplacementXForJump ) {
+				if ( GameVariableRepository.getInstance().isSetEmplacement(rightEmplacementX, leftAndRightY) != (-1) ) {
+					if ( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(rightEmplacementX, leftAndRightY)).getIsOccupied() == true) {
+						isEligibleForMove = true;
+					}
+				}
+			} else if ( this.positionY == upperDiagonalEmplacementsYForJump && this.positionX == leftDiagonalEmplacementXForJump ) {
+				if ( GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, upperDiagonalEmplacementsY) != (-1) ) {
+					if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, upperDiagonalEmplacementsY)).getIsOccupied() == true) {
+						isEligibleForMove = true;
+					}
+				}
+			} else if ( this.positionY == upperDiagonalEmplacementsYForJump &&  this.positionX == rightDiagonalEmplacementXForJump ) {
+				if ( GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, upperDiagonalEmplacementsY) != (-1) ) {
+					if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, upperDiagonalEmplacementsY)).getIsOccupied() == true) {
+						isEligibleForMove = true;
+					}
+				}
+			} else if ( this.positionY == lowerDiagonalEmplacementsYForJump && this.positionX == leftDiagonalEmplacementXForJump ) {
+				if ( GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, lowerDiagonalEmplacementsY) != (-1) ) {
+					if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, lowerDiagonalEmplacementsY)).getIsOccupied() == true) {
+						isEligibleForMove = true;
+					}
+				}
+			} else if ( this.positionY == lowerDiagonalEmplacementsYForJump && this.positionX == rightDiagonalEmplacementXForJump ) {
+				if ( GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, lowerDiagonalEmplacementsY) != (-1) ) {
+					if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, lowerDiagonalEmplacementsY)).getIsOccupied() == true) {
+						isEligibleForMove = true;
+					}
+				}
 			}
 		}
-	} else if ( this.positionY == leftAndRightYForJump && this.positionX == rightEmplacementXForJump ) {
-		if ( GameVariableRepository.getInstance().isSetEmplacement(rightEmplacementX, leftAndRightY) != (-1) ) {
-			if ( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(rightEmplacementX, leftAndRightY)).getIsOccupied() == true) {
-				isEligibleForMove = true;
-			}
-		}
-	} else if ( this.positionY == upperDiagonalEmplacementsYForJump && this.positionX == leftDiagonalEmplacementXForJump ) {
-		if ( GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, upperDiagonalEmplacementsY) != (-1) ) {
-			if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, upperDiagonalEmplacementsY)).getIsOccupied() == true) {
-				isEligibleForMove = true;
-			}
-		}
-	} else if ( this.positionY == upperDiagonalEmplacementsYForJump &&  this.positionX == rightDiagonalEmplacementXForJump ) {
-		if ( GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, upperDiagonalEmplacementsY) != (-1) ) {
-			if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, upperDiagonalEmplacementsY)).getIsOccupied() == true) {
-				isEligibleForMove = true;
-			}
-		}
-	} else if ( this.positionY == lowerDiagonalEmplacementsYForJump && this.positionX == leftDiagonalEmplacementXForJump ) {
-		if ( GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, lowerDiagonalEmplacementsY) != (-1) ) {
-			if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(leftDiagonalEmplacementX, lowerDiagonalEmplacementsY)).getIsOccupied() == true) {
-				isEligibleForMove = true;
-			}
-		}
-	} else if ( this.positionY == lowerDiagonalEmplacementsYForJump && this.positionX == rightDiagonalEmplacementXForJump ) {
-		if ( GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, lowerDiagonalEmplacementsY) != (-1) ) {
-			if( GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().isSetEmplacement(rightDiagonalEmplacementX, lowerDiagonalEmplacementsY)).getIsOccupied() == true) {
-				isEligibleForMove = true;
-			}
+	
+		if(isEligibleForMove==true) {
+			// System.out.println("Movement still possible ?");
+			return true;
+		} else {
+			return false;
 		}
 	}
-	if(isEligibleForMove==true) {
-		System.out.println("Movement still possible ?");
-		return true;
-	} else {
-		return false;
-	}
-}
 	
 	
 	public boolean ifIsEligibleForJump() {
