@@ -2,7 +2,7 @@ package customEventsPackage;
 
 import checker.core.VariableRepository;
 import checker.data.Piece;
-//cost 90
+
 public class PowerControl extends Power {
 	public PowerControl(){
 	}
@@ -16,13 +16,13 @@ public class PowerControl extends Power {
 		return "Control one of your opponent's piece instead of your for one round";
 	}
 	public static int getCost() {
-		return 5;
+		return 80;
 	}
 	public String getImage() {
 		return "power_control.jpg";
 	}
 	public int getCost2() {
-		return 5;
+		return 80;
 	}
 	public void effect(Piece currentPiece) {
 		 currentPiece.setIsClickeable(true);

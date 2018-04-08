@@ -24,7 +24,6 @@ public class VariableRepository {
 	 * @return Returns nothing
 	 */
 	private VariableRepository() {
-
 	}
 
 	/**

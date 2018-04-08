@@ -76,7 +76,7 @@ public class LaunchGameScreenPanel extends JPanel {
 	JList listSecondPlayerPower;
 	JList listThirdPlayerPower;
 	
-	Boolean playerNone=false;//true if there insn't a third player
+	Boolean playerNone=false;//true if there isn't a third player
 	
 	JButton buttonLaunchGame;
 	JButton buttonPrevious;
@@ -116,7 +116,7 @@ public class LaunchGameScreenPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public LaunchGameScreenPanel() {
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(Color.LIGHT_GRAY.darker());
 		setLayout(null);
 		
 		int windowWidth = GTParameters.WINDOW_WIDTH;
@@ -231,7 +231,7 @@ public class LaunchGameScreenPanel extends JPanel {
 			Player player2;
 			Player player3;
 					
-			// True si AI, Faux si joueur Human
+			// True if is AI, false if is Human
 			if ( returnComboBoxValue(comboBoxFirstPlayerChoice) == true ) {
 				if ( textFieldFirstPlayerName.getText().length() > 0 ) {
 					player1 = ClassFactory.createPlayer(textFieldFirstPlayerName.getText() + " ( AI )", returnComboBoxValue(comboBoxFirstPlayerChoice));
@@ -355,16 +355,19 @@ public class LaunchGameScreenPanel extends JPanel {
 		labelFirstPlayerInfo = new JLabel("Informations Player 1 :");
 		labelFirstPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		labelFirstPlayerInfo.setBounds(61, 131, 162, 14);
+		labelFirstPlayerInfo.setForeground(Color.red);
 		add(labelFirstPlayerInfo);
 		
 		labelSecondPlayerInfo = new JLabel("Informations Player 2 :");
 		labelSecondPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		labelSecondPlayerInfo.setBounds(390, 131, 168, 14);
+		labelSecondPlayerInfo.setForeground(Color.orange);
 		add(labelSecondPlayerInfo);
 		
 		labelThirdPlayerInfo = new JLabel("Informations Player 3 :");
 		labelThirdPlayerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		labelThirdPlayerInfo.setBounds(710, 131, 192, 14);
+		labelThirdPlayerInfo.setForeground(Color.green);
 		add(labelThirdPlayerInfo);
 		
 		textFieldFirstPlayerName = new JTextField();
@@ -678,8 +681,7 @@ public class LaunchGameScreenPanel extends JPanel {
 			}
 		});
 		
-		
-		
+			
 		btnPower1Player2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(nbPowerChoosenJ2<2 && al2.contains(jump)==false) {
@@ -823,5 +825,4 @@ public class LaunchGameScreenPanel extends JPanel {
 			}
 		});
 	}
-	
 }

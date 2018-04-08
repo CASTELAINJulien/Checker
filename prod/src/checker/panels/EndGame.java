@@ -50,7 +50,6 @@ private JLabel rankP3;
 
 	public EndGame() {
 		super();
-		//GameVariableRepository.getInstance().scoreCalculator();
 
 		initLayout();
 		initAction();
@@ -63,16 +62,17 @@ private JLabel rankP3;
 		lblGameOver.setBounds(418, 22, 335, 76);
 		add(lblGameOver);
 		
-		btnReplay = new JButton("Replay");
+		/*btnReplay = new JButton("Replay");
 		btnReplay.setBounds(360, 522, 114, 23);
 		add(btnReplay);
 		
 		btnMainMenu = new JButton("Main Menu");
 		btnMainMenu.setBounds(474, 522, 114, 23);
-		add(btnMainMenu);
+		add(btnMainMenu);*/
 		
 		btnQuit = new JButton("Quit");
-		btnQuit.setBounds(584, 522, 114, 23);
+		btnQuit.setBounds(474, 522, 114, 23);
+		//btnQuit.setBounds(584, 522, 114, 23);
 		add(btnQuit);
 		
 		JSeparator separator_1 = new JSeparator();
@@ -107,12 +107,10 @@ private JLabel rankP3;
 		nbPowerActivatedP1.setBounds(61, 235, 280, 14);
 		add(nbPowerActivatedP1);
 			
-		//a completer
 		rankP1 = new JLabel();
 		rankP1.setBounds(61, 255, 115, 14);
 		add(rankP1);
 				
-		
 		lblPlayer2 = new JLabel("Player 2:");
 		lblPlayer2.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblPlayer2.setBounds(410, 121, 168, 50);
@@ -134,7 +132,6 @@ private JLabel rankP3;
 		nbPowerActivatedP2.setBounds(390, 235, 280, 14);
 		add(nbPowerActivatedP2);
 		
-	
 		rankP2 = new JLabel();
 		rankP2.setBounds(390, 255, 115, 14);
 		add(rankP2);
@@ -169,8 +166,8 @@ private JLabel rankP3;
 	
 	public void initAction() {
 		btnQuit.addActionListener(new QuitAction());
-		btnReplay.addActionListener(new ReplayAction());
-		btnMainMenu.addActionListener(new MainMenuAction());
+		//btnReplay.addActionListener(new ReplayAction());
+		//btnMainMenu.addActionListener(new MainMenuAction());
 	}
 	
 	private class QuitAction implements ActionListener{	
@@ -190,8 +187,7 @@ private JLabel rankP3;
 	}
 	private class ReplayAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
-			//TODO reinitialisé board
-			//CheckerBuilder.getInstance().initializeEmplacements();
+
 			VariableRepository.getInstance().searchPlayer("Player 1").getStats().reset();
 			VariableRepository.getInstance().searchPlayer("Player 2").getStats().reset();
 			if(GameVariableRepository.getInstance().getPlayer3Exists()==true) {
@@ -203,9 +199,9 @@ private JLabel rankP3;
 				PanelsContainer.getInstance().getCardLayout().previous(PanelsContainer.getInstance());
 			}
 			PanelsContainer.getInstance().getCardLayout().previous(PanelsContainer.getInstance());
-
 		}
 	}
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if(GameVariableRepository.getInstance().getGameStarted()==true) {
@@ -232,9 +228,7 @@ private JLabel rankP3;
 				nbTotalMoveP3.setText("Number of moves: "+String.valueOf(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getTotalNumberOfMove()));
 				rankP3.setText("Rank: "+(VariableRepository.getInstance().searchPlayer("Player 3").getStats().getRank()));
 				lblPlayer3.setText(VariableRepository.getInstance().searchPlayer("Player 3").getPlayerName());
-			}
-			
+			}			
 		}
-		// repaint();	
 	}
 }

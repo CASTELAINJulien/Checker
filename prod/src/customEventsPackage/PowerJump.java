@@ -2,10 +2,9 @@ package customEventsPackage;
 
 import checker.core.VariableRepository;
 import checker.data.Piece;
-//cost 70
+
 public class PowerJump extends Power {
-	public PowerJump() {
-		
+	public PowerJump() {	
 	}
 	public String getName() {
 		return "Jump";
@@ -17,16 +16,15 @@ public class PowerJump extends Power {
 		return "Do a longer jump";
 	}
 	public static int getCost() {
-		return 5;
+		return 40;
 	}
 	public  String getImage() {
 		return "power_jump.png";
 	}
 	public int getCost2() {
-		return 5;
+		return 40;
 	}
 	public void effect(Piece currentPiece) {
-		
 	}
 	public static boolean testJump(String player) {
 		if( VariableRepository.getInstance().searchPlayer(player).getPowerActivated()!=9) {
@@ -36,5 +34,4 @@ public class PowerJump extends Power {
 		}
 		return false;	
 	}
-
 }

@@ -13,6 +13,5 @@ public abstract class Power {
 	public abstract String getName();
 	public abstract int getCost2();
 	public abstract void effect(Piece currentPiece);
-	//public abstract void effectUndo(Piece currentPiece);
 
 }

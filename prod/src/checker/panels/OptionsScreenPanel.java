@@ -1,4 +1,3 @@
-
 package checker.panels;
 
 import javax.swing.JPanel;
@@ -156,5 +155,4 @@ public class OptionsScreenPanel extends JPanel {
 	        }
 		}
 	}
-
 }

@@ -2,7 +2,6 @@ package checker.data;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import customEventsPackage.Power;
 
@@ -13,7 +12,7 @@ public class Player {
 	private ArrayList<Power> alPowers=new ArrayList<Power>();
 	private boolean round;
 	private boolean isAI;
-	private int powerActivated=9;//9 is the default value=no power activated	
+	private int powerActivated=9; //9 is the default value=no power activated	
 	private Statistics stats=new Statistics();
 	private boolean isBeginner=false;
 	private Color color;

@@ -7,11 +7,8 @@ import java.awt.Container;
 import javax.swing.JPanel;
 
 public class PanelsContainer extends JPanel {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
-	// private CardLayout cardLayout = new CardLayout();
 	
 	private PanelsContainer (CardLayout layoutParameter) {
 		super(layoutParameter );

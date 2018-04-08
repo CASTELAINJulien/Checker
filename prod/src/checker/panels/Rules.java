@@ -25,7 +25,6 @@ public class Rules extends JPanel {
 		initAction();
 	}
 	
-	
 	private void initLayout() {
 		
 		verticalBox = Box.createVerticalBox();
@@ -41,7 +40,6 @@ public class Rules extends JPanel {
 		
 		previousButton = (JButton) ClassFactory.createTextContainingComponent("JButton","previous");
 		verticalBox.add(previousButton);
-		
 	}
 	
 	public void initAction() {
@@ -50,9 +48,7 @@ public class Rules extends JPanel {
 	
 	private class PreviousAction implements ActionListener{	
 		public void actionPerformed(ActionEvent e) {
-			PanelsContainer.getInstance().getCardLayout().first(PanelsContainer.getInstance());
-			
+			PanelsContainer.getInstance().getCardLayout().first(PanelsContainer.getInstance());			
 		}
 	}
 }
-

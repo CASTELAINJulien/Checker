@@ -1,16 +1,13 @@
 package checker.gui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.io.IOException;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import checker.core.CheckerBuilder;
 import checker.core.VariableRepository;
 import checker.data.ClassFactory;
 import checker.panels.Board;
@@ -23,14 +20,11 @@ import checker.panels.PanelsContainer;
 import checker.panels.Rules;
 
 public class GraphicalChecker extends JFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1101006957083345550L;
 	private PanelsContainer panelsContainer;
 	private MainScreenPanel mainScreenPanel;
 	private LaunchGameScreenPanel launchGameScreenPanel;
-	// private CheckerBoardPanel checkerBoardPanel;
 	private Board checkerBoardPanel;
 	private OptionsScreenPanel optionsScreenPanel;
 	private Rules rulesPanel;
@@ -39,7 +33,6 @@ public class GraphicalChecker extends JFrame {
 
 	public GraphicalChecker() throws IllegalArgumentException, InterruptedException, LineUnavailableException, UnsupportedAudioFileException {
 		super("Checker");
-		// CheckerBuilder builder = new CheckerBuilder();
 		try {
 			panelsContainer = (PanelsContainer) ClassFactory.createPanel("PanelsContainer");
 			mainScreenPanel = (MainScreenPanel) ClassFactory.createPanel("MainScreenPanel");
@@ -63,21 +56,13 @@ public class GraphicalChecker extends JFrame {
 		panelsContainer.addPanel(optionsScreenPanel);
 		panelsContainer.addPanel(rulesPanel);
 		
-		
 		VariableRepository.getInstance();
-		
-		// panelsContainer.getCards();
-		// panelsContainer.getCardLayout().next(panelsContainer);
-		// System.out.println(panelsContainer.getCards().length);
-
-		initLayout();
-		
+		initLayout();	
 	}
 
 	private void initLayout() {
 		setBackground(Color.WHITE);
-		getContentPane().setBackground(Color.WHITE);
-		
+		getContentPane().setBackground(Color.WHITE);	
 		getContentPane().add(panelsContainer);
 		setVisible(true);
 		pack();
@@ -108,5 +93,4 @@ public class GraphicalChecker extends JFrame {
 	         }
 	      });
 	}
-
 }

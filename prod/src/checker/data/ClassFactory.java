@@ -17,8 +17,6 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
-
 import checker.panels.Board;
 import checker.panels.LaunchGameScreenPanel;
 import checker.panels.MainScreenPanel;
@@ -32,7 +30,7 @@ import checker.log.LoggerUtility;
  *
  */
 public class ClassFactory {
-	private static Logger logger = LoggerUtility.getLogger(ClassFactory.class);
+	private static org.apache.log4j.Logger logger = LoggerUtility.getLogger(ClassFactory.class);
 	/**
 	 * A method that instantiate graphical components that contains no text.
 	 * @param type A String-class parameter that indicates which class of object of the Swing API we need to instantiate. Possible values are :
@@ -167,6 +165,4 @@ public class ClassFactory {
 			return null;
 		}
 	}
-	
-	
 }

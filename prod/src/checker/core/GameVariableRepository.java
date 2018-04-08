@@ -3,20 +3,17 @@ package checker.core;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.ListIterator;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import checker.data.Emplacement;
 import checker.data.Piece;
 import checker.gui.BoardParameter;
 
 public class GameVariableRepository {
-	// Number of real player in the game
-	private int realPlayerCount;
+	
 	// Varies from 0 to 2, each digits indicating a player. Will varies between the turns.
 	private int playerTurn;
+	
 	private String actualPlayerName;
 	private String previousPlayerName;
 
@@ -41,6 +38,7 @@ public class GameVariableRepository {
 	private int indexOfEmplacementToBeEmptied;
 	private int nbRound;
 	private boolean player3Exists;
+	private Emplacement lastSpecialMoveEmplacement;
 	
 	// Everything that concerned the last turn state data
 	private ArrayList<Emplacement> previousTurnEmplacementsList;
@@ -145,18 +143,14 @@ public class GameVariableRepository {
 	
 	public void stringSecondVictory() {
 		ListIterator<Emplacement> listIterator = this.secondVictoryAreaEmplacements.listIterator();
-		System.out.println("second emplacement\n");
 		while(listIterator.hasNext()) {
 			Emplacement currentEmplacement = listIterator.next();
-			System.out.println("X: "+currentEmplacement.getPositionX()+" Y: "+currentEmplacement.getPositionY());
 		}
 	}
 	public void stringThirdVictory() {
 		ListIterator<Emplacement> listIterator = this.thirdVictoryAreaEmplacements.listIterator();
-		System.out.println("third emplacement\n");
 		while(listIterator.hasNext()) {
 			Emplacement currentEmplacement = listIterator.next();
-			System.out.println("X: "+currentEmplacement.getPositionX()+" Y: "+currentEmplacement.getPositionY());
 		}
 	}
 	public boolean checkIfVictoryState() {
@@ -169,7 +163,6 @@ public class GameVariableRepository {
 		Color thirdPlayerColor = Color.GREEN;
 		ListIterator<Emplacement> listIterator = this.firstVictoryAreaEmplacements.listIterator();
 		Color colorToCompare = null;
-		// int 
 		while( listIterator.hasNext() && itIsAVictory == false && firstAreaNotFilledCorrectly == false){
 			Emplacement currentEmplacement = listIterator.next();
 			if( this.firstVictoryAreaEmplacements.indexOf(currentEmplacement) == 0) {
@@ -189,7 +182,6 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.firstVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
-				System.out.println("check1");
 				return itIsAVictory = true;
 			}
 		}
@@ -215,7 +207,6 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.secondVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
-				System.out.println("check2");
 				return itIsAVictory = true;
 			}
 			
@@ -241,7 +232,6 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.thirdVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
-				System.out.println("check3");
 				return itIsAVictory = true;
 			}
 			
@@ -304,7 +294,7 @@ public class GameVariableRepository {
 				VariableRepository.getInstance().searchPlayer("Player 3").getStats().setRank("Third");
 				VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Second");
 			}
-			//si egalite
+			//if 2 players are tied, we compare the number of powers activated
 			else {
 				if(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getPowerUsed()<VariableRepository.getInstance().searchPlayer("Player 3").getStats().getPowerUsed()) {
 					VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Second");
@@ -352,7 +342,7 @@ public class GameVariableRepository {
 				VariableRepository.getInstance().searchPlayer("Player 1").getStats().setRank("Third");
 				VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Second");
 			}
-			//si egalite
+			//if 2 players are tied, we compare the number of powers activated
 			else {
 				if(VariableRepository.getInstance().searchPlayer("Player 2").getStats().getPowerUsed()<VariableRepository.getInstance().searchPlayer("Player 1").getStats().getPowerUsed()) {
 					VariableRepository.getInstance().searchPlayer("Player 2").getStats().setRank("Second");
@@ -394,7 +384,6 @@ public class GameVariableRepository {
 		}
 	}
 	
-	
 	public boolean getIsUpdating() {
 		return this.isUpdating;
 	}
@@ -405,7 +394,6 @@ public class GameVariableRepository {
             Piece currentPiece = currentEmplacement.getOccupyingPiece();
             if ( currentPiece != null && currentPiece!=pieceMoved )  {
             	currentPiece.setIsClickeable(false);
-            	System.out.println("disabled");
             }
             pieceMoved.setIsClickeable(true);
         }
@@ -570,6 +558,14 @@ public class GameVariableRepository {
 	public int getNbRound() {
 		return this.nbRound;
 	}
+	
+	public Emplacement getLastSpecialMoveEmplacement() {
+		return this.lastSpecialMoveEmplacement;
+	}
+	
+	public void setLastSpecialMoveEmplacement(Emplacement toKeep) {
+		this.lastSpecialMoveEmplacement = toKeep;
+	}
 
 	public boolean checkIfVictoryState2Players() {
 		boolean itIsAVictory = false;
@@ -579,7 +575,6 @@ public class GameVariableRepository {
 		Color secondPlayerColor = Color.YELLOW;
 		ListIterator<Emplacement> listIterator = this.firstVictoryAreaEmplacements.listIterator();
 		Color colorToCompare = null;
-		// int 
 		while(listIterator.hasNext() && itIsAVictory == false && firstAreaNotFilledCorrectly == false){
 			Emplacement currentEmplacement = listIterator.next();
 			if( this.firstVictoryAreaEmplacements.indexOf(currentEmplacement) == 0) {
@@ -600,7 +595,6 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.firstVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
-				System.out.println("check1");
 				return itIsAVictory = true;
 				
 			}
@@ -626,18 +620,9 @@ public class GameVariableRepository {
 			}
 			
 			if ( this.secondVictoryAreaEmplacements.indexOf(currentEmplacement) == 9 ) {
-				System.out.println("check2");
-
 				return itIsAVictory = true;
 			}
-			
 		}
-		
 		return itIsAVictory;
 	}
-	
-	
-	
-	
-
 }

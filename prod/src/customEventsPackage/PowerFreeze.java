@@ -1,14 +1,10 @@
 package customEventsPackage;
-
 import java.awt.Color;
 
-import checker.core.GameVariableRepository;
 import checker.core.VariableRepository;
 import checker.data.Piece;
-import checker.data.Player;
-//cost 80
+
 public class PowerFreeze extends Power {
-	private int round;
 	public PowerFreeze() {
 	}
 	public String getName() {
@@ -21,18 +17,17 @@ public class PowerFreeze extends Power {
 		return "Stuck one of your opponent's piece for one round";
 	}
 	public static int getCost() {
-		return 5;
+		return 50;
 	}
 	public String getImage() {
 		return "power_freeze.jpg";
 	}
 	public int getCost2() {
-		return 5;
+		return 50;
 	}
 	
 	public void effect(Piece pieceFrozen) {
-		//pieceFrozen.setIsClickeable(false);
-		//pieceFrozen.setColor(Color.blue);
+		//is implement directly in the Board class
 	}
 	public static void effectUndo(Piece pieceFrozen) {
 		String playerName=pieceFrozen.getOwnersName();

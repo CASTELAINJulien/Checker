@@ -2,22 +2,17 @@ package checker.core;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 import checker.data.Emplacement;
 import checker.data.Piece;
 import checker.data.Player;
 import checker.gui.BoardParameter;
-import checker.panels.Board;
 
 public class BoardUpdater {
 	private BoardUpdater() {
@@ -106,7 +101,6 @@ public class BoardUpdater {
 		boolean gameHasStarted = GameVariableRepository.getInstance().getGameStarted();
 		if ( gameHasStarted == true ) {
 			for (ListIterator<Emplacement> iter2 = GameVariableRepository.getInstance().getEmplacementsArrayList().listIterator(); iter2.hasNext(); ) {
-				//g.setColor(Color.red);
 				Emplacement currentEmplacement = iter2.next();				
 				int radius = BoardParameter.pieceRadius;
 				int x = currentEmplacement.getPositionX()*BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint;
@@ -125,7 +119,6 @@ public class BoardUpdater {
 			Emplacement toUpdate = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied());
 			g.setColor(Color.MAGENTA);
 			g.fillOval(toUpdate.getPositionX() * BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint, toUpdate.getPositionY()*BoardParameter.interEmplacementSpaces, BoardParameter.pieceRadius, BoardParameter.pieceRadius);
-			// justPlayed = false;
 		} else {
 			Emplacement toUpdate = GameVariableRepository.getInstance().getEmplacementsArrayList().get(GameVariableRepository.getInstance().getIndexOfEmplacementToBeEmptied());
 			if ( toUpdate != null ) {
@@ -134,7 +127,6 @@ public class BoardUpdater {
 			}
 			
 			GameVariableRepository.getInstance().setEmplacementToBeEmptied(null);
-			// GameVariableRepository.getInstance().setIndexOfEmplacementToBeEmptied(0);
 		}
 	}
 	
@@ -149,7 +141,6 @@ public class BoardUpdater {
 					g.fillOval(currentEmplacement.getPositionX() * BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint, currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces, BoardParameter.pieceRadius, BoardParameter.pieceRadius);	
 				}
 				//if teleport power is activated
-				//TODO need to be improved
 				else if(currentPlayer.getPowerActivated()!=9 && currentPlayer.getPower(currentPlayer.getPowerActivated()).getName()=="Teleport") {
 					if(currentEmplacement.getIsOccupied()==false) {			
 						g.setColor(Color.WHITE);
@@ -161,7 +152,6 @@ public class BoardUpdater {
 					if( currentEmplacement.ifIsEligibleForJump()==true) {
 						g.setColor(Color.WHITE);
 						g.fillOval(currentEmplacement.getPositionX() * BoardParameter.interEmplacementSpaces + BoardParameter.boardStartingPoint, currentEmplacement.getPositionY()*BoardParameter.interEmplacementSpaces, BoardParameter.pieceRadius, BoardParameter.pieceRadius);	
-					
 					}
 				}
 			}
